@@ -3,7 +3,7 @@ package com.bb.classmerge.decompile;
 import java.io.File;
 
 import com.bb.classmerge.util.FileNameUtil;
-import com.bb.classmerge.util.FileUtil;
+import com.bb.classmerge.util.FileCopyUtil;
 import com.bb.classmerge.util.ConsoleUtil;
 
 public class Decompiler {
@@ -33,7 +33,7 @@ public class Decompiler {
 		}
 		
 		String oldFileName = FileNameUtil.getFileName(oldFilePath);
-		FileUtil.copyFile(oldFilePath, tempDir + "\\" + oldFileName);
+		FileCopyUtil.copyFile(oldFilePath, tempDir + "\\" + oldFileName);
 		
 		File copiedFile = new File(tempDir + "\\" + oldFileName);
 		if (!copiedFile.exists()) {
@@ -43,7 +43,6 @@ public class Decompiler {
 		
 		String copiedFilePath = copiedFile.getAbsolutePath();
 		String exeFileParam = "jad158g/jad.exe -o -sjava " + copiedFilePath;
-		// FormConsole.print(exeFileParam);
 		
 		Process process = null;
 		
@@ -67,10 +66,10 @@ public class Decompiler {
 			return false;
 		}
 		
-		FileUtil.copyFile(decompiledFile.getAbsolutePath(), destFilePath);
+		FileCopyUtil.copyFile(decompiledFile.getAbsolutePath(), destFilePath);
 		
-		boolean b1 = decompiledFile.delete();
-		boolean b2 = copiedFile.delete();
+		boolean b1 = copiedFile.delete();
+		boolean b2 = decompiledFile.delete();
 		
 		if (destFilePath == null || destFilePath.length() == 0) {
 			ConsoleUtil.print("Decompiler decompile : destFilePath == null || destFilePath.length() == 0");
@@ -90,43 +89,4 @@ public class Decompiler {
 		
 		return true;
 	}
-	
-	
-	/*
-	public String compile(String filePath) {
-		if (filePath == null || filePath.length() == 0) {
-			return "";
-		}
-		
-		if (!filePath.endsWith(".java")) {
-			return "";
-		}
-		
-		File file = new File(filePath);
-		if (!file.exists()) {
-			return "";
-		}
-		
-		String exeFileParam = "C:/Java/jdk1.6.0_45/bin/javac.exe " + file.getAbsolutePath();
-		FormConsole.print(exeFileParam);
-		
-		Process process = null;
-		
-		try {
-			Runtime rt = Runtime.getRuntime();
-			process = rt.exec(exeFileParam);
-		    process.getErrorStream().close();
-		    process.getInputStream().close();
-		    process.getOutputStream().close();
-		    process.waitFor();
-		
-		} catch (Exception e) {
-		    e.printStackTrace();
-		    return "";
-		}
-		
-		String newPath = StringUtil.replaceLastOne(file.getAbsolutePath(), ".java", ".class");
-		return newPath;
-	}
-	*/
 }

@@ -31,16 +31,16 @@ public class MainForm extends JFrame {
 
 	
 	// 상단 클래스 폴더경로
-	private JTextField textField1 = null;
-	private JTextField textField2 = null;
+	public static JTextField textField1 = null;
+	public static JTextField textField2 = null;
 	
-	private String labelText1 = "Left Classes Dir";
-	private String labelText2 = "Right Classes Dir";
+	public static String labelText1 = "Left Classes Dir";
+	public static String labelText2 = "Right Classes Dir";
 	
 	// 우측상단 버튼
-	private JButton decompileButton = null;
-	private JButton mergeButton = null;
-	private JButton diffButton = null;
+	private static JButton decompileButton = null;
+	private static JButton mergeButton = null;
+	private static JButton diffButton = null;
 	
 	private int textFieldHeight = 35;
 	private int buttonHeight = 30;
@@ -49,7 +49,7 @@ public class MainForm extends JFrame {
 	public static JTextArea textArea = null;
 	
 	// 콘솔용 스크롤
-	private JScrollPane scrollPane = null;
+	public static JScrollPane scrollPane = null;
 	
 	
 	// 폰트 설정
@@ -213,35 +213,8 @@ public class MainForm extends JFrame {
 					return;
 				}
 				
-				FileConverter fileConverter = new FileConverter();
-				
-				String classesDirText1 = textField1.getText();
-				String classesDirText2 = textField2.getText();
-				
-				try {
-					// 폴더경로 밸리드 체크
-					fileConverter.checkDirectoryIsValid(classesDirText1);
-					fileConverter.checkDirectoryIsValid(classesDirText2);
-					
-					String destDirPath1 = fileConverter.convertClassToJava(classesDirText1);
-					String destDirPath2 = fileConverter.convertClassToJava(classesDirText2);
-					
-					File dir1 = new File(classesDirText1);
-					File dir2 = new File(classesDirText2);
-					String leftDirPath = StringUtil.revisePath(dir1.getAbsolutePath());
-					String rightDirPath = StringUtil.revisePath(dir2.getAbsolutePath());
-							
-					ConsoleUtil.print("[" + labelText1 + "] Input Path : " + leftDirPath);
-					ConsoleUtil.print("[" + labelText2 + "] Input Path : " + rightDirPath);
-					ConsoleUtil.print("[" + labelText1 + "] Output Path : " + destDirPath1);
-					ConsoleUtil.print("[" + labelText2 + "] Output Path : " + destDirPath2);
-				
-				} catch (MsgException ex) {
-					ConsoleUtil.print(ex);
-					
-				} catch (Exception ex) {
-					ConsoleUtil.print(ex);
-				}
+				DecompileThead decompileThead = new DecompileThead();
+				decompileThead.start();
 			}
 		});
 		
@@ -260,36 +233,8 @@ public class MainForm extends JFrame {
 					return;
 				}
 				
-				FileConverter fileConverter = new FileConverter();
-				
-				String classesDirText1 = textField1.getText();
-				String classesDirText2 = textField2.getText();
-				
-				try {
-					// 폴더경로 밸리드 체크
-					fileConverter.checkDirectoryIsValid(classesDirText1);
-					fileConverter.checkDirectoryIsValid(classesDirText2);
-					
-					File dir1 = new File(classesDirText1);
-					File dir2 = new File(classesDirText2);
-					String leftDirPath = StringUtil.revisePath(dir1.getAbsolutePath());
-					String rightDirPath = StringUtil.revisePath(dir2.getAbsolutePath());
-							
-					ConsoleUtil.print("[" + labelText1 + "] Input Path : " + leftDirPath);
-					ConsoleUtil.print("[" + labelText2 + "] Input Path : " + rightDirPath);
-					
-					MergeController mergeCtrl = new MergeController();
-					String destDirPath = mergeCtrl.mergeDirs(leftDirPath, rightDirPath);
-					
-					ConsoleUtil.print("Merged Path : " + StringUtil.revisePath(destDirPath));
-					
-				
-				} catch (MsgException ex) {
-					ConsoleUtil.print(ex);
-					
-				} catch (Exception ex) {
-					ConsoleUtil.print(ex);
-				}
+				MergeThread mergeThread = new MergeThread();
+				mergeThread.start();
 			}
 		});
 		
@@ -309,32 +254,8 @@ public class MainForm extends JFrame {
 					return;
 				}
 				
-				FileConverter fileConverter = new FileConverter();
-				
-				String classesDirText1 = textField1.getText();
-				String classesDirText2 = textField2.getText();
-				
-				try {
-					// 폴더경로 밸리드 체크
-					fileConverter.checkDirectoryIsValid(classesDirText1);
-					fileConverter.checkDirectoryIsValid(classesDirText2);
-					
-					File dir1 = new File(classesDirText1);
-					File dir2 = new File(classesDirText2);
-					String leftDirPath = StringUtil.revisePath(dir1.getAbsolutePath());
-					String rightDirPath = StringUtil.revisePath(dir2.getAbsolutePath());
-							
-					ConsoleUtil.print("[" + labelText1 + "] Input Path : " + leftDirPath);
-					ConsoleUtil.print("[" + labelText2 + "] Input Path : " + rightDirPath);
-					
-					DiffHelperMain.doDiffProcess(leftDirPath, rightDirPath);
-				
-				} catch (MsgException ex) {
-					ConsoleUtil.print(ex);
-					
-				} catch (Exception ex) {
-					ConsoleUtil.print(ex);
-				}
+				DiffThread diffThread = new DiffThread();
+				diffThread.start();
 			}
 		});
 	}
@@ -375,5 +296,25 @@ public class MainForm extends JFrame {
 		scrollPane.setBounds(10, textAreaTop, 755, defaultHeight - textAreaHeightGap);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+	}
+	
+	
+	public static void setFormDisable() {
+		textField1.setEnabled(false);
+		textField2.setEnabled(false);
+		
+		decompileButton.setEnabled(false);
+		mergeButton.setEnabled(false);
+		diffButton.setEnabled(false);
+	}
+	
+	
+	public static void setFormEnable() {
+		textField1.setEnabled(true);
+		textField2.setEnabled(true);
+		
+		decompileButton.setEnabled(true);
+		mergeButton.setEnabled(true);
+		diffButton.setEnabled(true);
 	}
 }

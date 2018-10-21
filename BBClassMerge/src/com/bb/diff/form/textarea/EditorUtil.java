@@ -8,7 +8,6 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import com.bb.diff.common.DiffConst;
-import com.bb.diff.file.FileUtil;
 import com.bb.diff.form.tree.BBTreeNode;
 import com.bb.diff.map.FileContentUtil;
 import com.bb.diff.prototype.Col;
@@ -161,8 +160,8 @@ public class EditorUtil {
 		setRightFileContentText(content2.toString(), true);
 		
 		
-		boolean testResult = FileUtil.ifSameFileContent(content1, content2, null, null);
-		System.out.println("testResult : " + testResult);
+//		boolean testResult = FileUtil.checkIsSameFileContent(content1, content2, null, null);
+//		System.out.println("testResult : " + testResult);
 		
 		/**
 		 * col 위치 계산해서 저장해둔다.

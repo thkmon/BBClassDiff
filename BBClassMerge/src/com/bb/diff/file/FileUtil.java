@@ -16,11 +16,10 @@ import com.bb.diff.string.StringUtil;
 
 public class FileUtil {
 	
-	private static int sameFileCountByDecompile =0;
-	private static int diffFileCount =0;
-	private static StringBuffer diffTempBuffer = new StringBuffer();
-	private static long tmpFileLen1 = 0;
-	private static long tmpFileLen2 = 0;
+//	private static StringBuffer diffTempBuffer = new StringBuffer();
+//	private static long tmpFileLen1 = 0;
+//	private static long tmpFileLen2 = 0;
+	
 	
 	/**
 	 * 파일을 복사한다.
@@ -104,6 +103,7 @@ public class FileUtil {
 		return true;
 	}
 	
+	
 	/**
 	 * 파일을 쓴다.
 	 * 
@@ -145,6 +145,7 @@ public class FileUtil {
 		return true;
 	}
 	
+	
 	/**
 	 * 파일을 이어서 쓴다.
 	 * 
@@ -155,6 +156,7 @@ public class FileUtil {
 	public static boolean appendFile(File file, StringBuffer fileContentBuffer, boolean putEnter) {
 		return appendFile(file, fileContentBuffer.toString(), putEnter);
 	}
+	
 	
 	/**
 	 * 파일을 이어서 쓴다.
@@ -198,6 +200,7 @@ public class FileUtil {
 		
 		return true;
 	}
+	
 
 	/**
 	 * 파일을 읽어들인다.
@@ -252,13 +255,13 @@ public class FileUtil {
 					reader.close();					
 				}
 			} catch (Exception ie) {
-				// ie.printStackTrace();
 				reader = null;
 			}
 		}
 		
 		return fileContent;
 	}
+	
 	
 	/**
 	 * 특정 파일의 엔터키 값(리턴값)을 찾아서 String 형태로 리턴한다.
@@ -312,7 +315,6 @@ public class FileUtil {
 		return returnCode;
 	}
 	
-	private static StringBuffer logBufferForSameFile = new StringBuffer();
 	
 	/**
 	 * 같은 파일인지 검사해서 boolean을 리턴한다.
@@ -328,12 +330,12 @@ public class FileUtil {
 	 * @param fileObj2
 	 * @return
 	 */
-	public static boolean isSameFile(BBFile fileObj1, BBFile fileObj2) {
+	public static boolean checkIsSameFile(File fileObj1, File fileObj2) {
 		
 		/**
 		 * 검사
 		 */
-		int diffResult = isSameFileBasic(fileObj1, fileObj2);
+		int diffResult = checkIsSameFileBasic(fileObj1, fileObj2);
 		
 		if (diffResult == 1) {
 			// 용량, 길이, 내용이 같은 파일임
@@ -345,71 +347,17 @@ public class FileUtil {
 			return false;
 		}
 		
-		// 클래스라면 한 번 더 검증한다.
-		// 디컴파일을 했을 떄는 동일할 수 있기 때문이다.
-		boolean isClassFileAndSame = isClassFileAndSame(fileObj1, fileObj2);
-		
-		if (DiffConst.doDecompileWhenClassDiff && isClassFileAndSame == true) {
-			
-			sameFileCountByDecompile++;
-			
-			StringBuffer buff = new StringBuffer();
-			
-			buff.append("디컴파일 결과 같은 파일 " + sameFileCountByDecompile + "번째 : ");
-			if (diffResult == -2) {
-				buff.append("파일의 용량은 다르지만, 디컴파일 결과는 내용 전체가 동일합니다.");
-				
-			} else if (diffResult == -3) {
-				buff.append("파일 내용의 길이는 다르지만, 디컴파일 결과는 내용 전체가 동일합니다.");
-				
-			} else if (diffResult == -4) {
-				buff.append("파일의 내용은 다르지만, 디컴파일 결과는 내용 전체가 동일합니다.");
-			}
-			
-			buff.append(" ").append(fileObj1.getAbsolutePath()).append(" ---- ").append(fileObj2.getAbsolutePath());
-			
-			LogUtil.appendLogFileForError(buff.toString());
-			LogUtil.appendLogFile();
-			return true;
-		}
-		
-		if (DiffConst.doDecompileWhenClassDiff && isClassFileAndSame == false) {
-			diffFileCount++;
-			LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : " + fileObj1.getAbsolutePath() + " ---- " + fileObj2.getAbsolutePath());
-			LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : 디컴파일 결과 내용이 다릅니다. ([" + fileObj1.length() + "] != [" + fileObj2.length() + "])");
-			LogUtil.appendLogFile();
+		// DIFF시 클래스의 경우 디컴파일하여 검사할지 여부
+		if (!DiffConst.doDecompileWhenClassDiff) {
 			return false;
 		}
 		
-		if (diffResult == -2) {
-			diffFileCount++;
-			LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : " + fileObj1.getAbsolutePath() + " ---- " + fileObj2.getAbsolutePath());
-			LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : 파일 용량이 다릅니다. ([" + fileObj1.length() + "] != [" + fileObj2.length() + "])");
-			LogUtil.appendLogFile();
-				
-		} else if (diffResult == -3) {
-			diffFileCount++;
-			LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : " + fileObj1.getAbsolutePath() + " ---- " + fileObj2.getAbsolutePath());
-			LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : 파일 내 문자열 길이가 다릅니다. ([" + tmpFileLen1 + "] != [" + tmpFileLen2 + "])");
-			LogUtil.appendLogFile();
-				
-		} else if (diffResult == -4) {
-			diffFileCount++;
-			LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : " + fileObj1.getAbsolutePath() + " ---- " + fileObj2.getAbsolutePath());
-			if (diffTempBuffer != null && diffTempBuffer.length() > 0) {
-				LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : 파일 내용이 다릅니다. " + diffTempBuffer.toString());
-			}
-			LogUtil.appendLogFile();
-			
-		} else {
-			diffFileCount++;
-			LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : " + fileObj1.getAbsolutePath() + " ---- " + fileObj2.getAbsolutePath());
-			LogUtil.appendLogFile(diffFileCount + "번째 다른 파일 : isDiff : 기타 경우의 수");
-			LogUtil.appendLogFile();
-		}
-		
-		return false;
+		// 클래스라면 한 번 더 검증한다.
+		// 디컴파일을 했을 떄는 동일할 수 있기 때문이다.
+		boolean bClassFilesAreSame = checkIsSameClassFile(fileObj1, fileObj2);
+		return bClassFilesAreSame;
 	}
+	
 	
 	/**
 	 * 클래스가 아닌 파일들(txt, js, jsp, htm, html 등을 검사한다.)
@@ -419,7 +367,7 @@ public class FileUtil {
 	 * @param fileObj2
 	 * @return
 	 */
-	public static int isSameFileBasic(BBFile fileObj1, BBFile fileObj2) {
+	private static int checkIsSameFileBasic(File fileObj1, File fileObj2) {
 		
 		try {
 			if (fileObj1 == null) {
@@ -452,12 +400,12 @@ public class FileUtil {
 			StringBuffer fileContent1 = readFile(fileObj1);
 			StringBuffer fileContent2 = readFile(fileObj2);
 			
-			tmpFileLen1 = fileContent1.length();
-			tmpFileLen2 = fileContent2.length();
+			long tmpFileLen1 = fileContent1.length();
+			long tmpFileLen2 = fileContent2.length();
 			
 			// 내용 저장
-			fileObj1.setFileContent(fileContent1);
-			fileObj2.setFileContent(fileContent2);
+//			fileObj1.setFileContent(fileContent1);
+//			fileObj2.setFileContent(fileContent2);
 			
 			/**
 			 * 문자열 길이 검사
@@ -470,7 +418,8 @@ public class FileUtil {
 			 * 내용 검사
 			 */
 			// contentDiffBuffer == null 이면 동일한 파일임
-			boolean isContentDiff = ifSameFileContent(fileContent1, fileContent2, fileObj1, fileObj2);
+			// boolean isContentDiff = checkIsSameFileContent(fileContent1, fileContent2, fileObj1, fileObj2);
+			boolean isContentDiff = checkIsSameFileContent(fileContent1, fileContent2);
 			
 			if (!isContentDiff) {
 				// 파일 내용 다른 경우
@@ -487,12 +436,13 @@ public class FileUtil {
 	/**
 	 * 클래스 비교를 위한 메서드.
 	 * 클래스 파일은 용량과 길이가 달라도, 역컴파일을 했을 때 내용이 동일한 경우가 있어서 따로 검사한다.
+	 * (내용이 다르다고 무조건 다른게 아니다. 클래스는 역컴파일까지 해봐야 한다.)
 	 * 
 	 * @param fileObj1
 	 * @param fileObj2
 	 * @return
 	 */
-	public static boolean isClassFileAndSame(BBFile fileObj1, BBFile fileObj2) {
+	private static boolean checkIsSameClassFile(File fileObj1, File fileObj2) {
 		/**
 		 * 2017-02-10 bb_
 		 * 클래스가 아닌 파일(txt, jsp, js, java 등)은 (1) 용량, (2) 길이, (3) 내용. 3가지를 비교하면 된다.
@@ -508,14 +458,6 @@ public class FileUtil {
 		 * 
 		 *  주의 : 디컴파일은 디컴파일러에 따라 지역 변수명이 랜덤하게 바뀌는 등 예외가 있으니 100% 라고 신뢰해서는 안된다.
 		 */
-		
-		// 내용이 다르다고 무조건 다른게 아니다. 클래스는 역컴파일까지 해봐야 한다.
-		
-		// DIFF시 클래스의 경우 디컴파일하여 검사할지 여부
-		if (!DiffConst.doDecompileWhenClassDiff) {
-			// 검사안하면 무조건 다르다고 인식
-			return false;
-		}
 		
 		/**
 		 * 마지막으로, 클래스의 경우 역컴파일 내용 검사
@@ -536,17 +478,18 @@ public class FileUtil {
 		StringBuffer decompiledContent2 = DecompileUtil.readClassFile(fileObj2.getAbsolutePath());
 		
 		// 디컴파일 해서 내용 비교
-		boolean clsContentIsDiff = ifSameFileContent(decompiledContent1, decompiledContent2, fileObj1, fileObj2);
+		// boolean clsContentIsDiff = checkIsSameFileContent(decompiledContent1, decompiledContent2, fileObj1, fileObj2);
+		boolean clsContentIsDiff = checkIsSameFileContent(decompiledContent1, decompiledContent2);
 		
 		// 역컴파일 내용을 객체에 저장해둠
-		fileObj1.setFileDecompiledContent(decompiledContent1);
-		fileObj2.setFileDecompiledContent(decompiledContent2);
+//		fileObj1.setFileDecompiledContent(decompiledContent1);
+//		fileObj2.setFileDecompiledContent(decompiledContent2);
 		
 		if (!clsContentIsDiff) {
-			System.err.println("다르다!" + fileObj1.getAbsolutePath());
-			System.err.println("--다르다!" + fileObj2.getAbsolutePath());
-			System.err.println();
-			System.err.println();
+//			System.err.println("다르다!" + fileObj1.getAbsolutePath());
+//			System.err.println("--다르다!" + fileObj2.getAbsolutePath());
+//			System.err.println();
+//			System.err.println();
 
 			return false;
 		}
@@ -562,26 +505,25 @@ public class FileUtil {
 	 * 
 	 * @param fileContent1
 	 * @param fileContent2
-	 * @param fileObj1
-	 * @param fileObj2
 	 * @return
 	 */
-	public static boolean ifSameFileContent(StringBuffer fileContent1, StringBuffer fileContent2, File fileObj1, File fileObj2) {
-		
+//	private static boolean checkIsSameFileContent(StringBuffer fileContent1, StringBuffer fileContent2, File fileObj1, File fileObj2) {
+	private static boolean checkIsSameFileContent(StringBuffer fileContent1, StringBuffer fileContent2) {	
 		int fileLen1 = fileContent1.length();
 		
 		// 파일별 엔터값 가져온다.
-		String file1ReturnCode = "\r\n";
-		if (fileObj1 != null) {
-			getReturnCode(fileObj1);
-		}
-		int len1OfReturnCode = file1ReturnCode.length();
+//		String file1ReturnCode = "\r\n";
+//		if (fileObj1 != null) {
+//			file1ReturnCode = getReturnCode(fileObj1);
+//		}
+		
+//		int len1OfReturnCode = file1ReturnCode.length();
 		
 		// System.out.println("fileReturnCode1 : " + file1ReturnCode.replace("\r", "\\r").replace("\n", "\\n"));
 		// System.out.println("len1OfReturnCode : " + len1OfReturnCode);
 		
-		int file1RowCnt = 0;
-		int file1axisCol = 0;
+//		int file1RowCnt = 0;
+//		int file1axisCol = 0;
 		
 		String oneChar1 = "";
 		String oneChar2 = "";
@@ -589,23 +531,23 @@ public class FileUtil {
 		// 내용으로 비교. 용량이 같아도 내용이 다를 수 있다.
 		for (int i=0; i<fileLen1; i++) {
 			
-			if (StringUtil.subText(fileContent1, i, i+len1OfReturnCode).equals(file1ReturnCode)) {
-				file1RowCnt++;
-				file1axisCol = i;
-			}
+//			if (StringUtil.subText(fileContent1, i, i+len1OfReturnCode).equals(file1ReturnCode)) {
+//				file1RowCnt++;
+//				file1axisCol = i;
+//			}
 			
 			oneChar1 = fileContent1.substring(i, i+1);
 			oneChar2 = fileContent2.substring(i, i+1);
 			
 			if (!oneChar1.equals(oneChar2)) {
 				
-				diffTempBuffer = new StringBuffer();
-				
-				diffTempBuffer.append(i).append("번째 글자.");
-				diffTempBuffer.append(" 위치(").append(file1RowCnt).append(", ").append((i-file1axisCol)).append(")");
-				diffTempBuffer.append(" ([").append(StringUtil.subTextToPrint(fileContent1, i-10, i+10));
-				diffTempBuffer.append("] != [").append(StringUtil.subTextToPrint(fileContent2, i-10, i+10)).append("])");
-				System.err.println(diffTempBuffer.toString());
+//				diffTempBuffer = new StringBuffer();
+//				
+//				diffTempBuffer.append(i).append("번째 글자.");
+//				diffTempBuffer.append(" 위치(").append(file1RowCnt).append(", ").append((i-file1axisCol)).append(")");
+//				diffTempBuffer.append(" ([").append(StringUtil.subTextToPrint(fileContent1, i-10, i+10));
+//				diffTempBuffer.append("] != [").append(StringUtil.subTextToPrint(fileContent2, i-10, i+10)).append("])");
+//				System.err.println(diffTempBuffer.toString());
 				
 				return false;
 			}

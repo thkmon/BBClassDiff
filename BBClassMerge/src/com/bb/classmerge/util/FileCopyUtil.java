@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.channels.FileChannel;
 
-public class FileUtil {
+public class FileCopyUtil {
 	
 	public static boolean copyFile(String oldFilePath, String destFilePath) throws Exception {
 		

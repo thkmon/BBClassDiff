@@ -6,8 +6,7 @@ import com.bb.classmerge.form.MainForm;
 public class ConsoleUtil {
 	
 	
-	public static void print(final String message) {
-		
+	public static void print(String message) {
 		System.out.println(message);
 
 		if (MainForm.textArea != null) {
@@ -17,6 +16,7 @@ public class ConsoleUtil {
 				MainForm.textArea.append(message);
 			}
 			
+//			MainForm.textArea.update(MainForm.textArea.getGraphics());
 			MainForm.textArea.setCaretPosition(MainForm.textArea.getDocument().getLength());
 		}
 	}

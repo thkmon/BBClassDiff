@@ -70,11 +70,8 @@ public class DiffConst {
 	public static String targetParentPath = "C:\\NANUM\\workspaces\\diff\\classes\\classes";
 
 	
-	// COPY시 클래스를 디컴파일할지 여부
-	public static boolean doDecompileWhenClassCopy = true;
-	
 	// DIFF시 클래스의 경우 디컴파일하여 검사할지 여부
-	public static boolean doDecompileWhenClassDiff = false;
+	public static boolean doDecompileWhenClassDiff = true;
 
 	
 	public static String includePathPattern = "*.js,*.jsp,*.xml,*.config,*.properties,*.class";

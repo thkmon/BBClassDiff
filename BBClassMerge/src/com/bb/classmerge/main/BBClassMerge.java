@@ -18,7 +18,13 @@ public class BBClassMerge {
 	public static void main(String[] args) {
 		
 		try {
-			HashMap<String, String> optionPropMap = PropertiesUtil.readPropertiesFile("option.properties");
+			HashMap<String, String> optionPropMap = null;
+			
+			try {
+				optionPropMap = PropertiesUtil.readPropertiesFile("option.properties");
+			} catch (Exception ie) {
+				// 무시
+			}
 			
 			if (optionPropMap != null) {
 				String leftClassesDir = optionPropMap.get("leftClassesDir");

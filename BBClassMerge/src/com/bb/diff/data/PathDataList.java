@@ -2,7 +2,7 @@ package com.bb.diff.data;
 
 import java.util.ArrayList;
 
-public class ClsPathList extends ArrayList<ClsPath> {
+public class PathDataList extends ArrayList<PathData> {
 
 	
 	@Override
@@ -10,16 +10,16 @@ public class ClsPathList extends ArrayList<ClsPath> {
 		
 		StringBuffer buff = new StringBuffer();
 		
-		ClsPath clsPath = null;
+		PathData pathData = null;
 		int clsCount = this.size();
 		
 		for (int i=0; i<clsCount; i++) {
-			clsPath = this.get(i);
-			if (clsPath == null) {
+			pathData = this.get(i);
+			if (pathData == null) {
 				continue;
 			}
 			
-			if (clsPath.getSimplePath() == null || clsPath.getSimplePath().length() == 0) {
+			if (pathData.getSimplePath() == null || pathData.getSimplePath().length() == 0) {
 				continue;
 			}
 			
@@ -27,19 +27,19 @@ public class ClsPathList extends ArrayList<ClsPath> {
 				buff.append("\r\n");
 			}
 			
-			buff.append("[" + (i+1) + "/" + clsCount + "] : " + clsPath.getSimplePath());
+			buff.append("[" + (i+1) + "/" + clsCount + "] : " + pathData.getSimplePath());
 		}
 		
 		return buff.toString();
 	}
 	
 	
-	public void addNotDupl(ClsPath clsPath) {
-		if (clsPath == null) {
+	public void addNotDupl(PathData pathData) {
+		if (pathData == null) {
 			return;
 		}
 		
-		String clsSimplePath = clsPath.getSimplePath();
+		String clsSimplePath = pathData.getSimplePath();
 		if (clsSimplePath == null || clsSimplePath.length() == 0) {
 			return;
 		}
@@ -62,6 +62,6 @@ public class ClsPathList extends ArrayList<ClsPath> {
 			}
 		}
 		
-		this.add(clsPath);
+		this.add(pathData);
 	}
 }

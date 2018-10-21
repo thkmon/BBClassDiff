@@ -3,33 +3,33 @@ package com.bb.diff.file;
 import java.io.File;
 
 import com.bb.classmerge.util.StringUtil;
-import com.bb.diff.data.ClsPath;
-import com.bb.diff.data.ClsPathList;
+import com.bb.diff.data.PathData;
+import com.bb.diff.data.PathDataList;
 import com.bb.diff.data.StringList;
 
 public class FileDiffController {
 	
 	
 	/**
-	 * decompile 하지 않고 classse 폴더 2개 비교하기
+	 * 폴더 2개 비교하기
 	 * 
 	 * @param leftClassesDir
 	 * @param rightClassesDir
 	 * @return
 	 * @throws Exception
 	 */
-	public ClsPathList diffClsDirs(String leftClassesDir, String rightClassesDir) throws Exception {
+	public PathDataList diffDirs(String leftClassesDir, String rightClassesDir) throws Exception {
 		
-		ClsPathList clsPathList = getMergedClassPathList(leftClassesDir, rightClassesDir);
-		if (clsPathList == null || clsPathList.size() == 0) {
+		PathDataList pathDataList = getMergedClassPathList(leftClassesDir, rightClassesDir);
+		if (pathDataList == null || pathDataList.size() == 0) {
 			throw new Exception("FileDiffController diffClsDirs : there are no files.");
 		}
 		
-		return clsPathList;
+		return pathDataList;
 	}
 	
 	
-	private ClsPathList getMergedClassPathList(String leftClassesDir, String rightClassesDir) throws Exception {
+	private PathDataList getMergedClassPathList(String leftClassesDir, String rightClassesDir) throws Exception {
 		if (leftClassesDir == null || leftClassesDir.length() == 0) {
 			throw new Exception("FileDiffController getMergedClassPathList : leftClassesDir is null or empty.");
 		}
@@ -49,15 +49,15 @@ public class FileDiffController {
 			throw new Exception("FileDiffController getMergedClassPathList : rightDir not exists.");
 		}
 
-		StringList clsPathList1 = getPathList(leftDir);
-		StringList clsPathList2 = getPathList(rightDir);
+		StringList pathDataList1 = getPathList(leftDir);
+		StringList pathDataList2 = getPathList(rightDir);
 		
-		StringList mergedPathList = getMergedPathList(clsPathList1, clsPathList2, "class");
+		StringList mergedPathList = getMergedPathList(pathDataList1, pathDataList2);
 		if (mergedPathList == null || mergedPathList.size() == 0) {
 			throw new Exception("FileDiffController getMergedClassPathList : mergedPathList is null or empty.");
 		}
 		
-		ClsPathList clsPathList = new ClsPathList();
+		PathDataList pathDataList = new PathDataList();
 		
 		String onePath = null;
 		int pathCount = mergedPathList.size();
@@ -78,20 +78,20 @@ public class FileDiffController {
 			
 			if (existing1 && existing2) {
 				long gap = getVolumeGap(file1, file2);
-				ClsPath clsPath = new ClsPath(onePath, path1, path2, gap);
-				clsPathList.addNotDupl(clsPath);
+				PathData pathData = new PathData(onePath, path1, path2, gap);
+				pathDataList.addNotDupl(pathData);
 				
 			} else if (existing1) {
-				ClsPath clsPath = new ClsPath(onePath, path1, "", 0);
-				clsPathList.addNotDupl(clsPath);
+				PathData pathData = new PathData(onePath, path1, "", 0);
+				pathDataList.addNotDupl(pathData);
 				
 			} else if (existing2) {
-				ClsPath clsPath = new ClsPath(onePath, "", path2, 0);
-				clsPathList.addNotDupl(clsPath);
+				PathData pathData = new PathData(onePath, "", path2, 0);
+				pathDataList.addNotDupl(pathData);
 			}
 		}
 		
-		return clsPathList;
+		return pathDataList;
 	}
 	
 	
@@ -119,7 +119,7 @@ public class FileDiffController {
 	}
 
 	
-	private StringList getMergedPathList(StringList list1, StringList list2, String extension) {
+	private StringList getMergedPathList(StringList list1, StringList list2) {
 		if (list1 == null) {
 			list1 = new StringList();
 		}
@@ -136,11 +136,7 @@ public class FileDiffController {
 				continue;
 			}
 			
-			if (extension != null && extension.length() > 0) {
-				if (path.toLowerCase().endsWith("." + extension.toLowerCase())) {
-					list1.addNotDupl(path);
-				}
-			}
+			list1.addNotDupl(path);
 		}
 		
 		return list1;

@@ -62,11 +62,6 @@ public class FileNameUtil {
 			return "";
 		}
 		
-		int lastDotIndex = filePath.lastIndexOf(".");
-		if (lastDotIndex < 0) {
-			return filePath;
-		}
-		
 		int slashIdx = filePath.lastIndexOf("\\");
 		int slashIdx2 = filePath.lastIndexOf("/");
 		if (slashIdx2 > slashIdx) {

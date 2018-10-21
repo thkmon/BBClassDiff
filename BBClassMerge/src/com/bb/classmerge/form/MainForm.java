@@ -9,7 +9,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 
 import javax.swing.JButton;
@@ -23,6 +22,7 @@ import javax.swing.ScrollPaneConstants;
 import com.bb.classmerge.exception.MsgException;
 import com.bb.classmerge.file.FileConverter;
 import com.bb.classmerge.main.BBClassMerge;
+import com.bb.classmerge.merge.MergeController;
 import com.bb.classmerge.util.ConsoleUtil;
 import com.bb.classmerge.util.StringUtil;
 import com.bb.diff.main.DiffHelperMain;
@@ -30,9 +30,6 @@ import com.bb.diff.main.DiffHelperMain;
 public class MainForm extends JFrame {
 
 	
-	private FileConverter fileConverter = null;
-	
-
 	// 상단 클래스 폴더경로
 	private JTextField textField1 = null;
 	private JTextField textField2 = null;
@@ -42,7 +39,11 @@ public class MainForm extends JFrame {
 	
 	// 우측상단 버튼
 	private JButton decompileButton = null;
+	private JButton mergeButton = null;
 	private JButton diffButton = null;
+	
+	private int textFieldHeight = 35;
+	private int buttonHeight = 30;
 	
 	// 콘솔용 텍스트영역
 	public static JTextArea textArea = null;
@@ -59,7 +60,8 @@ public class MainForm extends JFrame {
 	
 	
 	private int defaultHeight = 400;
-	private int textAreaTop = 100;
+	private int textAreaTop = 120;
+	private int textAreaHeightGap = 180;
 	
 	
 	public MainForm(String title, String version) {
@@ -120,27 +122,31 @@ public class MainForm extends JFrame {
 				int formHeight = (int) rectangle.getHeight();
 				
 				if (textField1 != null) {
-					textField1.setBounds(150, 10, formWidth - 315, 35);
+					textField1.setBounds(150, 10, formWidth - 315, textFieldHeight);
 				}
 				
 				if (textField2 != null) {
-					textField2.setBounds(150, 50, formWidth - 315, 35);
+					textField2.setBounds(150, 50, formWidth - 315, textFieldHeight);
 				}
 				
 				if (decompileButton != null) {
-					decompileButton.setBounds(formWidth - 155, 10, 120, 35);
+					decompileButton.setBounds(formWidth - 155, 10, 120, buttonHeight);
+				}
+				
+				if (mergeButton != null) {
+					mergeButton.setBounds(formWidth - 155, 45, 120, buttonHeight);
 				}
 				
 				if (diffButton != null) {
-					diffButton.setBounds(formWidth - 155, 50, 120, 35);
+					diffButton.setBounds(formWidth - 155, 80, 120, buttonHeight);
 				}
 				
 				if (scrollPane != null) {
-					scrollPane.setBounds(10, textAreaTop, formWidth - 45, formHeight - 160);
+					scrollPane.setBounds(10, textAreaTop, formWidth - 45, formHeight - textAreaHeightGap);
 				}
 				
 				if (textArea != null) {
-					textArea.setBounds(10, textAreaTop, formWidth - 45, formHeight - 160);
+					textArea.setBounds(10, textAreaTop, formWidth - 45, formHeight - textAreaHeightGap);
 				}
 			}
 			
@@ -163,13 +169,13 @@ public class MainForm extends JFrame {
 		// 좌측상단 레이블 추가
 		JLabel label = new JLabel(labelText1);
 		label.setFont(basicFont);
-		label.setBounds(10, 10, 150, 35);
+		label.setBounds(10, 10, 150, textFieldHeight);
 		this.getContentPane().add(label);
 		
 		// 좌측상단 레이블 추가
 		JLabel label2 = new JLabel(labelText2);
 		label2.setFont(basicFont);
-		label2.setBounds(10, 50, 150, 35);
+		label2.setBounds(10, 50, 150, textFieldHeight);
 		this.getContentPane().add(label2);
 	}
 	
@@ -178,14 +184,23 @@ public class MainForm extends JFrame {
 		// 우측상단 버튼 추가
 		decompileButton = new JButton("Decompile");
 		decompileButton.setFont(basicFont);
-		decompileButton.setBounds(645, 10, 120, 35);
+		decompileButton.setBounds(645, 10, 120, buttonHeight);
 		this.getContentPane().add(decompileButton);
+		
+		mergeButton = new JButton("Merge");
+		mergeButton.setFont(basicFont);
+		mergeButton.setBounds(645, 45, 120, buttonHeight);
+		this.getContentPane().add(mergeButton);
 		
 		diffButton = new JButton("Diff");
 		diffButton.setFont(basicFont);
-		diffButton.setBounds(645, 50, 120, 35);
+		diffButton.setBounds(645, 80, 120, buttonHeight);
 		this.getContentPane().add(diffButton);
 		
+		
+		/**
+		 * Decompile 버튼 기능
+		 */
 		decompileButton.addActionListener(new ActionListener() {
 			
 			// 버튼 클릭시 이벤트 수행
@@ -198,9 +213,7 @@ public class MainForm extends JFrame {
 					return;
 				}
 				
-				if (fileConverter == null) {
-					fileConverter = new FileConverter();
-				}
+				FileConverter fileConverter = new FileConverter();
 				
 				String classesDirText1 = textField1.getText();
 				String classesDirText2 = textField2.getText();
@@ -210,17 +223,18 @@ public class MainForm extends JFrame {
 					fileConverter.checkDirectoryIsValid(classesDirText1);
 					fileConverter.checkDirectoryIsValid(classesDirText2);
 					
-					fileConverter.convertClassToJava(classesDirText1);
-					fileConverter.convertClassToJava(classesDirText2);
+					String destDirPath1 = fileConverter.convertClassToJava(classesDirText1);
+					String destDirPath2 = fileConverter.convertClassToJava(classesDirText2);
 					
 					File dir1 = new File(classesDirText1);
 					File dir2 = new File(classesDirText2);
-					
 					String leftDirPath = StringUtil.revisePath(dir1.getAbsolutePath());
 					String rightDirPath = StringUtil.revisePath(dir2.getAbsolutePath());
 							
-					ConsoleUtil.print("[" + labelText1 + "] Path : " + leftDirPath);
-					ConsoleUtil.print("[" + labelText2 + "] Path : " + rightDirPath);
+					ConsoleUtil.print("[" + labelText1 + "] Input Path : " + leftDirPath);
+					ConsoleUtil.print("[" + labelText2 + "] Input Path : " + rightDirPath);
+					ConsoleUtil.print("[" + labelText1 + "] Output Path : " + destDirPath1);
+					ConsoleUtil.print("[" + labelText2 + "] Output Path : " + destDirPath2);
 				
 				} catch (MsgException ex) {
 					ConsoleUtil.print(ex);
@@ -232,6 +246,57 @@ public class MainForm extends JFrame {
 		});
 		
 		
+		/**
+		 * Merge 버튼 기능
+		 */
+		 mergeButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				// 아직 로딩 전이면 버튼 동작하지 않는다.
+				if (textField1 == null || textField2 == null) {
+					ConsoleUtil.print("Loading...");
+					return;
+				}
+				
+				FileConverter fileConverter = new FileConverter();
+				
+				String classesDirText1 = textField1.getText();
+				String classesDirText2 = textField2.getText();
+				
+				try {
+					// 폴더경로 밸리드 체크
+					fileConverter.checkDirectoryIsValid(classesDirText1);
+					fileConverter.checkDirectoryIsValid(classesDirText2);
+					
+					File dir1 = new File(classesDirText1);
+					File dir2 = new File(classesDirText2);
+					String leftDirPath = StringUtil.revisePath(dir1.getAbsolutePath());
+					String rightDirPath = StringUtil.revisePath(dir2.getAbsolutePath());
+							
+					ConsoleUtil.print("[" + labelText1 + "] Input Path : " + leftDirPath);
+					ConsoleUtil.print("[" + labelText2 + "] Input Path : " + rightDirPath);
+					
+					MergeController mergeCtrl = new MergeController();
+					String destDirPath = mergeCtrl.mergeDirs(leftDirPath, rightDirPath);
+					
+					ConsoleUtil.print("Merged Path : " + StringUtil.revisePath(destDirPath));
+					
+				
+				} catch (MsgException ex) {
+					ConsoleUtil.print(ex);
+					
+				} catch (Exception ex) {
+					ConsoleUtil.print(ex);
+				}
+			}
+		});
+		
+		
+		/**
+		 * Diff 버튼 기능
+		 */
 		diffButton.addActionListener(new ActionListener() {
 			
 			// 버튼 클릭시 이벤트 수행
@@ -244,9 +309,7 @@ public class MainForm extends JFrame {
 					return;
 				}
 				
-				if (fileConverter == null) {
-					fileConverter = new FileConverter();
-				}
+				FileConverter fileConverter = new FileConverter();
 				
 				String classesDirText1 = textField1.getText();
 				String classesDirText2 = textField2.getText();
@@ -258,12 +321,11 @@ public class MainForm extends JFrame {
 					
 					File dir1 = new File(classesDirText1);
 					File dir2 = new File(classesDirText2);
-
 					String leftDirPath = StringUtil.revisePath(dir1.getAbsolutePath());
 					String rightDirPath = StringUtil.revisePath(dir2.getAbsolutePath());
 							
-					ConsoleUtil.print("[" + labelText1 + "] Path : " + leftDirPath);
-					ConsoleUtil.print("[" + labelText2 + "] Path : " + rightDirPath);
+					ConsoleUtil.print("[" + labelText1 + "] Input Path : " + leftDirPath);
+					ConsoleUtil.print("[" + labelText2 + "] Input Path : " + rightDirPath);
 					
 					DiffHelperMain.doDiffProcess(leftDirPath, rightDirPath);
 				
@@ -310,7 +372,7 @@ public class MainForm extends JFrame {
 		scrollPane = new JScrollPane(textArea);
 		scrollPane.setBackground(lightGrayColor);
 		this.getContentPane().add(scrollPane);
-		scrollPane.setBounds(10, textAreaTop, 755, defaultHeight - 160);
+		scrollPane.setBounds(10, textAreaTop, 755, defaultHeight - textAreaHeightGap);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	}

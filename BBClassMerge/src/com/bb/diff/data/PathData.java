@@ -1,6 +1,6 @@
 package com.bb.diff.data;
 
-public class ClsPath {
+public class PathData {
 	
 	private String simplePath = "";
 	private String leftFullPath = "";
@@ -9,7 +9,7 @@ public class ClsPath {
 	private long gapValue = 0;
 	
 	
-	public ClsPath(String simplePath, String leftFullPath, String rightFullPath, long gapValue) {
+	public PathData(String simplePath, String leftFullPath, String rightFullPath, long gapValue) {
 		this.simplePath = simplePath;
 		this.leftFullPath = leftFullPath;
 		this.rightFullPath = rightFullPath;

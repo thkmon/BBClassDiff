@@ -53,7 +53,7 @@ public class FileConverter {
 		
 		File dir = new File(dirPath);
 		String oldDirPath = dir.getAbsolutePath();
-		String destDirPath = makeResultDir();
+		String destDirPath = makeDestinationDir();
 		
 		FileCollector fileCollector = new FileCollector();
 		FileList fileList = fileCollector.getFileList(dirPath, true);
@@ -96,51 +96,13 @@ public class FileConverter {
 	}
 	
 	
-//	private String makeDestDir(File dirFile) throws Exception {
-//		if (dirFile == null) {
-//			return null;
-//		}
-//		
-//		String dirPath = dirFile.getAbsolutePath();
-//		
-//		int slashIdx = dirPath.lastIndexOf("\\");
-//		int slashIdx2 = dirPath.lastIndexOf("/");
-//		if (slashIdx2 > slashIdx) {
-//			slashIdx = slashIdx2;
-//		}
-//		
-//		String leftPath = dirPath.substring(0, slashIdx);
-//		String rightPath = dirPath.substring(slashIdx + 1);
-//		
-//		String newPath = leftPath + "/" + rightPath + "_" + DateUtil.getTodayDateTime();
-//		File newDir = new File(newPath);
-//		if (!newDir.exists()) {
-//			newDir.mkdirs();
-//		}
-//		
-//		String destDirPath = newDir.getAbsolutePath();
-//		return destDirPath;
-//	}
-	
-	
-	private String makeResultDir() throws Exception {
+	public String makeDestinationDir() throws Exception {
 		File resultDir = new File("result");
 		if (!resultDir.exists()) {
 			resultDir.mkdirs();
 		}
 		
 		String dirPath = resultDir.getAbsolutePath();
-		
-//		int slashIdx = dirPath.lastIndexOf("\\");
-//		int slashIdx2 = dirPath.lastIndexOf("/");
-//		if (slashIdx2 > slashIdx) {
-//			slashIdx = slashIdx2;
-//		}
-//		
-//		String leftPath = dirPath.substring(0, slashIdx);
-//		String rightPath = dirPath.substring(slashIdx + 1);
-//		
-//		String newPath = leftPath + "/" + rightPath + "_" + DateUtil.getTodayDateTime();
 		
 		String newPath = StringUtil.revisePath(dirPath + "/" + DateUtil.getTodayDateTime());
 		File newDir = new File(newPath);
@@ -151,11 +113,4 @@ public class FileConverter {
 		String destDirPath = newDir.getAbsolutePath();
 		return destDirPath;
 	}
-	
-	
-	/*
-	public void convertJavaToClass() {
-		
-	}
-	*/
 }

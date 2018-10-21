@@ -3,8 +3,8 @@ package com.bb.diff.form.tree;
 import java.io.File;
 
 import com.bb.diff.common.DiffConst;
-import com.bb.diff.data.ClsPath;
-import com.bb.diff.data.ClsPathList;
+import com.bb.diff.data.PathData;
+import com.bb.diff.data.PathDataList;
 import com.bb.diff.file.FileDiffController;
 import com.bb.diff.log.LogUtil;
 import com.bb.diff.path.PathUtil;
@@ -19,16 +19,16 @@ public class TreeUtil {
 		
 		try {
 			FileDiffController fileDiffCtrl = new FileDiffController();
-			ClsPathList clsPathList = fileDiffCtrl.diffClsDirs(leftClassesDir, rightClassesDir);
+			PathDataList pathDataList = fileDiffCtrl.diffDirs(leftClassesDir, rightClassesDir);
 			
-			if (clsPathList != null && clsPathList.size() > 0) {
-				int clsCount = clsPathList.size();
+			if (pathDataList != null && pathDataList.size() > 0) {
+				int clsCount = pathDataList.size();
 				for (int i=0; i<clsCount; i++) {
-					if (clsPathList.get(i) == null) {
+					if (pathDataList.get(i) == null) {
 						continue;
 					}
 					
-					ClsPath pathObj = clsPathList.get(i);
+					PathData pathObj = pathDataList.get(i);
 					
 					boolean bLeftFileExists = false;
 					String leftPath = pathObj.getLeftFullPath();
@@ -113,6 +113,7 @@ public class TreeUtil {
 			
 			if (oneChunk.indexOf(".") > 0) {
 				if (inLeftList && intRightList) {
+					// 양쪽에 있는 파일은 용량비교해서 gap을 표시한다.
 					nodeTitle = oneChunk + " " + "[" + getVolumeGap(leftAbsolutePath, rightAbsolutePath) + "]";
 				} else if (inLeftList) {
 					nodeTitle = oneChunk + " " + leftMark;
@@ -120,7 +121,7 @@ public class TreeUtil {
 					nodeTitle = oneChunk + " " + rightMark;
 				}
 			}
-			
+		
 //			if (inLeftList && intRightList) {
 //			} else {
 //				// 둘 다 해당이 아닐 경우 띄우지 않는다.

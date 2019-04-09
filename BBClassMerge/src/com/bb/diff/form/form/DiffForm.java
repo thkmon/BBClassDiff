@@ -7,10 +7,9 @@ import com.bb.classmerge.main.BBClassMerge;
 import com.bb.diff.common.DiffConst;
 import com.bb.diff.form.textarea.EditorListener;
 import com.bb.diff.form.tree.BBTree;
+import com.bb.diff.form.tree.BBTreeCellRenderer;
 import com.bb.diff.form.tree.BBTreeNode;
 import com.bb.diff.form.tree.TreeUtil;
-import com.bb.diff.prototype.DoublePathList;
-import com.bb.diff.prototype.PathList;
 
 public class DiffForm {
 
@@ -64,7 +63,10 @@ public class DiffForm {
 		 * 기존 트리 추가하는 코드 (상속버전)
 		 */
 		BBTreeNode rootNode = new BBTreeNode("Root");		
-		DiffConst.fileTree = DiffConst.bForm.addTree(0, 0, 0, 0, new BBTree(rootNode));
+		BBTree bbTree = new BBTree(rootNode);
+		bbTree.setCellRenderer(new BBTreeCellRenderer());
+		
+		DiffConst.fileTree = DiffConst.bForm.addTree(0, 0, 0, 0, bbTree);
 		DiffConst.leftFileContent = DiffConst.bForm.addTextArea(0, 0, 0, 0);
 		DiffConst.rightFileContent = DiffConst.bForm.addTextArea(0, 0, 0, 0);
 		

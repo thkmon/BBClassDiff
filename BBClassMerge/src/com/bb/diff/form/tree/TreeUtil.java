@@ -95,11 +95,12 @@ public class TreeUtil {
 		BBTreeNode parentNode = rootNode;
 		BBTreeNode childNode = null;
 		
+		boolean lastChunkElement = true;
+		File oneFile = null;
 		String oneChunk = "";
 		
-		boolean lastChunkElemet = true;
-		
 		for (int i=0; i<count; i++) {
+			oneFile = null;
 			oneChunk = corePathList.get(i);
 			
 			if (oneChunk == null || oneChunk.length() == 0) {
@@ -108,13 +109,22 @@ public class TreeUtil {
 				return;
 			}
 			
+			// 마지막 청크인지 검사
+			if (i == (count - 1)) {
+				lastChunkElement = true;
+			} else {
+				lastChunkElement = false;
+			}
+			
 			String nodeTitle = "";
 			nodeTitle = oneChunk;
 			
 			if (oneChunk.indexOf(".") > 0) {
 				if (inLeftList && intRightList) {
 					// 양쪽에 있는 파일은 용량비교해서 gap을 표시한다.
-					nodeTitle = oneChunk + " " + "[" + getVolumeGap(leftAbsolutePath, rightAbsolutePath) + "]";
+					long gap = getVolumeGap(leftAbsolutePath, rightAbsolutePath);
+					nodeTitle = oneChunk + " " + "[" + gap + "]";
+					
 				} else if (inLeftList) {
 					nodeTitle = oneChunk + " " + leftMark;
 				} else if (intRightList) {
@@ -134,25 +144,31 @@ public class TreeUtil {
 			if (childNode.getLeftAbsoulutePath() == null || childNode.getLeftAbsoulutePath().length() == 0) {
 				if (leftAbsolutePath != null && leftAbsolutePath.length() > 0) {
 					leftAbsolutePath = PathUtil.reviseStandardPath(leftAbsolutePath);
-					childNode.setLeftAbsoulutePath(leftAbsolutePath);
+					if (leftAbsolutePath.length() > 0) {
+						childNode.setLeftAbsoulutePath(leftAbsolutePath);
+						// 마지막 청크일 때만 파일인지 검사한다. (전체 패스가 C:/aaa/bbb/temp.java 일 경우, 마지막 청크는 temp.java 임)
+						if (lastChunkElement && oneFile == null) {
+							oneFile = new File(leftAbsolutePath);
+						}
+					}
 				}
 			}
 			
 			if (childNode.getRightAbsoulutePath() == null || childNode.getRightAbsoulutePath().length() == 0) {
 				if (rightAbsolutePath != null && rightAbsolutePath.length() > 0) {
 					rightAbsolutePath = PathUtil.reviseStandardPath(rightAbsolutePath);
-					childNode.setRightAbsoulutePath(rightAbsolutePath);
+					if (rightAbsolutePath.length() > 0) {
+						childNode.setRightAbsoulutePath(rightAbsolutePath);
+						// 마지막 청크일 때만 파일인지 검사한다. (전체 패스가 C:/aaa/bbb/temp.java 일 경우, 마지막 청크는 temp.java 임)
+						if (lastChunkElement && oneFile == null) {
+							oneFile = new File(rightAbsolutePath);
+						}
+					}
 				}
 			}
 			
-			if (count == i-1) {
-				lastChunkElemet = true;
-			} else {
-				lastChunkElemet = false;
-			}
-			
-			if (lastChunkElemet) {
-				// 마지막 청크일 경우
+			// 마지막 청크일 때만 파일인지 검사한다. (전체 패스가 C:/aaa/bbb/temp.java 일 경우, 마지막 청크는 temp.java 임)
+			if (lastChunkElement && oneFile != null && oneFile.isFile()) {
 				childNode.setDir(false);
 				childNode.setFile(true);
 				

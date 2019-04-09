@@ -21,32 +21,64 @@ public class DecompileThead extends Thread {
 		String classesDirText1 = MainForm.textField1.getText();
 		String classesDirText2 = MainForm.textField2.getText();
 		
+		boolean bDecompileDir2 = (classesDirText2 != null && classesDirText2.length() > 0);
+		
 		try {
 			// 폴더경로 밸리드 체크
 			fileConverter.checkDirectoryIsValid(classesDirText1);
-			fileConverter.checkDirectoryIsValid(classesDirText2);
+			ConsoleUtil.print("[Left Classes Path] is valid.");
+			if (bDecompileDir2) {
+				fileConverter.checkDirectoryIsValid(classesDirText2);
+				ConsoleUtil.print("[Right Classes Path] is valid.");
+			} else {
+				ConsoleUtil.print("[Right Classes Path] is empty. (skip)");
+			}
 			
-			String destDirPath1 = fileConverter.convertClassToJava(classesDirText1);
-			String destDirPath2 = fileConverter.convertClassToJava(classesDirText2);
 			
-			File dir1 = new File(classesDirText1);
-			File dir2 = new File(classesDirText2);
-			String leftDirPath = StringUtil.revisePath(dir1.getAbsolutePath());
-			String rightDirPath = StringUtil.revisePath(dir2.getAbsolutePath());
-					
+			// 디컴파일 실행
+			String destDirPath1 = "";
+			String destDirPath2 = "";
+			
+			destDirPath1 = fileConverter.convertClassToJava(classesDirText1);
+			if (bDecompileDir2) {
+				destDirPath2 = fileConverter.convertClassToJava(classesDirText2);
+			}
+			
+			
+			// 파일 패스 보정
+			File dir1 = null;
+			File dir2 = null;
+			String leftDirPath = "";
+			String rightDirPath = "";
+			
+			dir1 = new File(classesDirText1);
+			leftDirPath = StringUtil.revisePath(dir1.getAbsolutePath());
+			if (bDecompileDir2) {
+				dir2 = new File(classesDirText2);
+				rightDirPath = StringUtil.revisePath(dir2.getAbsolutePath());
+			}
+			
+			
+			// 경로 출력
 			ConsoleUtil.print("[" + MainForm.labelText1 + "] Input Path : " + leftDirPath);
-			ConsoleUtil.print("[" + MainForm.labelText2 + "] Input Path : " + rightDirPath);
+			if (bDecompileDir2) {
+				ConsoleUtil.print("[" + MainForm.labelText2 + "] Input Path : " + rightDirPath);
+			}
+			
 			ConsoleUtil.print("[" + MainForm.labelText1 + "] Output Path : " + destDirPath1);
-			ConsoleUtil.print("[" + MainForm.labelText2 + "] Output Path : " + destDirPath2);
-		
-			// 버튼 활성화
-			MainForm.setFormEnable();
+			if (bDecompileDir2) {
+				ConsoleUtil.print("[" + MainForm.labelText2 + "] Output Path : " + destDirPath2);
+			}
 			
 		} catch (MsgException ex) {
 			ConsoleUtil.print(ex);
 			
 		} catch (Exception ex) {
 			ConsoleUtil.print(ex);
+			
+		} finally {
+			// 버튼 활성화
+			MainForm.setFormEnable();
 		}
 	}
 

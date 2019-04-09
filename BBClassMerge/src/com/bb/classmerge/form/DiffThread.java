@@ -36,14 +36,14 @@ public class DiffThread extends Thread {
 			
 			DiffHelperMain.doDiffProcess(leftDirPath, rightDirPath);
 			
-			// 버튼 활성화
-			MainForm.setFormEnable();
-		
 		} catch (MsgException ex) {
 			ConsoleUtil.print(ex);
 			
 		} catch (Exception ex) {
 			ConsoleUtil.print(ex);
+		} finally {
+			// 버튼 활성화
+			MainForm.setFormEnable();
 		}
 	}
 }

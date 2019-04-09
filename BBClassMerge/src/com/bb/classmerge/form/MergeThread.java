@@ -39,14 +39,15 @@ public class MergeThread extends Thread {
 			
 			ConsoleUtil.print("Merged Path : " + StringUtil.revisePath(destDirPath));
 			
-			// 버튼 활성화
-			MainForm.setFormEnable();
-			
 		} catch (MsgException ex) {
 			ConsoleUtil.print(ex);
 			
 		} catch (Exception ex) {
 			ConsoleUtil.print(ex);
+			
+		} finally {
+			// 버튼 활성화
+			MainForm.setFormEnable();
 		}
 	}
 }

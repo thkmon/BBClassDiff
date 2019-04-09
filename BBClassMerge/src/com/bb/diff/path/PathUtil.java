@@ -35,4 +35,19 @@ public class PathUtil {
 		
 		return pathStr;
 	}
+	
+	
+	public static String getFileName(String path) {
+		if (path == null || path.length() == 0) {
+			return "";
+		}
+		
+		path = reviseStandardPath(path);
+		
+		if (path.lastIndexOf("\\") > -1) {
+			return path.substring(path.lastIndexOf("\\") + 1);
+		}
+		
+		return path;
+	}
 }

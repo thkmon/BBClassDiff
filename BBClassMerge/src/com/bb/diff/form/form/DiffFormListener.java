@@ -4,7 +4,9 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
 import com.bb.diff.common.DiffConst;
-import com.bb.diff.form.button.BBArrowButtonListener;
+import com.bb.diff.form.button.BBArrowButtonMouseListener;
+import com.bb.diff.form.button.BBDiffButtonMouseListener;
+import com.bb.diff.form.button.BBWinmergeButtonMouseListener;
 
 public class DiffFormListener implements ComponentListener {
 
@@ -48,7 +50,6 @@ public class DiffFormListener implements ComponentListener {
 		/**
 		 * 바운더리 적용
 		 */
-		
 		// 트리
 		DiffConst.fileTree.setBounds(DiffConst.treeLeftMargin, DiffConst.treeTopMargin, DiffConst.treeWidth, boxHeight);
 		DiffConst.fileTree.getScrollPane().setBounds(DiffConst.treeLeftMargin, DiffConst.treeTopMargin, DiffConst.treeWidth, boxHeight);
@@ -77,10 +78,10 @@ public class DiffFormListener implements ComponentListener {
 		DiffConst.leftBottomButton.setBounds(leftButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
 		
 		// 버튼 액션
-		DiffConst.leftTopButton.addActionListener(new BBArrowButtonListener   (true, false, true, true));
-		DiffConst.leftBottomButton.addActionListener(new BBArrowButtonListener(true, false, false, true));
-		DiffConst.leftUpButton.addActionListener(new BBArrowButtonListener    (true, false, true, false));
-		DiffConst.leftDownButton.addActionListener(new BBArrowButtonListener  (true, false, false, false));
+		DiffConst.leftTopButton.addMouseListener(new BBArrowButtonMouseListener   (true, false, true, true));
+		DiffConst.leftBottomButton.addMouseListener(new BBArrowButtonMouseListener(true, false, false, true));
+		DiffConst.leftUpButton.addMouseListener(new BBArrowButtonMouseListener    (true, false, true, false));
+		DiffConst.leftDownButton.addMouseListener(new BBArrowButtonMouseListener  (true, false, false, false));
 		
 		
 		// 우측 파일패스
@@ -106,15 +107,18 @@ public class DiffFormListener implements ComponentListener {
 		DiffConst.rightBottomButton.setBounds(rightButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
 		
 		
-		
 		// 버튼 액션
-		DiffConst.rightTopButton.addActionListener(new BBArrowButtonListener   (false, true, true, true));
-		DiffConst.rightBottomButton.addActionListener(new BBArrowButtonListener(false, true, false, true));
-		DiffConst.rightUpButton.addActionListener(new BBArrowButtonListener   (false, true, true, false));
-		DiffConst.rightDownButton.addActionListener(new BBArrowButtonListener  (false, true, false, false));
+		DiffConst.rightTopButton.addMouseListener(new BBArrowButtonMouseListener   (false, true, true, true));
+		DiffConst.rightBottomButton.addMouseListener(new BBArrowButtonMouseListener(false, true, false, true));
+		DiffConst.rightUpButton.addMouseListener(new BBArrowButtonMouseListener   (false, true, true, false));
+		DiffConst.rightDownButton.addMouseListener(new BBArrowButtonMouseListener  (false, true, false, false));
+		
 		
 		// 공통 버튼
-		int bothArrowButton1Left = box2Left + boxWidth - ((DiffConst.arrowButtonWidth - 4) * 4) - 6;
+		int bothArrowButton1Left = box2Left + boxWidth - ((DiffConst.arrowButtonWidth - 4) * 4) - 46;
+		DiffConst.bothDiffButton.setBounds(bothArrowButton1Left, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		
+		bothArrowButton1Left = bothArrowButton1Left + DiffConst.arrowButtonWidth - 4;
 		DiffConst.bothUpButton.setBounds(bothArrowButton1Left, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
 		
 		bothArrowButton1Left = bothArrowButton1Left + DiffConst.arrowButtonWidth - 4;
@@ -127,11 +131,11 @@ public class DiffFormListener implements ComponentListener {
 		DiffConst.bothBottomButton.setBounds(bothArrowButton1Left, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
 		
 		
-		
 		// 버튼 액션
-		DiffConst.bothTopButton.addActionListener(new BBArrowButtonListener      (true, true, true, true));
-		DiffConst.bothBottomButton.addActionListener(new BBArrowButtonListener   (true, true, false, true));
-		DiffConst.bothUpButton.addActionListener(new BBArrowButtonListener       (true, true, true, false));
-		DiffConst.bothDownButton.addActionListener(new BBArrowButtonListener     (true, true, false, false));
+		DiffConst.bothDiffButton.addMouseListener(new BBDiffButtonMouseListener());
+		DiffConst.bothTopButton.addMouseListener(new BBArrowButtonMouseListener      (true, true, true, true));
+		DiffConst.bothBottomButton.addMouseListener(new BBArrowButtonMouseListener   (true, true, false, true));
+		DiffConst.bothUpButton.addMouseListener(new BBArrowButtonMouseListener       (true, true, true, false));
+		DiffConst.bothDownButton.addMouseListener(new BBArrowButtonMouseListener     (true, true, false, false));
 	}
 }

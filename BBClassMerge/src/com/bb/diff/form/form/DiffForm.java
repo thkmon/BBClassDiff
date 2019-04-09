@@ -5,6 +5,7 @@ import java.awt.event.MouseWheelListener;
 
 import com.bb.classmerge.main.BBClassMerge;
 import com.bb.diff.common.DiffConst;
+import com.bb.diff.form.button.BBWinmergeButtonMouseListener;
 import com.bb.diff.form.textarea.EditorListener;
 import com.bb.diff.form.tree.BBTree;
 import com.bb.diff.form.tree.BBTreeCellRenderer;
@@ -12,16 +13,6 @@ import com.bb.diff.form.tree.BBTreeNode;
 import com.bb.diff.form.tree.TreeUtil;
 
 public class DiffForm {
-
-//	/**
-//	 * 생성자
-//	 */
-//	public DiffForm(PathList originOnlyList, PathList targetOnlyList, DoublePathList diffPathList) {
-//		/**
-//		 * 폼 생성
-//		 */
-//		initDiffForm(originOnlyList, targetOnlyList, diffPathList);
-//	}
 
 	/**
 	 * 생성자
@@ -33,8 +24,6 @@ public class DiffForm {
 		initDiffForm(leftClassesDir, rightClassesDir);
 	}
 	
-	
-	// public void initDiffForm(PathList originOnlyList, PathList targetOnlyList, DoublePathList diffPathList) {
 	
 	/**
 	 * 폼 생성
@@ -59,6 +48,12 @@ public class DiffForm {
 		DiffConst.leftFilePathText = DiffConst.bForm.addTextInput(0, 0, 0, 0);
 		DiffConst.rightFilePathText = DiffConst.bForm.addTextInput(0, 0, 0, 0);
 		
+		DiffConst.winmergeButton = DiffConst.bForm.addButton(0, 0, 80, 24, "Winmerge");
+		DiffConst.winmergeButton.addMouseListener(new BBWinmergeButtonMouseListener());
+		
+		DiffConst.diffPointLabel = DiffConst.bForm.addLabel(90, 0, 80, 24, "Diff Point : ");
+		
+		
 		/**
 		 * 기존 트리 추가하는 코드 (상속버전)
 		 */
@@ -81,6 +76,7 @@ public class DiffForm {
 				
 			}
 		});
+		
 		DiffConst.rightFileContent.getScrollPane().addMouseWheelListener(new MouseWheelListener() {
 			
 			public void mouseWheelMoved(MouseWheelEvent arg0) {
@@ -95,6 +91,7 @@ public class DiffForm {
 		DiffConst.leftTopButton = DiffConst.bForm.addButton(0, 0, 0, 0, "B");
 		DiffConst.leftBottomButton = DiffConst.bForm.addButton(0, 0, 0, 0, "E");
 		
+		DiffConst.bothDiffButton = DiffConst.bForm.addButton(0, 0, 0, 0, "D");
 		DiffConst.bothUpButton = DiffConst.bForm.addButton(0, 0, 0, 0, "▲");
 		DiffConst.bothDownButton = DiffConst.bForm.addButton(0, 0, 0, 0, "▼");
 		DiffConst.bothTopButton = DiffConst.bForm.addButton(0, 0, 0, 0, "B");
@@ -107,9 +104,8 @@ public class DiffForm {
 		
 		DiffFormListener formListener = new DiffFormListener();
 		DiffConst.bForm.addComponentListener(formListener);
-
+		
 		TreeUtil.drawTree(leftClassesDir, rightClassesDir);
-//		TreeUtil.drawTree(originOnlyList, targetOnlyList, diffPathList);
 		
 		DiffConst.bForm.open();
 		

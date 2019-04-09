@@ -99,9 +99,12 @@ public class BBForm extends JFrame {
 		obj.setBounds(left, top, width, height);
 		obj.setFont(font);
 		
-		JScrollPane scrollPane = new JScrollPane(obj);  //스크롤판 추가
+		// 스크롤판 추가
+		JScrollPane scrollPane = new JScrollPane(obj);
 		scrollPane.setBounds(left, top, width, height);
-		container.add(scrollPane); //화면에는 스크롤판 추가
+		
+		// 화면에는 스크롤판 추가
+		container.add(scrollPane);
 		
 		obj.setScrollPane(scrollPane);
 		return obj;

@@ -125,6 +125,11 @@ public class TreeUtil {
 					long gap = getVolumeGap(leftAbsolutePath, rightAbsolutePath);
 					nodeTitle = oneChunk + " " + "[" + gap + "]";
 					
+					// 용량 차이 없는 파일은  띄우지 않는다.
+					if (gap == 0) {
+						return;
+					}
+					
 				} else if (inLeftList) {
 					nodeTitle = oneChunk + " " + leftMark;
 				} else if (intRightList) {
@@ -132,11 +137,10 @@ public class TreeUtil {
 				}
 			}
 		
-//			if (inLeftList && intRightList) {
-//			} else {
-//				// 둘 다 해당이 아닐 경우 띄우지 않는다.
-//				return;
-//			}
+			// 둘 다 해당이 아닐 경우 띄우지 않는다.
+			if (!inLeftList || !intRightList) {
+				return;
+			}
 			
 			// 중복 아닐 경우만 트리에 노드 추가하기
 			childNode = parentNode.addIfNotDupl(nodeTitle);

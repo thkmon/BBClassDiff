@@ -25,6 +25,10 @@ public class DecompileUtil {
 			
 			// 기존값 검사
 			FileContentInfo info = DiffConst.fileContentMap.get(clsFilePath);
+			
+			// 190409. 무조건 새걸로 가져온다.
+			info = null;
+			
 			if (info != null) {
 				StringBuffer buf = info.getFileDecompileContent();
 				if (buf != null && buf.length() > 0) {

@@ -1,6 +1,7 @@
 package com.bb.diff.form.textarea;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.swing.text.Style;
@@ -10,6 +11,7 @@ import javax.swing.text.StyledDocument;
 import com.bb.diff.common.DiffConst;
 import com.bb.diff.form.tree.BBTreeNode;
 import com.bb.diff.map.FileContentUtil;
+import com.bb.diff.path.PathUtil;
 import com.bb.diff.prototype.Col;
 import com.bb.diff.prototype.ColList;
 
@@ -123,18 +125,16 @@ public class EditorUtil {
 		}
 	}
 	
+	
 	/**
 	 * 노드 속의 정보를 활용해서 파일 열기
 	 * @param node
 	 */
 	public static boolean loadFileByNode(BBTreeNode node) {
-//		loadLeftFile(node);
-//		loadRightFile(node);
 		
 		/**
 		 * 좌측 파일 출력
 		 */
-		
 		boolean leftFileExists = setLeftPathText(node.getLeftAbsoulutePath());
 		
 		if (!leftFileExists) {
@@ -160,8 +160,10 @@ public class EditorUtil {
 		setRightFileContentText(content2.toString(), true);
 		
 		
-//		boolean testResult = FileUtil.checkIsSameFileContent(content1, content2, null, null);
-//		System.out.println("testResult : " + testResult);
+		String fileName = PathUtil.getFileName(node.getLeftAbsoulutePath());
+		if (fileName == null || fileName.length() == 0) {
+			fileName = PathUtil.getFileName(node.getRightAbsoulutePath());
+		}
 		
 		/**
 		 * col 위치 계산해서 저장해둔다.
@@ -200,7 +202,7 @@ public class EditorUtil {
 		/**
 		 * 비교해서 색칠한다. (DIFF)
 		 */
-		diffForHighlight();
+		diffForHighlight(fileName);
 		
 		/**
 		 * 디폴트로 최상단 보여주기
@@ -212,119 +214,11 @@ public class EditorUtil {
 	}
 	
 	
-	/**
-	 * 비교해서 색칠한다. (DIFF)
-	 * 
-	 */
-//	public static void diffForHighlight() {
-//		
-//		int lastIndex1 = colList1.size() - 1;
-//		int lastIndex2 = colList2.size() - 1;
-//		
-//		int lineCount1 = colList1.size();
-//		int lineCount2 = colList2.size();
-//		
-//		int limitIndex = lastIndex1;
-//		if (limitIndex < lastIndex2) {
-//			limitIndex = lastIndex2;
-//		}
-//		
-//		int curRow1 = 0;
-//		int curRow2 = 0;
-//		
-//		Col col1 = null;
-//		Col col2 = null;
-//		
-//		while (true) {
-//			if (curRow1 > limitIndex || curRow2 > limitIndex) {
-//				break;
-//			}
-//			
-//			col1 = (lastIndex1 < curRow1) ? null : colList1.get(curRow1);
-//			col2 = (lastIndex2 < curRow2) ? null : colList2.get(curRow2);
-//			
-//			if (col1 == null && col2 == null) {
-//				curRow1++;
-//				curRow2++;
-//				continue;
-//				
-//			} else if (col1 == null) {
-//				paintRightDocStrong(curRow2);
-//				curRow1++;
-//				curRow2++;
-//				continue;
-//				
-//			} else if (col2 == null) {
-//				paintLeftDocStrong(curRow1);
-//				curRow1++;
-//				curRow2++;
-//				continue;
-//			}
-//			
-//			if (!col1.getText().equals(col2.getText())) {
-//				// 다른거 나오면 일단 칠한다.
-////				System.err.println("다르다 [" + col1.getText() + "] [" + col2.getText() + "]");
-//				paintLeftDocStrong(curRow1);
-//				paintRightDocStrong(curRow2);
-//				
-//				boolean foundSame = false;
-//				
-//				int beginRow1 = curRow1;
-//				int beginRow2 = curRow2;
-//				int endRow1 = -1;
-//				int endRow2 = -1;
-//				
-//				// 다른거 한 번 나오면 똑같은거 나올 때까지 찾는다.
-//				outLoop : for (int k=curRow1+1; k<lineCount1; k++) {
-//					inLoop : for (int p=curRow2+1; p<lineCount2; p++) {
-//						col1 = colList1.get(k);
-//						col2 = colList2.get(p);
-//						
-//						if (col1 != null && col2 != null) {
-//							if (col1.getText().equals(col2.getText())) {
-//								// 콘텐츠가 같으면
-//								foundSame = true;
-//								
-//								endRow1 = k;
-//								endRow2 = p;
-//								
-//								curRow1 = k;
-//								curRow2 = p;
-//								
-//								break outLoop;
-//							}
-//						}
-//					}
-//				}
-//				
-//				if (!foundSame) {
-//					// 못찾으면 끝까지 칠하기.
-//					endRow1 = lineCount1;
-//					endRow2 = lineCount2;
-//				}
-//				
-//				// 지금까지 라인 전부 칠하기 (좌측)
-//				for (int rr=beginRow1+1; rr<endRow1-1; rr++) {
-//					paintLeftDocNormal(rr);
-//				}
-////				// 지금까지 라인 전부 칠하기 (우측)
-//				for (int rr=beginRow2+1; rr<endRow2-1; rr++) {
-//					paintRightDocNormal(rr);
-//				}
-//				
-//				if (!foundSame) {
-//					break;
-//				}
-//				
-//			}
-//			
-//			curRow1++;
-//			curRow2++;
-//		}
-//	}
-	
-	
-	public static void diffForHighlight() {
+	public static void diffForHighlight(String fileName) {
+		int diffPoint = 0;
+		DiffConst.diffPointList = new ArrayList<Integer>();
+		DiffConst.currentDiffPointIndex = -1;
+		
 		int rowCount1 = colList1.size();
 		int rowCount2 = colList2.size();
 		
@@ -342,8 +236,6 @@ public class EditorUtil {
 		String lineText2 = null;
 		boolean bEmptyLine1 = false;
 		boolean bEmptyLine2 = false;
-		
-		boolean bSearchAxisIsLeft = true;
 		
 		for (int i=0; i<bigRowCount; i++) {
 			
@@ -369,6 +261,9 @@ public class EditorUtil {
 				continue;
 				
 			} else if (bEmptyLine1 || bEmptyLine2 || !lineText1.equals(lineText2)) {
+				diffPoint++;
+				DiffConst.diffPointList.add(rowNum1);
+				
 				// 다른거 나오면 일단 칠한다.
 				if (rowNum1 < rowCount1) {
 					paintLeftDocStrong(rowNum1);
@@ -467,7 +362,6 @@ public class EditorUtil {
 					break;
 				}
 				
-			
 				//}}}}}
 				//}}}}}
 				//}}}}}
@@ -486,115 +380,27 @@ public class EditorUtil {
 				continue;
 			}
 		}
-//		
-//		int lineCount1 = colList1.size();
-//		int lineCount2 = colList2.size();
-//		
-//		int limitIndex = lastIndex1;
-//		if (limitIndex < lastIndex2) {
-//			limitIndex = lastIndex2;
-//		}
-//		
-//		int curRow1 = 0;
-//		int curRow2 = 0;
-//		
-//		Col col1 = null;
-//		Col col2 = null;
-//		
-//		while (true) {
-//			if (curRow1 > limitIndex || curRow2 > limitIndex) {
-//				break;
-//			}
-//			
-//			col1 = (lastIndex1 < curRow1) ? null : colList1.get(curRow1);
-//			col2 = (lastIndex2 < curRow2) ? null : colList2.get(curRow2);
-//			
-//			if (col1 == null && col2 == null) {
-//				curRow1++;
-//				curRow2++;
-//				continue;
-//				
-//			} else if (col1 == null) {
-//				paintRightDocStrong(curRow2);
-//				curRow1++;
-//				curRow2++;
-//				continue;
-//				
-//			} else if (col2 == null) {
-//				paintLeftDocStrong(curRow1);
-//				curRow1++;
-//				curRow2++;
-//				continue;
-//			}
-//			
-//			if (!col1.getText().equals(col2.getText())) {
-//				// 다른거 나오면 일단 칠한다.
-////				System.err.println("다르다 [" + col1.getText() + "] [" + col2.getText() + "]");
-//				paintLeftDocStrong(curRow1);
-//				paintRightDocStrong(curRow2);
-//				
-//				boolean foundSame = false;
-//				
-//				int beginRow1 = curRow1;
-//				int beginRow2 = curRow2;
-//				int endRow1 = -1;
-//				int endRow2 = -1;
-//				
-//				// 다른거 한 번 나오면 똑같은거 나올 때까지 찾는다.
-//				outLoop : for (int k=curRow1+1; k<lineCount1; k++) {
-//					inLoop : for (int p=curRow2+1; p<lineCount2; p++) {
-//						col1 = colList1.get(k);
-//						col2 = colList2.get(p);
-//						
-//						if (col1 != null && col2 != null) {
-//							if (col1.getText().equals(col2.getText())) {
-//								// 콘텐츠가 같으면
-//								foundSame = true;
-//								
-//								endRow1 = k;
-//								endRow2 = p;
-//								
-//								curRow1 = k;
-//								curRow2 = p;
-//								
-//								break outLoop;
-//							}
-//						}
-//					}
-//				}
-//				
-//				if (!foundSame) {
-//					// 못찾으면 끝까지 칠하기.
-//					endRow1 = lineCount1;
-//					endRow2 = lineCount2;
-//				}
-//				
-//				// 지금까지 라인 전부 칠하기 (좌측)
-//				for (int rr=beginRow1+1; rr<endRow1-1; rr++) {
-//					paintLeftDocNormal(rr);
-//				}
-////				// 지금까지 라인 전부 칠하기 (우측)
-//				for (int rr=beginRow2+1; rr<endRow2-1; rr++) {
-//					paintRightDocNormal(rr);
-//				}
-//				
-//				if (!foundSame) {
-//					break;
-//				}
-//				
-//			}
-//			
-//			curRow1++;
-//			curRow2++;
-//		}
 		
+		
+		DiffConst.diffPointLabel.setText("Diff Point : " + diffPoint);
+		
+		if (diffPoint == 0) {
+			if (fileName != null && fileName.length() > 0) {
+				DiffConst.leftFileContent.setText("내용 동일함 : " + fileName);
+				DiffConst.rightFileContent.setText("내용 동일함 : " + fileName);
+				
+			} else {
+				DiffConst.leftFileContent.setText("내용 동일함");
+				DiffConst.rightFileContent.setText("내용 동일함");
+			}
+		}
 	}
+	
 	
 	public static boolean loadLeftFile(BBTreeNode node) {
 		/**
 		 * 좌측 파일 출력
 		 */
-		
 		boolean leftFileExists = setLeftPathText(node.getLeftAbsoulutePath());
 		
 		if (!leftFileExists) {
@@ -606,6 +412,7 @@ public class EditorUtil {
 		setLeftFileContentText(con.toString(), true);
 		return true;
 	}
+	
 	
 	public static boolean loadRightFile(BBTreeNode node) {
 		/**

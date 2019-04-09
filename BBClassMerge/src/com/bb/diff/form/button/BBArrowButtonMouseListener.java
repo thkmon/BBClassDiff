@@ -1,42 +1,48 @@
 package com.bb.diff.form.button;
 
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.text.Position;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import com.bb.diff.common.DiffConst;
-import com.bb.diff.form.textarea.BBEditor;
 
-public class BBArrowButtonListener implements ActionListener {
+public class BBArrowButtonMouseListener implements MouseListener {
 
-	private long preWhen = 0;
-//	private BBTextArea targetTextArea = null;
-	
 	private boolean targetIsleftSide = false;
 	private boolean targetIsRightSide = false;
 	private boolean targetIsToUp = false;
 	private boolean isToLimit = false;
 	
-	public BBArrowButtonListener(boolean targetIsleftSide, boolean targetIsRightSide, boolean targetIsToUp, boolean isToLimit) {
+	public BBArrowButtonMouseListener(boolean targetIsleftSide, boolean targetIsRightSide, boolean targetIsToUp, boolean isToLimit) {
 		
 		this.targetIsleftSide = targetIsleftSide;
 		this.targetIsRightSide = targetIsRightSide;
 		this.targetIsToUp = targetIsToUp;
 		this.isToLimit = isToLimit;
-	}
 
-	public void actionPerformed(ActionEvent arg0) {
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
-		// 연속적 눌림 방지
-		long newWhen = arg0.getWhen();
+	}
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
 		
-		if (newWhen == preWhen) {
-			return;
-		} else {
-			preWhen = newWhen;
-		}
+	}
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void mouseReleased(MouseEvent e) {
 		
 		//JScrollPane의 바를 최 하단으로 맞춤
 
@@ -99,11 +105,7 @@ public class BBArrowButtonListener implements ActionListener {
 					DiffConst.rightFileContent.addScrollY(DiffConst.movingValueOfTextArea);
 				}
 			}
-			
 		}
-		
-		
-		
 	}
 
 }

@@ -1,10 +1,14 @@
 package com.bb.diff.common;
 
+import java.util.ArrayList;
+
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.bb.diff.date.DateUtil;
 import com.bb.diff.form.button.BBButton;
 import com.bb.diff.form.form.BBForm;
+import com.bb.diff.form.form.DiffForm;
 import com.bb.diff.form.textarea.BBEditor;
 import com.bb.diff.form.tree.BBTree;
 import com.bb.diff.map.FileContentMap;
@@ -34,11 +38,16 @@ public class DiffConst {
 	public static float treeWidthRatio = 0.18f;
 	public static int treeWidth = (int) (fullWidth * treeWidthRatio);
 	public static int treeLeftMargin = 4;
-
+	
+	public static BBButton winmergeButton = null;
+	public static JLabel diffPointLabel = null;
+	
 	public static BBButton leftUpButton = null;
 	public static BBButton leftDownButton = null;
 	public static BBButton rightUpButton = null;
 	public static BBButton rightDownButton = null;
+	
+	public static BBButton bothDiffButton = null;
 	public static BBButton bothUpButton = null;
 	public static BBButton bothDownButton = null;
 	
@@ -79,4 +88,11 @@ public class DiffConst {
 	
 	// 로그파일 쓸지 여부
 	public static boolean bWriteLogFile = false;
+	
+	
+	public static DiffForm diffForm = null;
+	
+	
+	public static ArrayList<Integer> diffPointList = new ArrayList<Integer>();
+	public static int currentDiffPointIndex = -1;
 }

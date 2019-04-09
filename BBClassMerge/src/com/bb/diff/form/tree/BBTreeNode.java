@@ -187,6 +187,9 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		// 기존값 검사
 		FileContentInfo info = DiffConst.fileContentMap.get(absolPath);
 
+		// 190409. 무조건 새걸로 가져온다.
+		info = null;
+				
 		if (info == null) {
 			info = new FileContentInfo();
 			
@@ -259,7 +262,10 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		
 		// 기존값 검사
 		FileContentInfo info = DiffConst.fileContentMap.get(absolPath);
-		
+
+		// 190409. 무조건 새걸로 가져온다.
+		info = null;
+				
 		if (info == null) {
 			info = new FileContentInfo();
 			
@@ -319,6 +325,9 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 				
 		// 기존값 검사
 		FileContentInfo info = DiffConst.fileContentMap.get(absolPath);
+		
+		// 190409. 무조건 새걸로 가져온다.
+		info = null;
 
 		if (info == null) {
 			info = new FileContentInfo();

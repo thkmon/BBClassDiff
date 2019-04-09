@@ -61,11 +61,10 @@ public class DiffHelperMain {
 		if (BBClassMerge.mainForm != null) {
 			BBClassMerge.mainForm.setVisible(false);
 		}
-		
 	}
 	
 	
-	private static void showDiffForm(String leftClassesDir, String rightClassesDir) {
-		DiffForm diffForm = new DiffForm(leftClassesDir, rightClassesDir);
+	public static void showDiffForm(String leftClassesDir, String rightClassesDir) {
+		DiffConst.diffForm = new DiffForm(leftClassesDir, rightClassesDir);
 	}
 }

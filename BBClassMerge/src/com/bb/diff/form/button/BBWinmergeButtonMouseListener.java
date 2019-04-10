@@ -6,11 +6,38 @@ import java.io.File;
 import java.util.ArrayList;
 
 import com.bb.classmerge.date.DateUtil;
-import com.bb.classmerge.file.FileConverter;
+import com.bb.classmerge.util.PropertiesUtil;
 import com.bb.diff.common.DiffConst;
 import com.bb.diff.file.FileUtil;
+import com.bb.diff.path.PathUtil;
 
 public class BBWinmergeButtonMouseListener implements MouseListener {
+	
+	/**
+	 * 윈머지 경로를 프로퍼티 파일에서 가져오도록 처리한다.
+	 */
+	private static String winmergePath = "";
+	
+	/**
+	 * 윈머지 경로를 프로퍼티 파일에서 가져오도록 처리한다.
+	 * @return
+	 */
+	private static String getWinmergePath() {
+		String resultPath = "";
+		
+		if (winmergePath == null || winmergePath.length() == 0) {
+			winmergePath = PropertiesUtil.getValueFromProperties("winmergePath");
+			winmergePath = PathUtil.reviseStandardPath(winmergePath);
+		}			
+		
+		if (winmergePath != null && winmergePath.length() > 0) {
+			resultPath = winmergePath;
+		} else {
+			resultPath = "C:\\Program Files (x86)\\WinMerge\\WinMergeU.exe";
+		}
+		
+		return resultPath;
+	}
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -54,13 +81,20 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 			String date1 = strDate + "_l";
 			String date2 = strDate + "_r";
 			
-			String destDir = new FileConverter().makeDestinationDir();
-			File file1 = new File(destDir + "/" + date1 + ".txt");
+			File tempDir = new File("temp");
+			if (!tempDir.exists()) {
+				tempDir.mkdirs();
+			}
+			
+			String txtPath1 = PathUtil.reviseStandardPath(tempDir.getAbsolutePath() + "/" + date1 + ".txt");
+			String txtPath2 = PathUtil.reviseStandardPath(tempDir.getAbsolutePath() + "/" + date2 + ".txt");
+			
+			File file1 = new File(txtPath1);
 			if (!file1.exists()) {
 				file1.createNewFile();
 			}
 			
-			File file2 = new File(destDir + "/" + date2 + ".txt");
+			File file2 = new File(txtPath2);
 			if (!file2.exists()) {
 				file2.createNewFile();
 			}
@@ -68,19 +102,18 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 			FileUtil.writeFile(file1, leftText);
 			FileUtil.writeFile(file2, rightText);
 			
-			ProcessBuilder b = new ProcessBuilder();
+			ProcessBuilder builder = new ProcessBuilder();
 			
-			ArrayList<String> v = new ArrayList<String>();
-			v.add("C:\\Program Files (x86)\\WinMerge\\WinMergeU.exe");
-			v.add(file1.getAbsolutePath());
-			v.add(file2.getAbsolutePath());
+			ArrayList<String> argList = new ArrayList<String>();
+			argList.add(getWinmergePath());
+			argList.add(file1.getAbsolutePath());
+			argList.add(file2.getAbsolutePath());
 	
-			b.command(v);
-			b.start();
+			builder.command(argList);
+			builder.start();
 			
 		} catch (Exception e0) {
 			e0.printStackTrace();
 		}
 	}
-
 }

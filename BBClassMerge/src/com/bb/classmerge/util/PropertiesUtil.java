@@ -8,7 +8,34 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 
 public class PropertiesUtil {
-
+	
+	public static String getValueFromProperties(String key) {
+		
+		String value = "";
+		
+		if (key == null || key.length() == 0) {
+			return "";
+		}
+		
+		HashMap<String, String> optionPropMap = null;
+		
+		try {
+			optionPropMap = readPropertiesFile("option.properties");
+		} catch (Exception ie) {
+			// 무시
+		}
+		
+		if (optionPropMap != null) {
+			value = optionPropMap.get(key);
+			if (value != null) {
+				value = value.trim();
+			}
+		}
+		
+		return value;
+	}
+	
+	
 	/**
 	 * UTF-8 인코딩 형식의 properties 파일을 읽어서 HashMap 객체로 만들어 리턴한다.
 	 * 

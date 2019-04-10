@@ -10,6 +10,7 @@ import javax.swing.text.StyledDocument;
 
 import com.bb.diff.common.DiffConst;
 import com.bb.diff.form.tree.BBTreeNode;
+import com.bb.diff.form.tree.TreeUtil;
 import com.bb.diff.map.FileContentUtil;
 import com.bb.diff.path.PathUtil;
 import com.bb.diff.prototype.Col;
@@ -163,6 +164,33 @@ public class EditorUtil {
 		String fileName = PathUtil.getFileName(node.getLeftAbsoulutePath());
 		if (fileName == null || fileName.length() == 0) {
 			fileName = PathUtil.getFileName(node.getRightAbsoulutePath());
+		}
+		
+		/**
+		 * 용량을 다시 계산한다.
+		 */
+		String oldTitle = node.getTitle();
+		if (oldTitle.lastIndexOf("[") > -1) {
+			oldTitle = oldTitle.substring(0, oldTitle.lastIndexOf("[")).trim();
+		}
+		
+		if (leftFileExists && rightFileExists) {
+			// 양쪽에 있는 파일은 용량비교해서 gap을 표시한다.
+			String leftAbsolutePath = node.getLeftAbsoulutePath();
+			String rightAbsolutePath = node.getRightAbsoulutePath();
+			long volGap = TreeUtil.getVolumeGap(leftAbsolutePath, rightAbsolutePath);
+			
+			String newTitle = oldTitle + " " + "[" + volGap + "]";
+			System.out.println(newTitle);
+			node.setTitle(newTitle);
+			
+		} else if (leftFileExists) {
+			String newTitle = oldTitle + " " + TreeUtil.leftMark;
+			node.setTitle(newTitle);
+			
+		} else if (rightFileExists) {
+			String newTitle = oldTitle + " " + TreeUtil.rightMark;
+			node.setTitle(newTitle);
 		}
 		
 		/**

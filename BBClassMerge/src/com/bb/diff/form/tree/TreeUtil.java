@@ -12,8 +12,8 @@ import com.bb.diff.prototype.StringList;
 import com.bb.diff.string.StringUtil;
 
 public class TreeUtil {
-	private static String leftMark = "[Left]";
-	private static String rightMark = "[Right]";
+	public static String leftMark = "[Left]";
+	public static String rightMark = "[Right]";
 	
 	public static void drawTree(String leftClassesDir, String rightClassesDir) {
 		
@@ -122,11 +122,11 @@ public class TreeUtil {
 			if (oneChunk.indexOf(".") > 0) {
 				if (inLeftList && intRightList) {
 					// 양쪽에 있는 파일은 용량비교해서 gap을 표시한다.
-					long gap = getVolumeGap(leftAbsolutePath, rightAbsolutePath);
-					nodeTitle = oneChunk + " " + "[" + gap + "]";
+					long volGap = getVolumeGap(leftAbsolutePath, rightAbsolutePath);
+					nodeTitle = oneChunk + " " + "[" + volGap + "]";
 					
 					// 용량 차이 없는 파일은  띄우지 않는다.
-					if (gap == 0) {
+					if (volGap == 0) {
 						return;
 					}
 					
@@ -197,7 +197,7 @@ public class TreeUtil {
 	 * @param filePath2
 	 * @return
 	 */
-	private static long getVolumeGap(String filePath1, String filePath2) {
+	public static long getVolumeGap(String filePath1, String filePath2) {
 		File file1 = new File(filePath1);
 		File file2 = new File(filePath2);
 		

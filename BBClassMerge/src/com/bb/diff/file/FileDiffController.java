@@ -77,8 +77,8 @@ public class FileDiffController {
 			boolean existing2 = file2.exists();
 			
 			if (existing1 && existing2) {
-				long gap = getVolumeGap(file1, file2);
-				PathData pathData = new PathData(onePath, path1, path2, gap);
+				long volGap = getVolumeGap(file1, file2);
+				PathData pathData = new PathData(onePath, path1, path2, volGap);
 				pathDataList.addNotDupl(pathData);
 				
 			} else if (existing1) {

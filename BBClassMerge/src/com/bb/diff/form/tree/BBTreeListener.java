@@ -14,7 +14,10 @@ public class BBTreeListener implements MouseListener {
 	public BBTreeListener(BBTree parentTreeObj) {
 		this.parentTree = parentTreeObj;
 	}
-
+	
+	/**
+	 * 트리 노드 더블클릭시
+	 */
 	public void mouseClicked(MouseEvent arg) {
 		if (arg.getClickCount() == 2) {
 			

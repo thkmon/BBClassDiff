@@ -1,19 +1,11 @@
 package com.bb.diff.form.textarea;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Point;
 import java.io.StringReader;
 
-import javax.swing.JEditorPane;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextPane;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.Caret;
 import javax.swing.text.Document;
 import javax.swing.text.EditorKit;
-import javax.swing.text.JTextComponent;
 
 public class BBEditor extends JTextPane {
 	private JScrollPane scrollPane = null;

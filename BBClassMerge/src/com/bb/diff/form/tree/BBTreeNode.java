@@ -11,6 +11,10 @@ import com.bb.diff.map.FileContentInfo;
 
 public class BBTreeNode extends DefaultMutableTreeNode {
 	
+	public String toString() {
+		return this.getTitle();
+	}
+	
 	private String title = "";
 	
 	private boolean isFile = false;
@@ -121,34 +125,6 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		this.add(childNode);
 		return childNode;
 	}
-	
-//	private StringBuffer fileContent = null;
-//	private StringBuffer fileDecompileContent = null;
-//
-//	public StringBuffer getFileContent() {
-//		return fileContent;
-//	}
-//
-//	public void setFileContent(StringBuffer fileContent) {
-//		this.fileContent = fileContent;
-//	}
-//
-//	public StringBuffer getFileDecompileContent() {
-//		return fileDecompileContent;
-//	}
-//
-//	public void setFileDecompileContent(StringBuffer fileDecompileContent) {
-//		this.fileDecompileContent = fileDecompileContent;
-//	}
-	
-	/**
-	 * 좌측 우측 모두 초기화
-	 * @param beForce
-	 */
-//	public void initBothFileContent(boolean beForce) {
-//		initFileContent(true, beForce);
-//		initFileContent(false, beForce);
-//	}
 	
 	/**
 	 * 절대경로를 이용해 파일 내용을 로드하고, 공통 맵에 저장해둔다.

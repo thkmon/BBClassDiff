@@ -161,9 +161,9 @@ public class EditorUtil {
 		setRightFileContentText(content2.toString(), true);
 		
 		
-		String fileName = PathUtil.getFileName(node.getLeftAbsoulutePath());
+		String fileName = PathUtil.getFileNameWithExt(node.getLeftAbsoulutePath());
 		if (fileName == null || fileName.length() == 0) {
-			fileName = PathUtil.getFileName(node.getRightAbsoulutePath());
+			fileName = PathUtil.getFileNameWithExt(node.getRightAbsoulutePath());
 		}
 		
 		/**

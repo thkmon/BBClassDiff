@@ -7,6 +7,7 @@ import com.bb.classmerge.decompile.Decompiler;
 import com.bb.classmerge.exception.MsgException;
 import com.bb.classmerge.util.FileNameUtil;
 import com.bb.classmerge.util.ConsoleUtil;
+import com.bb.classmerge.util.DirUtil;
 import com.bb.classmerge.util.StringUtil;
 
 public class FileConverter {
@@ -53,7 +54,7 @@ public class FileConverter {
 		
 		File dir = new File(dirPath);
 		String oldDirPath = dir.getAbsolutePath();
-		String destDirPath = makeDestinationDir();
+		String destDirPath = DirUtil.makeDestinationDir("result");
 		
 		FileCollector fileCollector = new FileCollector();
 		FileList fileList = fileCollector.getFileList(dirPath, true);
@@ -92,25 +93,6 @@ public class FileConverter {
 		ConsoleUtil.print("결과 폴더 : " + destDirPath);
 		ConsoleUtil.print("----------");
 		
-		return destDirPath;
-	}
-	
-	
-	public String makeDestinationDir() throws Exception {
-		File resultDir = new File("result");
-		if (!resultDir.exists()) {
-			resultDir.mkdirs();
-		}
-		
-		String dirPath = resultDir.getAbsolutePath();
-		
-		String newPath = StringUtil.revisePath(dirPath + "/" + DateUtil.getTodayDateTime());
-		File newDir = new File(newPath);
-		if (!newDir.exists()) {
-			newDir.mkdirs();
-		}
-		
-		String destDirPath = newDir.getAbsolutePath();
 		return destDirPath;
 	}
 }

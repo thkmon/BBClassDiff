@@ -5,6 +5,7 @@ import java.io.File;
 import com.bb.classmerge.decompile.Decompiler;
 import com.bb.classmerge.file.FileConverter;
 import com.bb.classmerge.util.ConsoleUtil;
+import com.bb.classmerge.util.DirUtil;
 import com.bb.classmerge.util.FileCopyUtil;
 import com.bb.diff.data.PathData;
 import com.bb.diff.data.PathDataList;
@@ -25,8 +26,7 @@ public class MergeController {
 			throw new Exception("MergeController mergeDirs : pathDataList == null || pathDataList.size() == 0");
 		}
 		
-		FileConverter fileConverter = new FileConverter();
-		String destDir = fileConverter.makeDestinationDir();
+		String destDir = DirUtil.makeDestinationDir("result");
 		if (destDir == null || destDir.length() == 0) {
 			throw new Exception("MergeController mergeDirs : destDir == null || destDir.length() == 0");
 		}

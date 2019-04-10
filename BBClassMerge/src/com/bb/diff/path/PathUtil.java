@@ -37,7 +37,7 @@ public class PathUtil {
 	}
 	
 	
-	public static String getFileName(String path) {
+	public static String getFileNameWithExt(String path) {
 		if (path == null || path.length() == 0) {
 			return "";
 		}

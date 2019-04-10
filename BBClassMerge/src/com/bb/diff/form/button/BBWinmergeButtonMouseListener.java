@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 
-import com.bb.classmerge.date.DateUtil;
+import com.bb.classmerge.util.DirUtil;
 import com.bb.classmerge.util.PropertiesUtil;
 import com.bb.diff.common.DiffConst;
 import com.bb.diff.file.FileUtil;
@@ -77,18 +77,37 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 				rightText = "";
 			}
 			
-			String strDate = DateUtil.getTodayDateTime();
-			String date1 = strDate + "_l";
-			String date2 = strDate + "_r";
 			
-			File tempDir = new File("temp");
-			if (!tempDir.exists()) {
-				tempDir.mkdirs();
+			/**
+			 * winmerge를 위한 임시파일 만들기
+			 */
+			String fileName = PathUtil.getFileNameWithExt(DiffConst.leftFilePathText.getText());
+			
+			if (fileName == null || fileName.length() == 0) {
+				fileName = PathUtil.getFileNameWithExt(DiffConst.rightFilePathText.getText());
 			}
 			
-			String txtPath1 = PathUtil.reviseStandardPath(tempDir.getAbsolutePath() + "/" + date1 + ".txt");
-			String txtPath2 = PathUtil.reviseStandardPath(tempDir.getAbsolutePath() + "/" + date2 + ".txt");
+			if (fileName == null || fileName.length() == 0) {
+				fileName = "temp";
+			}
 			
+			fileName = fileName.replace(".", "_");
+			fileName = fileName.replace("\\", "_");
+			fileName = fileName.replace("/", "_");
+			
+			String fileName1 = fileName + "_l";
+			String fileName2 = fileName + "_r";
+			
+			// temp 폴더 생성
+			String destDirPath = DirUtil.makeDestinationDir("temp");
+			
+			String txtPath1 = PathUtil.reviseStandardPath(destDirPath + "/" + fileName1 + ".txt");
+			String txtPath2 = PathUtil.reviseStandardPath(destDirPath + "/" + fileName2 + ".txt");
+			
+			
+			/**
+			 * 파일 쓰기
+			 */
 			File file1 = new File(txtPath1);
 			if (!file1.exists()) {
 				file1.createNewFile();

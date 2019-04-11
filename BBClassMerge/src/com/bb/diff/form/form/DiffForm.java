@@ -59,6 +59,7 @@ public class DiffForm {
 		 */
 		BBTreeNode rootNode = new BBTreeNode("Root");		
 		BBTree bbTree = new BBTree(rootNode);
+		DiffConst.treeModel = bbTree;
 		bbTree.setCellRenderer(new BBTreeCellRenderer());
 		
 		DiffConst.fileTree = DiffConst.bForm.addTree(0, 0, 0, 0, bbTree);

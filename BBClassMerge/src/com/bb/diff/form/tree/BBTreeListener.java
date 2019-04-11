@@ -20,17 +20,32 @@ public class BBTreeListener implements MouseListener {
 	 */
 	public void mouseClicked(MouseEvent arg) {
 		if (arg.getClickCount() == 2) {
-			
             TreePath path = parentTree.getPathForLocation(arg.getX(), arg.getY());
             if (path != null) {
             	BBTreeNode node = (BBTreeNode) path.getLastPathComponent();
-            	System.out.println("0 : leftAbsolutePath : " + node.getLeftAbsoulutePath());
-            	System.out.println("0 : rightAbsolutePath : " + node.getRightAbsoulutePath());
-            	
-            	EditorUtil.loadFileByNode(node);
+//            	System.out.println("0 : leftAbsolutePath : " + node.getLeftAbsoulutePath());
+//            	System.out.println("0 : rightAbsolutePath : " + node.getRightAbsoulutePath());
+
+        		if (node.isFile()) {
+        			EditorUtil.loadFileByNode(node);
+        		}
             }
         }
 		
+		// 사용자가 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여준다.
+		if (arg.getButton() == 3) {
+			 TreePath path = parentTree.getPathForLocation(arg.getX(), arg.getY());
+			 if (path != null) {
+				 BBTreeNode node = (BBTreeNode) path.getLastPathComponent();
+				 if (node.getTitle() != null) {
+					 if (node.getTitle().startsWith("{◎}")) {
+						 node.setTitle(node.getTitle().substring(3));
+					 } else {
+						 node.setTitle("{◎}" + node.getTitle());
+					 }
+				 }
+            }
+		}
 	}
 
 	public void mousePressed(MouseEvent arg0) {

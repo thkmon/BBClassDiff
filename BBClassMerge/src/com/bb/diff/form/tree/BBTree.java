@@ -58,43 +58,16 @@ public class BBTree extends JTree {
 	}
 	
 	/**
-	 * 루트 노드에 새 노드를 추가한다.
-	 * 새로 추가한 노드를 리턴한다.
-	 * 
+	 * 노드 새로고침. 노드를 다시 그린다.
 	 * @param nodeName
-	 * @return
 	 */
-//	public BBTreeNode addToRootNode(String nodeText) {
-//		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
-//		BBTreeNode rootNode = (BBTreeNode) model.getRoot();
-//		
-//		BBTreeNode newTreeNode = new BBTreeNode(nodeText);
-//		rootNode.add(newTreeNode);
-//		
-//		model.reload(rootNode);
-//		return newTreeNode;
-//	}
+	public void refreshNode(BBTreeNode node) {
+		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
+		model.reload(node);
+	}
 	
 	/**
-	 * 특정 노드에 새 노드를 추가한다.
-	 * 새로 추가한 노드를 리턴한다.
-	 * 
-	 * @param targetNode
-	 * @param nodeName
-	 * @return
-	 */
-//	public BBTreeNode addToNode(BBTreeNode targetNode, String nodeText) {
-//		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
-//		
-//		BBTreeNode newTreeNode = new BBTreeNode(nodeText);
-//		targetNode.add(newTreeNode);
-//		
-//		model.reload(targetNode);
-//		return newTreeNode;
-//	}
-//	
-	/**
-	 * 트리를 다시 그린다.
+	 * 트리 새로고침. 트리 전체를 다시 그린다.
 	 */
 	public void refreshTreeSet() {
 		DefaultTreeModel model = (DefaultTreeModel) this.getModel();

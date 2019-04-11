@@ -181,7 +181,6 @@ public class EditorUtil {
 			long volGap = TreeUtil.getVolumeGap(leftAbsolutePath, rightAbsolutePath);
 			
 			String newTitle = oldTitle + " " + "[" + volGap + "]";
-			System.out.println(newTitle);
 			node.setTitle(newTitle);
 			
 		} else if (leftFileExists) {
@@ -230,7 +229,7 @@ public class EditorUtil {
 		/**
 		 * 비교해서 색칠한다. (DIFF)
 		 */
-		diffForHighlight(fileName);
+		diffForHighlight(node, fileName);
 		
 		/**
 		 * 디폴트로 최상단 보여주기
@@ -242,7 +241,7 @@ public class EditorUtil {
 	}
 	
 	
-	public static void diffForHighlight(String fileName) {
+	public static void diffForHighlight(BBTreeNode node, String fileName) {
 		int diffPoint = 0;
 		DiffConst.diffPointList = new ArrayList<Integer>();
 		DiffConst.currentDiffPointIndex = -1;
@@ -420,6 +419,37 @@ public class EditorUtil {
 			} else {
 				DiffConst.leftFileContent.setText("내용 동일함");
 				DiffConst.rightFileContent.setText("내용 동일함");
+			}
+			
+			// 차이점 없이 내용 동일할 경우 {●} 마크를 앞에 붙여준다.
+			if (node.getTitle() != null) {
+				int middleBracketIndex = node.getTitle().lastIndexOf("}");
+				if (middleBracketIndex > -1) {
+					String newTitle = "{●}" + node.getTitle().substring(middleBracketIndex + 1);
+					// 사용자가 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여주는 기능이 있으므로, 이 점을 고려하여 처리한다.
+					if (node.getTitle().startsWith("{◎}")) {
+						newTitle = "{◎}" + newTitle;
+					}
+					node.setTitle(newTitle);
+				} else {
+					String newTitle = "{●}" + node.getTitle();
+					node.setTitle(newTitle);
+				}
+			}
+			
+		} else if (diffPoint > 0) {
+			// 차이점이 존재할 경우 {숫자(디프개수)} 마크를 앞에 붙여준다.
+			int middleBracketIndex = node.getTitle().lastIndexOf("}");
+			if (middleBracketIndex > -1) {
+				String newTitle = "{" + diffPoint + "}" + node.getTitle().substring(middleBracketIndex + 1);
+				// 사용자가 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여주는 기능이 있으므로, 이 점을 고려하여 처리한다.
+				if (node.getTitle().startsWith("{◎}")) {
+					newTitle = "{◎}" + newTitle;
+				}
+				node.setTitle(newTitle);
+			} else {
+				String newTitle = "{" + diffPoint + "}" + node.getTitle();
+				node.setTitle(newTitle);
 			}
 		}
 	}

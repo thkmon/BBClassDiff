@@ -95,4 +95,6 @@ public class DiffConst {
 	
 	public static ArrayList<Integer> diffPointList = new ArrayList<Integer>();
 	public static int currentDiffPointIndex = -1;
+	
+	public static BBTree treeModel = null;
 }

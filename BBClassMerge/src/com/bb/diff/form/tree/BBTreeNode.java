@@ -42,6 +42,10 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 
 	public void setTitle(String title) {
 		this.title = title;
+		
+		if (DiffConst.treeModel != null) {
+			DiffConst.treeModel.refreshNode(this);
+		}
 	}
 
 	public BBTreeNode(Object arg0) {
@@ -330,7 +334,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 				buffer = info.getFileDecompileContent();
 				if (buffer == null || buffer.length() == 0) {
 					// 내용 없으므로 세팅한다.
-					System.err.println("새로 값을 세팅한다. (initFileDecompileContent 수행)");
+					// System.err.println("새로 값을 세팅한다. (initFileDecompileContent 수행)");
 					initFileDecompileContent(isLeft, true, absolPath);
 				}
 				
@@ -338,7 +342,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 				buffer = info.getFileContent();
 				if (buffer == null || buffer.length() == 0) {
 					// 내용 없으므로 세팅한다.
-					System.err.println("새로 값을 세팅한다. (initFileContent 수행)");
+					// System.err.println("새로 값을 세팅한다. (initFileContent 수행)");
 					initFileContent(isLeft, true, absolPath);
 				}
 			}

@@ -27,24 +27,30 @@ public class BBTreeListener implements MouseListener {
 //            	System.out.println("0 : rightAbsolutePath : " + node.getRightAbsoulutePath());
 
         		if (node.isFile()) {
-        			EditorUtil.loadFileByNode(node);
+        			EditorUtil.loadFileByNode(node, false);
         		}
             }
         }
 		
-		// 사용자가 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여준다.
+		// 사용자가 파일을 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여준다. 사용자가 폴더를 마우스 우클릭헀을 경우 내용 동일한 파일들을 검사해서 제거 처리한다.
 		if (arg.getButton() == 3) {
-			 TreePath path = parentTree.getPathForLocation(arg.getX(), arg.getY());
-			 if (path != null) {
-				 BBTreeNode node = (BBTreeNode) path.getLastPathComponent();
-				 if (node.getTitle() != null) {
-					 if (node.getTitle().startsWith("{◎}")) {
-						 node.setTitle(node.getTitle().substring(3));
-					 } else {
-						 node.setTitle("{◎}" + node.getTitle());
-					 }
-				 }
-            }
+			// 마우스 우클릭
+			TreePath path = parentTree.getPathForLocation(arg.getX(), arg.getY());
+			if (path != null) {
+				BBTreeNode node = (BBTreeNode) path.getLastPathComponent();
+				
+				if (node.isFile()) {
+					if (node.getTitle() != null) {
+						if (node.getTitle().startsWith("{◎}")) {
+							node.setTitle(node.getTitle().substring(3));
+						} else {
+							node.setTitle("{◎}" + node.getTitle());
+						}
+					}
+				} else if (node.isDir()) {
+					EditorUtil.loadDirByNode(node, true, true);
+				}
+			}
 		}
 	}
 

@@ -42,10 +42,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 
 	public void setTitle(String title) {
 		this.title = title;
-		
-		if (DiffConst.treeModel != null) {
-			DiffConst.treeModel.refreshNode(this);
-		}
+		refreshNode(this);
 	}
 
 	public BBTreeNode(Object arg0) {
@@ -54,7 +51,27 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		if (arg0 != null && arg0 instanceof String) {
 			setTitle(String.valueOf(arg0));
 		}
-		
+	}
+	
+	/**
+	 * 특정 노드를 새로고침 한다.
+	 * @param node
+	 */
+	public void refreshNode(BBTreeNode node) {
+		if (DiffConst.treeModel != null) {
+			DiffConst.treeModel.refreshNode(node);
+		}
+	}
+	
+	/**
+	 * 특정 노드를 제거한다.
+	 */
+	public void removeMe() {
+		if (this.getParent() != null) {
+			BBTreeNode parentNode = (BBTreeNode) this.getParent();
+			parentNode.remove(this);
+			refreshNode(this);
+		}
 	}
 	
 	private String leftAbsoulutePath = "";

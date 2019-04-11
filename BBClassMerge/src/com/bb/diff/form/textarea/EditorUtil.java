@@ -127,11 +127,32 @@ public class EditorUtil {
 	}
 	
 	
+	public static void loadDirByNode(BBTreeNode dirNode, boolean bRemoveIfSame, boolean bLoop) {
+		int childCount = dirNode.getChildCount();
+		int lastIndex = childCount - 1;
+		
+		if (childCount == 0 && bRemoveIfSame) {
+			dirNode.removeMe();
+		}
+		
+		for (int i=lastIndex; i>=0; i--) {
+			BBTreeNode oneNode = (BBTreeNode) dirNode.getChildAt(i);
+			if (oneNode.isFile()) {
+				System.out.println("loadDirByNode : " + i + ": " + oneNode);
+				EditorUtil.loadFileByNode(oneNode, bRemoveIfSame);
+			} else if (oneNode.isDir()) {
+				if (bLoop) {
+					loadDirByNode(oneNode, true, bRemoveIfSame);
+				}
+			}
+		}
+	}
+	
 	/**
 	 * 노드 속의 정보를 활용해서 파일 열기
 	 * @param node
 	 */
-	public static boolean loadFileByNode(BBTreeNode node) {
+	public static boolean loadFileByNode(BBTreeNode node, boolean bRemoveIfSame) {
 		
 		/**
 		 * 좌측 파일 출력
@@ -229,7 +250,7 @@ public class EditorUtil {
 		/**
 		 * 비교해서 색칠한다. (DIFF)
 		 */
-		diffForHighlight(node, fileName);
+		diffForHighlight(node, fileName, bRemoveIfSame);
 		
 		/**
 		 * 디폴트로 최상단 보여주기
@@ -241,7 +262,7 @@ public class EditorUtil {
 	}
 	
 	
-	public static void diffForHighlight(BBTreeNode node, String fileName) {
+	public static void diffForHighlight(BBTreeNode node, String fileName, boolean bRemoveIfSame) {
 		int diffPoint = 0;
 		DiffConst.diffPointList = new ArrayList<Integer>();
 		DiffConst.currentDiffPointIndex = -1;
@@ -421,19 +442,43 @@ public class EditorUtil {
 				DiffConst.rightFileContent.setText("내용 동일함");
 			}
 			
-			// 차이점 없이 내용 동일할 경우 {●} 마크를 앞에 붙여준다.
-			if (node.getTitle() != null) {
-				int middleBracketIndex = node.getTitle().lastIndexOf("}");
-				if (middleBracketIndex > -1) {
-					String newTitle = "{●}" + node.getTitle().substring(middleBracketIndex + 1);
-					// 사용자가 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여주는 기능이 있으므로, 이 점을 고려하여 처리한다.
-					if (node.getTitle().startsWith("{◎}")) {
-						newTitle = "{◎}" + newTitle;
+			if (bRemoveIfSame) {
+				// 부모 노드가 비었는지 미리 검사한다.
+				boolean bParentIsEmpty = false;
+				BBTreeNode parentNode = null;
+				if (node.getParent() != null) {
+					parentNode = (BBTreeNode) node.getParent();
+					
+					if (parentNode.getChildCount() < 2) {
+						// 1개 일경우도 비었다고 판단한다. 왜? 곧 자식을 지울 예정이기 때문에.
+						bParentIsEmpty = true;
 					}
-					node.setTitle(newTitle);
-				} else {
-					String newTitle = "{●}" + node.getTitle();
-					node.setTitle(newTitle);
+				}
+				
+				// 특정 노드를 삭제한다.
+				node.removeMe();
+				
+				if (bParentIsEmpty) {
+					// 부모 노드가 비었을 경우, 부모 노드를 삭제한다.
+					parentNode.removeMe();
+				}
+				
+				
+			} else {
+				// 차이점 없이 내용 동일할 경우 {●} 마크를 앞에 붙여준다.
+				if (node.getTitle() != null) {
+					int middleBracketIndex = node.getTitle().lastIndexOf("}");
+					if (middleBracketIndex > -1) {
+						String newTitle = "{●}" + node.getTitle().substring(middleBracketIndex + 1);
+						// 사용자가 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여주는 기능이 있으므로, 이 점을 고려하여 처리한다.
+						if (node.getTitle().startsWith("{◎}")) {
+							newTitle = "{◎}" + newTitle;
+						}
+						node.setTitle(newTitle);
+					} else {
+						String newTitle = "{●}" + node.getTitle();
+						node.setTitle(newTitle);
+					}
 				}
 			}
 			

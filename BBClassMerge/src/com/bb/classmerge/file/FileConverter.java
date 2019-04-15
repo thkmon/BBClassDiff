@@ -38,7 +38,7 @@ public class FileConverter {
 		}
 		
 		FileCollector fileCollector = new FileCollector();
-		FileList fileList = fileCollector.getFileList(dirPath, true);
+		FileList fileList = fileCollector.getFileList(dirPath, false);
 		if (fileList == null || fileList.size() == 0) {
 			throw new MsgException("해당 경로 안에 파일이 존재하지 않습니다. [" + StringUtil.revisePath(dir.getAbsolutePath()) + "]");
 		}

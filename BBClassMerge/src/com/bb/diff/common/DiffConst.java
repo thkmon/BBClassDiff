@@ -87,7 +87,7 @@ public class DiffConst {
 	public static String exceptPathPattern = "";
 	
 	// 로그파일 쓸지 여부
-	public static boolean bWriteLogFile = false;
+	public static boolean bWriteLogFile = true;
 	
 	
 	public static DiffForm diffForm = null;

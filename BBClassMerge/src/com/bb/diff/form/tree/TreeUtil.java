@@ -6,6 +6,7 @@ import com.bb.diff.common.DiffConst;
 import com.bb.diff.data.PathData;
 import com.bb.diff.data.PathDataList;
 import com.bb.diff.file.FileDiffController;
+import com.bb.diff.file.FileUtil;
 import com.bb.diff.log.LogUtil;
 import com.bb.diff.path.PathUtil;
 import com.bb.diff.prototype.StringList;
@@ -74,6 +75,7 @@ public class TreeUtil {
 		addToRootNodeByCorePath(leftAbsolutePath, rightAbsolutePath, inputCorePath, inLeftList, intRightList);
 	}
 	
+	
 	/**
 	 * root 노드까지의 패스를 뗀 패스(==corePath)를 인자로 넘기면 추가된다.
 	 * 
@@ -136,7 +138,7 @@ public class TreeUtil {
 					nodeTitle = oneChunk + " " + rightMark;
 				}
 			}
-		
+			
 			// 둘 다 해당이 아닐 경우 띄우지 않는다.
 			if (!inLeftList || !intRightList) {
 				return;
@@ -180,12 +182,80 @@ public class TreeUtil {
 				childNode.setDir(true);
 				childNode.setFile(false);
 			}
+
+			if (lastChunkElement) {
+				if (childNode.isFile()) {
+					
+					if (inLeftList && !intRightList) {
+						if (childNode.getLeftAbsoulutePath() != null && childNode.getLeftAbsoulutePath().length() > 0) {
+							LogUtil.appendLogFile("좌측에만있는파일 : " + childNode.getLeftAbsoulutePath());
+						}
+					}
+					
+					if (!inLeftList && intRightList) {
+						if (childNode.getRightAbsoulutePath() != null && childNode.getRightAbsoulutePath().length() > 0) {
+							LogUtil.appendLogFile("우측에만있는파일 : " + childNode.getRightAbsoulutePath());
+						}
+					}
+					
+					if (inLeftList && intRightList) {
+						if (childNode.getLeftAbsoulutePath() != null && childNode.getLeftAbsoulutePath().length() > 0) {
+							if (childNode.getRightAbsoulutePath() != null && childNode.getRightAbsoulutePath().length() > 0) {
+								// 클래스 파일이 아닌 경우만 내용 비교
+								if (!childNode.getLeftAbsoulutePath().endsWith(".class")) {
+									if (!checkFileContentAreSame(childNode.getLeftAbsoulutePath(), childNode.getRightAbsoulutePath())) {
+										LogUtil.appendLogFile("내용불일치 : " + childNode.getLeftAbsoulutePath());
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 			
 			parentNode = childNode;
 		}
 		
 		// 그리기
 		DiffConst.fileTree.refreshTreeSet();
+	}
+	
+	
+	/**
+	 * 파일 내용이 같은지 단순 검사한다. 클래스 파일이 아닌 경우만 사용할 것.
+	 * 
+	 * @param path1
+	 * @param path2
+	 * @return
+	 */
+	private static boolean checkFileContentAreSame(String path1, String path2) {
+		if (path1 == null || path1.length() == 0) {
+			return false;
+		}
+		
+		if (path2 == null || path2.length() == 0) {
+			return false;
+		}
+		
+		// System.out.println("checkFileContentAreSame : " + path1);
+		
+		File f1 = new File(path1);
+		File f2 = new File(path2);
+		
+		StringBuffer buffer1 = FileUtil.readFile(f1);
+		StringBuffer buffer2 = FileUtil.readFile(f2);
+		
+		String content1 = buffer1.toString();
+		String content2 = buffer2.toString();
+		
+		content1 = content1.replace("\r", "").replace("\n", "");
+		content2 = content2.replace("\r", "").replace("\n", "");
+		
+		if (content1.equals(content2)) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	

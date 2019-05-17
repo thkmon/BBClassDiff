@@ -127,23 +127,34 @@ public class TreeUtil {
 					long volGap = getVolumeGap(leftAbsolutePath, rightAbsolutePath);
 					nodeTitle = oneChunk + " " + "[" + volGap + "]";
 					
-					// 용량 차이 없는 파일은  띄우지 않는다.
-//					if (volGap == 0) {
-//						LogUtil.appendLogFile("용량차이 없는 파일 : " + PathUtil.reviseStandardPath(leftAbsolutePath));
-//						return;
-//					}
+					// 용량 차이 없는 파일
+					if (volGap == 0) {
+						LogUtil.appendLogFile("용량차이 없는 파일 : " + PathUtil.reviseStandardPath(leftAbsolutePath));
+						
+						// 용량 차이 없는 파일은  띄우지 않는다.
+						// return;
+					}
 					
 				} else if (inLeftList) {
 					nodeTitle = oneChunk + " " + leftMark;
+					
 				} else if (intRightList) {
 					nodeTitle = oneChunk + " " + rightMark;
 				}
 			}
 			
-			// 둘 다 해당이 아닐 경우 띄우지 않는다.
-			if (!inLeftList || !intRightList) {
-				return;
+			if (inLeftList && !intRightList) {
+				LogUtil.appendLogFile("Left 에만 있는 파일 : " + PathUtil.reviseStandardPath(leftAbsolutePath));
 			}
+			
+			if (!inLeftList && intRightList) {
+				LogUtil.appendLogFile("Right 에만 있는 파일 : " + PathUtil.reviseStandardPath(leftAbsolutePath));
+			}
+			
+			// 좌측과 우측 둘 다 해당이 아닐 경우 띄우지 않는다.
+//			if (!inLeftList || !intRightList) {
+//				return;
+//			}
 			
 			// 중복 아닐 경우만 트리에 노드 추가하기
 			childNode = parentNode.addIfNotDupl(nodeTitle);

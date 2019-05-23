@@ -71,7 +71,7 @@ public class MainForm extends JFrame {
 		
 		this.setLayout(null);
 		this.setTitle(title);
-		this.setBounds(0, 0, 800, defaultHeight);
+		this.setBounds(0, 0, 200, 200);
 		this.setVisible(true);
 		
 		addBasicWindowListener();

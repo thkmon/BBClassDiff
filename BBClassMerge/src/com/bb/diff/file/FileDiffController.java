@@ -161,17 +161,17 @@ public class FileDiffController {
 			return;
 		}
 		
-		if (file.isFile()) {
-			String onePath = file.getAbsolutePath();
-			onePath = StringUtil.revisePath(onePath);
+		// 190523. 파일 경로 리스트에 폴더도 추가하도록 개선.
+		String onePath = file.getAbsolutePath();
+		onePath = StringUtil.revisePath(onePath);
+		
+		if (onePath.startsWith(dirPath)) {
+			onePath = StringUtil.replaceOne(onePath, dirPath, "");
+		}
+		
+		pathList.addNotDupl(onePath);
 			
-			if (onePath.startsWith(dirPath)) {
-				onePath = StringUtil.replaceOne(onePath, dirPath, "");
-			}
-			
-			pathList.addNotDupl(onePath);
-			
-		} else if (file.isDirectory()) {
+		if (file.isDirectory()) {
 			File[] fileArray = file.listFiles();
 			if (fileArray != null && fileArray.length > 0) {
 				int fileCount = fileArray.length;

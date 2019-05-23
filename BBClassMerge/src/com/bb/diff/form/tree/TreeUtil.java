@@ -121,34 +121,34 @@ public class TreeUtil {
 			String nodeTitle = "";
 			nodeTitle = oneChunk;
 			
-			if (oneChunk.indexOf(".") > 0) {
+			// 파일간 용량 차이
+			long fileVolGap = 0;
+			
+			if (lastChunkElement) {
 				if (inLeftList && intRightList) {
-					// 양쪽에 있는 파일은 용량비교해서 gap을 표시한다.
-					long volGap = getVolumeGap(leftAbsolutePath, rightAbsolutePath);
-					nodeTitle = oneChunk + " " + "[" + volGap + "]";
-					
-					// 용량 차이 없는 파일
-					if (volGap == 0) {
-						LogUtil.appendLogFile("용량차이 없는 파일 : " + PathUtil.reviseStandardPath(leftAbsolutePath));
+					// 폴더는 용량 체크해봤자 0으로 나온다. 파일 용량 차이만 표시.
+					if (FileUtil.checkIsFile(leftAbsolutePath, rightAbsolutePath)) {
+						// 양쪽에 있는 파일은 용량비교해서 gap을 표시한다.
+						fileVolGap = getVolumeGap(leftAbsolutePath, rightAbsolutePath);
+						nodeTitle = oneChunk + " " + "[" + fileVolGap + "]";
 						
-						// 용량 차이 없는 파일은  띄우지 않는다.
-						// return;
+						// 용량 차이 없는 파일
+						if (fileVolGap == 0) {
+							// 용량 차이 없는 파일은  띄우지 않는다.
+							// return;
+						}
 					}
 					
 				} else if (inLeftList) {
 					nodeTitle = oneChunk + " " + leftMark;
+					// 좌측에만 있는 파일은  띄우지 않는다.
+					// return;
 					
 				} else if (intRightList) {
 					nodeTitle = oneChunk + " " + rightMark;
+					// 우측에만 있는 파일은  띄우지 않는다.
+					// return;
 				}
-			}
-			
-			if (inLeftList && !intRightList) {
-				LogUtil.appendLogFile("Left 에만 있는 파일 : " + PathUtil.reviseStandardPath(leftAbsolutePath));
-			}
-			
-			if (!inLeftList && intRightList) {
-				LogUtil.appendLogFile("Right 에만 있는 파일 : " + PathUtil.reviseStandardPath(leftAbsolutePath));
 			}
 			
 			// 좌측과 우측 둘 다 해당이 아닐 경우 띄우지 않는다.
@@ -195,36 +195,52 @@ public class TreeUtil {
 				childNode.setFile(false);
 			}
 
+			/**
+			 * 로그 쓰기
+			 */
 			if (lastChunkElement) {
-				if (childNode.isFile()) {
-					
-					if (inLeftList && !intRightList) {
-						if (childNode.getLeftAbsoulutePath() != null && childNode.getLeftAbsoulutePath().length() > 0) {
-							LogUtil.appendLogFile("좌측에만있는파일 : " + childNode.getLeftAbsoulutePath());
+				if (childNode.isFile() && inLeftList && intRightList) {
+					// 용량 차이 없는 파일
+					if (fileVolGap == 0) {
+						LogUtil.appendLogFile("용량차이 없는 파일 : " + PathUtil.reviseStandardPath(leftAbsolutePath));
+					}
+				}
+				
+				if (inLeftList && !intRightList) {
+					if (childNode.getLeftAbsoulutePath() != null && childNode.getLeftAbsoulutePath().length() > 0) {
+						if (childNode.isFile()) {
+							LogUtil.appendLogFile("Left에만 있는 파일 : " + childNode.getLeftAbsoulutePath());
+						} else if (childNode.isDir()) {
+							LogUtil.appendLogFile("Left에만 있는 폴더 : " + childNode.getLeftAbsoulutePath());
 						}
 					}
-					
-					if (!inLeftList && intRightList) {
-						if (childNode.getRightAbsoulutePath() != null && childNode.getRightAbsoulutePath().length() > 0) {
-							LogUtil.appendLogFile("우측에만있는파일 : " + childNode.getRightAbsoulutePath());
+				}
+				
+				if (!inLeftList && intRightList) {
+					if (childNode.getRightAbsoulutePath() != null && childNode.getRightAbsoulutePath().length() > 0) {
+						if (childNode.isFile()) {
+							LogUtil.appendLogFile("Right에만 있는 파일 : " + childNode.getRightAbsoulutePath());
+						} else if (childNode.isDir()) {
+							LogUtil.appendLogFile("Right에만 있는 폴더 : " + childNode.getRightAbsoulutePath());
 						}
 					}
+				}
 					
-//					if (inLeftList && intRightList) {
-//						if (childNode.getLeftAbsoulutePath() != null && childNode.getLeftAbsoulutePath().length() > 0) {
-//							if (childNode.getRightAbsoulutePath() != null && childNode.getRightAbsoulutePath().length() > 0) {
-//								// 클래스 파일이 아닌 경우만 내용 비교
-//								if (!childNode.getLeftAbsoulutePath().endsWith(".class")) {
-//									if (!checkFileContentAreSame(childNode.getLeftAbsoulutePath(), childNode.getRightAbsoulutePath())) {
-//										LogUtil.appendLogFile("내용불일치 : " + childNode.getLeftAbsoulutePath());
-//									} else {
-//										LogUtil.appendLogFile("내용일치 : " + childNode.getLeftAbsoulutePath());
-//									}
+//				if (childNode.isFile() && inLeftList && intRightList) {
+//					if (childNode.getLeftAbsoulutePath() != null && childNode.getLeftAbsoulutePath().length() > 0) {
+//						if (childNode.getRightAbsoulutePath() != null && childNode.getRightAbsoulutePath().length() > 0) {
+//							// 클래스 파일이 아닌 경우만 내용 비교
+//							if (!childNode.getLeftAbsoulutePath().endsWith(".class")) {
+//								if (!checkFileContentAreSame(childNode.getLeftAbsoulutePath(), childNode.getRightAbsoulutePath())) {
+//									LogUtil.appendLogFile("내용불일치 : " + childNode.getLeftAbsoulutePath());
+//								} else {
+//									LogUtil.appendLogFile("내용일치 : " + childNode.getLeftAbsoulutePath());
 //								}
 //							}
 //						}
 //					}
-				}
+//				}
+				
 			}
 			
 			parentNode = childNode;
@@ -242,6 +258,7 @@ public class TreeUtil {
 	 * @param path2
 	 * @return
 	 */
+	/*
 	private static boolean checkFileContentAreSame(String path1, String path2) {
 		if (path1 == null || path1.length() == 0) {
 			return false;
@@ -271,6 +288,7 @@ public class TreeUtil {
 		
 		return false;
 	}
+	*/
 	
 	
 	/**

@@ -5,19 +5,19 @@ import java.io.File;
 public class FileCollector {
 	
 	
-	public FileList getFileList(String dirPath, boolean bGetClassOnly) throws Exception {
+	public FileList getFilesAndDirsList(String dirPath, boolean bGetClassOnly) throws Exception {
 		File dirFile = new File(dirPath);
 		if (!dirFile.exists()) {
 			throw new Exception("getFileList : Directory Not Exists. dirPath == [" + dirFile.getAbsolutePath() + "]");
 		}
 		
 		FileList resultList = new FileList();
-		addFiles(resultList, dirFile, bGetClassOnly);
+		addFilesAndDirs(resultList, dirFile, bGetClassOnly);
 		return resultList;
 	}
 	
 	
-	private void addFiles(FileList fileList, File file, boolean bGetClassOnly) throws Exception {
+	private void addFilesAndDirs(FileList fileList, File file, boolean bGetClassOnly) throws Exception {
 		
 		if (fileList == null) {
 			return;
@@ -45,6 +45,9 @@ public class FileCollector {
 		}
 		
 		if (file.isDirectory()) {
+			// 190523. 파일 경로 리스트에 폴더도 추가하도록 개선.
+			fileList.add(file);
+			
 			File[] fileArr = file.listFiles();
 			if (fileArr == null || fileArr.length == 0) {
 				return;
@@ -52,7 +55,7 @@ public class FileCollector {
 			
 			int fileCount = fileArr.length;
 			for (int i=0; i<fileCount; i++) {
-				addFiles(fileList, fileArr[i], bGetClassOnly);
+				addFilesAndDirs(fileList, fileArr[i], bGetClassOnly);
 			}
 		}
 	}

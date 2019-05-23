@@ -2,12 +2,11 @@ package com.bb.classmerge.file;
 
 import java.io.File;
 
-import com.bb.classmerge.date.DateUtil;
 import com.bb.classmerge.decompile.Decompiler;
 import com.bb.classmerge.exception.MsgException;
-import com.bb.classmerge.util.FileNameUtil;
 import com.bb.classmerge.util.ConsoleUtil;
 import com.bb.classmerge.util.DirUtil;
+import com.bb.classmerge.util.FileNameUtil;
 import com.bb.classmerge.util.StringUtil;
 
 public class FileConverter {
@@ -38,7 +37,7 @@ public class FileConverter {
 		}
 		
 		FileCollector fileCollector = new FileCollector();
-		FileList fileList = fileCollector.getFileList(dirPath, false);
+		FileList fileList = fileCollector.getFilesAndDirsList(dirPath, false);
 		if (fileList == null || fileList.size() == 0) {
 			throw new MsgException("해당 경로 안에 파일이 존재하지 않습니다. [" + StringUtil.revisePath(dir.getAbsolutePath()) + "]");
 		}
@@ -57,7 +56,7 @@ public class FileConverter {
 		String destDirPath = DirUtil.makeDestinationDir("result");
 		
 		FileCollector fileCollector = new FileCollector();
-		FileList fileList = fileCollector.getFileList(dirPath, true);
+		FileList fileList = fileCollector.getFilesAndDirsList(dirPath, true);
 		
 		Decompiler decompiler = new Decompiler();
 		

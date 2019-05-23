@@ -557,5 +557,53 @@ public class FileUtil {
 		return true;
 	}
 	
-
+	
+	/**
+	 * 특정 패스 2개를 넘겨 파일인지 확인한다. 폴더가 아니고, 현재 존재하는 파일일 경우 true를 리턴.
+	 * (첫 번째 패스에 파일 또는 폴더가 존재할 경우, 두 번째 패스는 검사하지 않는다. 첫 번째 패스의 파일 여부만 리턴한다.) 
+	 * 
+	 * @param leftPath
+	 * @param rightPath
+	 * @return
+	 */
+	public static boolean checkIsFile(String leftPath, String rightPath) {
+		Boolean bIsFile = checkIsFile(leftPath);
+		if (bIsFile != null) {
+			// 첫 번째 패스에 파일 또는 폴더가 존재할 경우, 두 번째 패스는 검사하지 않는다. 첫 번째 패스의 파일 여부만 리턴한다.
+			return bIsFile;
+		}
+		
+		bIsFile = checkIsFile(rightPath);
+		if (bIsFile != null) {
+			return bIsFile;
+		}
+		
+		return false;
+	}
+	
+	
+	/**
+	 * 특정 패스가 파일인지 확인한다. 폴더가 아니고, 현재 존재하는 파일일 경우 true를 리턴.
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static Boolean checkIsFile(String path) {
+		if (path == null || path.length() == 0) {
+			return null;
+		}
+		
+		File file = new File(path);
+		if (!file.exists()) {
+			return null;
+		}
+		
+		if (file.isFile()) {
+			return true;
+		} else if (file.isDirectory()) {
+			return false;
+		}
+		
+		return null;
+	}
 }

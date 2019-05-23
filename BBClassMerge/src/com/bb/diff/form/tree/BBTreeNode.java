@@ -130,6 +130,17 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 				// 이미 트리에 존재함
 				return oneNode;
 			}
+			
+			if ((oneNode.getTitle()).equals(childNodeTitle + " " + TreeUtil.leftMark)) {
+				// 이미 트리에 존재함
+				return oneNode;
+			}
+			
+			if ((oneNode.getTitle()).equals(childNodeTitle + " " + TreeUtil.rightMark)) {
+				// 이미 트리에 존재함
+				return oneNode;
+			}
+			
 		}
 		
 		BBTreeNode resultNode = addByForce(childNodeTitle);

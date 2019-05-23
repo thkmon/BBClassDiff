@@ -9,7 +9,6 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -19,13 +18,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-import com.bb.classmerge.exception.MsgException;
-import com.bb.classmerge.file.FileConverter;
 import com.bb.classmerge.main.BBClassMerge;
-import com.bb.classmerge.merge.MergeController;
 import com.bb.classmerge.util.ConsoleUtil;
-import com.bb.classmerge.util.StringUtil;
-import com.bb.diff.main.DiffHelperMain;
 
 public class MainForm extends JFrame {
 
@@ -83,12 +77,12 @@ public class MainForm extends JFrame {
 		addBasicWindowListener();
 		
 		addLabel();
-		
 		addButton();
-		
 		addTextField();
-		
 		addTextArea();
+		
+		// 190523. 윈도우 막 띄웠을 때 버튼, 레이블 보이지 않는 버그 수정. 한 번 더 리사이즈 처리한다.
+		this.setBounds(0, 0, 800, defaultHeight);
 	}
 	
 	

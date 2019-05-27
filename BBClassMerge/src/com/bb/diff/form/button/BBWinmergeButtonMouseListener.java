@@ -18,38 +18,44 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 	 */
 	private static String winmergePath = "";
 	
+	
 	/**
 	 * 윈머지 경로를 프로퍼티 파일에서 가져오도록 처리한다.
 	 * @return
 	 */
 	private static String getWinmergePath() {
-		String resultPath = "";
-		
-		if (winmergePath == null || winmergePath.length() == 0) {
-			winmergePath = PropertiesUtil.getValueFromProperties("winmergePath");
-			winmergePath = PathUtil.reviseStandardPath(winmergePath);
-		}			
-		
 		if (winmergePath != null && winmergePath.length() > 0) {
-			resultPath = winmergePath;
-		} else {
-			resultPath = "C:\\Program Files (x86)\\WinMerge\\WinMergeU.exe";
+			return winmergePath;
 		}
 		
-		return resultPath;
+		// 윈머지 경로를 프로퍼티 파일에서 가져오도록 처리한다.
+		if (winmergePath == null || winmergePath.trim().length() == 0) {
+			winmergePath = PropertiesUtil.getValueFromProperties("winmergePath");
+			winmergePath = PathUtil.reviseStandardPath(winmergePath);
+		}
+		
+		// 프로퍼티 내에 값이 없다면, 윈머지 기본경로를 넣어준다.
+		if (winmergePath == null || winmergePath.trim().length() == 0) {
+			winmergePath = "C:\\Program Files (x86)\\WinMerge\\WinMergeU.exe";
+		}
+		
+		return winmergePath;
 	}
+	
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
-
+	
+	
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
 		
 	}
+	
 
 	@Override
 	public void mouseExited(MouseEvent e) {
@@ -62,6 +68,7 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 		// TODO Auto-generated method stub
 		
 	}
+	
 
 	@Override
 	public void mouseReleased(MouseEvent e) {

@@ -3,7 +3,7 @@ package com.bb.diff.decompile;
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.map.FileContentInfo;
 import com.bb.diff.path.PathUtil;
@@ -24,7 +24,7 @@ public class DecompileUtil {
 			clsFilePath = PathUtil.reviseStandardPath(clsFilePath);
 			
 			// 기존값 검사
-			FileContentInfo info = DiffConst.fileContentMap.get(clsFilePath);
+			FileContentInfo info = CommonConst.fileContentMap.get(clsFilePath);
 			
 			// 190409. 무조건 새걸로 가져온다.
 			info = null;
@@ -122,7 +122,7 @@ public class DecompileUtil {
 				
 				info.setFileContent(javaContent);
 //				System.out.println(javaContent.toString());
-				DiffConst.fileContentMap.put(clsFilePath, info);
+				CommonConst.fileContentMap.put(clsFilePath, info);
 				
 				javaFile.delete();
 				copiedClsFile.delete();

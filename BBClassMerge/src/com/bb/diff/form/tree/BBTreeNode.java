@@ -4,7 +4,7 @@ import java.io.File;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.decompile.DecompileUtil;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.map.FileContentInfo;
@@ -58,8 +58,8 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 	 * @param node
 	 */
 	public void refreshNode(BBTreeNode node) {
-		if (DiffConst.treeModel != null) {
-			DiffConst.treeModel.refreshNode(node);
+		if (CommonConst.treeModel != null) {
+			CommonConst.treeModel.refreshNode(node);
 		}
 	}
 	
@@ -193,7 +193,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		}
 		
 		// 기존값 검사
-		FileContentInfo info = DiffConst.fileContentMap.get(absolPath);
+		FileContentInfo info = CommonConst.fileContentMap.get(absolPath);
 
 		// 190409. 무조건 새걸로 가져온다.
 		info = null;
@@ -227,7 +227,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		// 맵에 콘텐츠 저장한다.
 		StringBuffer fileContent = FileUtil.readFile(f);
 		info.setFileContent(fileContent);
-		DiffConst.fileContentMap.put(absolPath, info);
+		CommonConst.fileContentMap.put(absolPath, info);
 	}
 	
 	/**
@@ -269,7 +269,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		}
 		
 		// 기존값 검사
-		FileContentInfo info = DiffConst.fileContentMap.get(absolPath);
+		FileContentInfo info = CommonConst.fileContentMap.get(absolPath);
 
 		// 190409. 무조건 새걸로 가져온다.
 		info = null;
@@ -298,7 +298,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		// 맵에 콘텐츠 저장한다.
 		StringBuffer fileDecompiledContent = DecompileUtil.readClassFile(absolPath);
 		info.setFileDecompileContent(fileDecompiledContent);
-		DiffConst.fileContentMap.put(absolPath, info);
+		CommonConst.fileContentMap.put(absolPath, info);
 	}
 	
 	
@@ -327,12 +327,19 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		// 클래스인지 여부 검사
 		boolean isClassFile = false;
 		
-		if (getLeftAbsoulutePath().endsWith(".class")) {
-			isClassFile = true;
+		if (isLeft) {
+			if (getLeftAbsoulutePath().endsWith(".class")) {
+				isClassFile = true;
+			}
+		} else {
+			if (getRightAbsoulutePath().endsWith(".class")) {
+				isClassFile = true;
+			}
 		}
+		
 				
 		// 기존값 검사
-		FileContentInfo info = DiffConst.fileContentMap.get(absolPath);
+		FileContentInfo info = CommonConst.fileContentMap.get(absolPath);
 		
 		// 190409. 무조건 새걸로 가져온다.
 		info = null;
@@ -381,7 +388,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		}
 	
 		// 세팅한 이후이니, 다시 로드해본다.
-		info = DiffConst.fileContentMap.get(absolPath);
+		info = CommonConst.fileContentMap.get(absolPath);
 		if (info == null) {
 			System.err.println("파일을 세팅할 수 없습니다. (0)");
 			return new StringBuffer("");

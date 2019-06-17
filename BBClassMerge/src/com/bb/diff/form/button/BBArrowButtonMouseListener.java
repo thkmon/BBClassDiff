@@ -3,7 +3,7 @@ package com.bb.diff.form.button;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 
 public class BBArrowButtonMouseListener implements MouseListener {
 
@@ -75,16 +75,16 @@ public class BBArrowButtonMouseListener implements MouseListener {
 		if (targetIsleftSide) {
 			if (targetIsToUp) {
 				if (isToLimit) {
-					DiffConst.leftFileContent.setScrollTop();
+					CommonConst.leftFileContent.setScrollTop();
 				} else {
-					DiffConst.leftFileContent.addScrollY(DiffConst.movingValueOfTextArea * (-1));
+					CommonConst.leftFileContent.addScrollY(CommonConst.movingValueOfTextArea * (-1));
 				}
 				
 			} else {
 				if (isToLimit) {
-					DiffConst.leftFileContent.setScrollBottom();
+					CommonConst.leftFileContent.setScrollBottom();
 				} else {
-					DiffConst.leftFileContent.addScrollY(DiffConst.movingValueOfTextArea);
+					CommonConst.leftFileContent.addScrollY(CommonConst.movingValueOfTextArea);
 				}
 				
 			}
@@ -94,15 +94,15 @@ public class BBArrowButtonMouseListener implements MouseListener {
 		if (targetIsRightSide) {
 			if (targetIsToUp) {
 				if (isToLimit) {
-					DiffConst.rightFileContent.setScrollTop();
+					CommonConst.rightFileContent.setScrollTop();
 				} else {
-					DiffConst.rightFileContent.addScrollY(DiffConst.movingValueOfTextArea * (-1));
+					CommonConst.rightFileContent.addScrollY(CommonConst.movingValueOfTextArea * (-1));
 				}
 			} else {
 				if (isToLimit) {
-					DiffConst.rightFileContent.setScrollBottom();
+					CommonConst.rightFileContent.setScrollBottom();
 				} else {
-					DiffConst.rightFileContent.addScrollY(DiffConst.movingValueOfTextArea);
+					CommonConst.rightFileContent.addScrollY(CommonConst.movingValueOfTextArea);
 				}
 			}
 		}

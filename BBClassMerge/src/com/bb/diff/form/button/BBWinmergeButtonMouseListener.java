@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import com.bb.classmerge.util.DirUtil;
 import com.bb.classmerge.util.PropertiesUtil;
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.path.PathUtil;
 
@@ -74,12 +74,12 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		
 		try {
-			String leftText = DiffConst.leftFileContent.getText();
+			String leftText = CommonConst.leftFileContent.getText();
 			if (leftText == null) {
 				leftText = "";
 			}
 			
-			String rightText = DiffConst.rightFileContent.getText();
+			String rightText = CommonConst.rightFileContent.getText();
 			if (rightText == null) {
 				rightText = "";
 			}
@@ -88,10 +88,10 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 			/**
 			 * winmerge를 위한 임시파일 만들기
 			 */
-			String fileName = PathUtil.getFileNameWithExt(DiffConst.leftFilePathText.getText());
+			String fileName = PathUtil.getFileNameWithExt(CommonConst.leftFilePathText.getText());
 			
 			if (fileName == null || fileName.length() == 0) {
-				fileName = PathUtil.getFileNameWithExt(DiffConst.rightFilePathText.getText());
+				fileName = PathUtil.getFileNameWithExt(CommonConst.rightFilePathText.getText());
 			}
 			
 			if (fileName == null || fileName.length() == 0) {

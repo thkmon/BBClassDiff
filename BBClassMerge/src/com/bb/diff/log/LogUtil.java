@@ -2,7 +2,7 @@ package com.bb.diff.log;
 
 import java.io.File;
 
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.prototype.PathList;
 
@@ -73,7 +73,7 @@ public class LogUtil {
 	public static boolean appendLogFile(String logContent, boolean isError) {
 		
 		if (commonLogFileObj == null) {
-			if (DiffConst.bWriteLogFile) {
+			if (CommonConst.bWriteLogFile) {
 				boolean logFileCreated = createLogFile();
 				if (!logFileCreated) {
 					return false;
@@ -81,7 +81,7 @@ public class LogUtil {
 			}
 		}
 		
-		if (DiffConst.bWriteLogFile) {
+		if (CommonConst.bWriteLogFile) {
 			FileUtil.appendFile(commonLogFileObj, logContent, true);
 		}
 		
@@ -109,7 +109,7 @@ public class LogUtil {
 			String tempFilePath = "";
 			
 			while (true) {
-				tempFilePath = "log\\" + DiffConst.todayDate + "_" + String.valueOf(seqNum);
+				tempFilePath = "log\\" + CommonConst.todayDate + "_" + String.valueOf(seqNum);
 				
 				tmpLogFile = new File(tempFilePath + ".txt");
 				if (tmpLogFile != null && !tmpLogFile.exists()) {
@@ -124,12 +124,12 @@ public class LogUtil {
 				}
 			}
 			
-			DiffConst.seqNumStr = String.valueOf(seqNum);
-			DiffConst.commonLogFilePath = tempFilePath + ".txt";
-			commonLogFileObj = new File(DiffConst.commonLogFilePath);
+			CommonConst.seqNumStr = String.valueOf(seqNum);
+			CommonConst.commonLogFilePath = tempFilePath + ".txt";
+			commonLogFileObj = new File(CommonConst.commonLogFilePath);
 			
-			DiffConst.commonOriginToCopyDirPath = tempFilePath + "_origin";
-			DiffConst.commonTargetToCopyDirPath = tempFilePath + "_target";
+			CommonConst.commonOriginToCopyDirPath = tempFilePath + "_origin";
+			CommonConst.commonTargetToCopyDirPath = tempFilePath + "_target";
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -13,20 +13,25 @@ public class BBTree extends JTree {
 		this.addMouseListener(new BBTreeListener(this));
 	}
 	
+	
 	private JScrollPane scrollPane = null;
 
+	
 	public JScrollPane getScrollPane() {
 		return scrollPane;
 	}
 
+	
 	public void setScrollPane(JScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
 	}
 
+	
 //	public DefaultMutableTreeNode getRoot() {
 //		DefaultMutableTreeNode obj = (DefaultMutableTreeNode) this.treeModel.getRoot();
 //		return obj;
 //	}
+	
 	
 	/**
 		//참고용
@@ -37,6 +42,7 @@ public class BBTree extends JTree {
 			model.reload(root);
 		}
 	**/
+	
 	
 	/**
 	 * 루트 노드를 얻는다.
@@ -57,6 +63,7 @@ public class BBTree extends JTree {
 		model.reload(rootNode);
 	}
 	
+	
 	/**
 	 * 노드 새로고침. 노드를 다시 그린다.
 	 * @param nodeName
@@ -65,6 +72,7 @@ public class BBTree extends JTree {
 		DefaultTreeModel model = (DefaultTreeModel) this.getModel();
 		model.reload(node);
 	}
+	
 	
 	/**
 	 * 트리 새로고침. 트리 전체를 다시 그린다.

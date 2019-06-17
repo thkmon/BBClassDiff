@@ -1,7 +1,7 @@
 package com.bb.diff.main;
 
 import com.bb.classmerge.main.BBClassMerge;
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.date.DateUtil;
 import com.bb.diff.form.form.DiffForm;
 import com.bb.diff.log.LogUtil;
@@ -18,22 +18,22 @@ public class DiffHelperMain {
 	 */
 	public static void doDiffProcess(String leftDirPath, String rightDirPath) {
 		
-		DiffConst.originParentPath = leftDirPath;
-		DiffConst.targetParentPath = rightDirPath;
+		CommonConst.originParentPath = leftDirPath;
+		CommonConst.targetParentPath = rightDirPath;
 		
-		if (DiffConst.originParentPath == null || DiffConst.originParentPath.length() == 0) {
+		if (CommonConst.originParentPath == null || CommonConst.originParentPath.length() == 0) {
 			LogUtil.appendLogFileForError("CConst.originParentPath == null || CConst.originParentPath.length() == 0");
 			return;
 		}
 		
-		if (DiffConst.targetParentPath == null || DiffConst.targetParentPath.length() == 0) {
+		if (CommonConst.targetParentPath == null || CommonConst.targetParentPath.length() == 0) {
 			LogUtil.appendLogFileForError("CConst.targetParentPath == null || CConst.targetParentPath.length() == 0");
 			return;
 		}
 		
 		// 패스 보정
-		DiffConst.originParentPath = PathUtil.reviseStandardPath(DiffConst.originParentPath);
-		DiffConst.targetParentPath = PathUtil.reviseStandardPath(DiffConst.targetParentPath);
+		CommonConst.originParentPath = PathUtil.reviseStandardPath(CommonConst.originParentPath);
+		CommonConst.targetParentPath = PathUtil.reviseStandardPath(CommonConst.targetParentPath);
 		
 		LogUtil.appendLogFile("#### DirectoryDiffHelper 시작");
 		LogUtil.appendLogFile("#### " + DateUtil.getTodayDateTimeToPrint() + " 에 작성된 파일임.");
@@ -41,21 +41,21 @@ public class DiffHelperMain {
 		
 		
 		PathMaker pathMaker = new PathMaker();
-		PathList originList = pathMaker.makePathList(DiffConst.originParentPath, DiffConst.includePathPattern, DiffConst.exceptPathPattern);
-		PathList targetList = pathMaker.makePathList(DiffConst.targetParentPath, DiffConst.includePathPattern, DiffConst.exceptPathPattern);
+		PathList originList = pathMaker.makePathList(CommonConst.originParentPath, CommonConst.includePathPattern, CommonConst.exceptPathPattern);
+		PathList targetList = pathMaker.makePathList(CommonConst.targetParentPath, CommonConst.includePathPattern, CommonConst.exceptPathPattern);
 		
-		LogUtil.appendLogFile("#### 원본 디렉토리 경로(CConst.originParentPath) : " + DiffConst.originParentPath);
+		LogUtil.appendLogFile("#### 원본 디렉토리 경로(CConst.originParentPath) : " + CommonConst.originParentPath);
 		LogUtil.appendLogFile("#### 원본 디렉토리 내 파일 개수 (originList.size()) : " + originList.size());
 		LogUtil.appendLogFile();
 		
-		LogUtil.appendLogFile("#### 대상 디렉토리 경로 (CConst.targetParentPath) : " + DiffConst.targetParentPath);
+		LogUtil.appendLogFile("#### 대상 디렉토리 경로 (CConst.targetParentPath) : " + CommonConst.targetParentPath);
 		LogUtil.appendLogFile("#### 대상 디렉토리 내 파일 개수 (targetList.size()) : " + targetList.size());
 		LogUtil.appendLogFile();
 		
 		/**
 		 * 비교 폼을 띄운다.
 		 */
-		showDiffForm(DiffConst.originParentPath, DiffConst.targetParentPath);
+		showDiffForm(CommonConst.originParentPath, CommonConst.targetParentPath);
 		
 		// 기존 메인폼 숨김처리
 		if (BBClassMerge.mainForm != null) {
@@ -65,6 +65,6 @@ public class DiffHelperMain {
 	
 	
 	public static void showDiffForm(String leftClassesDir, String rightClassesDir) {
-		DiffConst.diffForm = new DiffForm(leftClassesDir, rightClassesDir);
+		CommonConst.diffForm = new DiffForm(leftClassesDir, rightClassesDir);
 	}
 }

@@ -8,7 +8,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.tree.BBTreeNode;
 import com.bb.diff.form.tree.TreeUtil;
 import com.bb.diff.map.FileContentUtil;
@@ -62,67 +62,67 @@ public class EditorUtil {
 	
 	private static boolean setLeftPathText(String str) {
 		if (str == null) {
-			DiffConst.leftFilePathText.setText(DiffConst.FNULL);
+			CommonConst.leftFilePathText.setText(CommonConst.FNULL);
 			return false;
 		}
 		
 		if (str.length() == 0) {
-			DiffConst.leftFilePathText.setText(DiffConst.FEMPTY);
+			CommonConst.leftFilePathText.setText(CommonConst.FEMPTY);
 			return false;
 		}
 		
-		DiffConst.leftFilePathText.setText(str);
+		CommonConst.leftFilePathText.setText(str);
 		return true;
 	}
 	
 	private static boolean setRightPathText(String str) {
 		if (str == null) {
-			DiffConst.rightFilePathText.setText(DiffConst.FNULL);
+			CommonConst.rightFilePathText.setText(CommonConst.FNULL);
 			return false;
 		}
 		
 		if (str.length() == 0) {
-			DiffConst.rightFilePathText.setText(DiffConst.FEMPTY);
+			CommonConst.rightFilePathText.setText(CommonConst.FEMPTY);
 			return false;
 		}
 		
-		DiffConst.rightFilePathText.setText(str);
+		CommonConst.rightFilePathText.setText(str);
 		return true;
 	}
 	
 	private static void setLeftFileContentText(String str, boolean setScrollToTop) {
 		if (str == null) {
-			DiffConst.leftFileContent.setText(DiffConst.FNULL);
+			CommonConst.leftFileContent.setText(CommonConst.FNULL);
 			return;
 		}
 		
 		if (str.length() == 0) {
-			DiffConst.leftFileContent.setText(DiffConst.FEMPTY);
+			CommonConst.leftFileContent.setText(CommonConst.FEMPTY);
 			return;
 		}
 		
-		DiffConst.leftFileContent.setText(str);
+		CommonConst.leftFileContent.setText(str);
 		
 		if (setScrollToTop) {
-			DiffConst.leftFileContent.setScrollTop();
+			CommonConst.leftFileContent.setScrollTop();
 		}
 	}
 	
 	private static void setRightFileContentText(String str, boolean setScrollToTop) {
 		if (str == null) {
-			DiffConst.rightFileContent.setText(DiffConst.FNULL);
+			CommonConst.rightFileContent.setText(CommonConst.FNULL);
 			return;
 		}
 		
 		if (str.length() == 0) {
-			DiffConst.rightFileContent.setText(DiffConst.FEMPTY);
+			CommonConst.rightFileContent.setText(CommonConst.FEMPTY);
 			return;
 		}
 		
-		DiffConst.rightFileContent.setText(str);
+		CommonConst.rightFileContent.setText(str);
 		
 		if (setScrollToTop) {
-			DiffConst.rightFileContent.setScrollTop();
+			CommonConst.rightFileContent.setScrollTop();
 		}
 	}
 	
@@ -158,28 +158,33 @@ public class EditorUtil {
 		 * 좌측 파일 출력
 		 */
 		boolean leftFileExists = setLeftPathText(node.getLeftAbsoulutePath());
+		StringBuffer content1 = null;
 		
-		if (!leftFileExists) {
-			 setLeftFileContentText("좌측 파일 내용이 없습니다.", true);
-			return false;
+		if (leftFileExists) {
+			content1 = node.getFileContentString(true, null);
+			setLeftFileContentText(content1.toString(), true);
 		}
-		
-		StringBuffer content1 = node.getFileContentString(true, null);
-		setLeftFileContentText(content1.toString(), true);
-		
 		
 		/**
 		 * 우측 파일 출력
 		 */
 		boolean rightFileExists = setRightPathText(node.getRightAbsoulutePath());
+		StringBuffer content2 = null;
 		
-		if (!rightFileExists) {
+		if (rightFileExists) {
+			content2 = node.getFileContentString(false, null);
+			setRightFileContentText(content2.toString(), true);
+		}
+		
+		
+		if (!leftFileExists) {
+			setLeftFileContentText("좌측 파일 내용이 없습니다.", true);
+			return false;
+			
+		} else if (!rightFileExists) {
 			setRightFileContentText("우측 파일 내용이 없습니다.", true);
 			return false;
 		}
-		
-		StringBuffer content2 = node.getFileContentString(false, null);
-		setRightFileContentText(content2.toString(), true);
 		
 		
 		String fileName = PathUtil.getFileNameWithExt(node.getLeftAbsoulutePath());
@@ -229,17 +234,17 @@ public class EditorUtil {
 		}
 		
 		// 색칠용
-		leftDoc = DiffConst.leftFileContent.getStyledDocument();
-		rightDoc = DiffConst.rightFileContent.getStyledDocument();
+		leftDoc = CommonConst.leftFileContent.getStyledDocument();
+		rightDoc = CommonConst.rightFileContent.getStyledDocument();
 		
-		strongStyle1 = DiffConst.leftFileContent.addStyle("1", null);
-		strongStyle2 = DiffConst.rightFileContent.addStyle("2", null);
+		strongStyle1 = CommonConst.leftFileContent.addStyle("1", null);
+		strongStyle2 = CommonConst.rightFileContent.addStyle("2", null);
 		
-		normalStyle1 = DiffConst.leftFileContent.addStyle("3", null);
-		normalStyle2 = DiffConst.rightFileContent.addStyle("4", null);
+		normalStyle1 = CommonConst.leftFileContent.addStyle("3", null);
+		normalStyle2 = CommonConst.rightFileContent.addStyle("4", null);
 		
-		whiteStyle = DiffConst.leftFileContent.addStyle("5", null);
-		whiteStyle = DiffConst.rightFileContent.addStyle("6", null);
+		whiteStyle = CommonConst.leftFileContent.addStyle("5", null);
+		whiteStyle = CommonConst.rightFileContent.addStyle("6", null);
 		
 		StyleConstants.setBackground(whiteStyle, new Color(255, 255, 255));
 		StyleConstants.setBackground(strongStyle1, new Color(200, 200, 255));
@@ -255,8 +260,8 @@ public class EditorUtil {
 		/**
 		 * 디폴트로 최상단 보여주기
 		 */
-		DiffConst.leftFileContent.setScrollTop();
-		DiffConst.rightFileContent.setScrollTop();
+		CommonConst.leftFileContent.setScrollTop();
+		CommonConst.rightFileContent.setScrollTop();
 
 		return true;
 	}
@@ -264,8 +269,8 @@ public class EditorUtil {
 	
 	public static void diffForHighlight(BBTreeNode node, String fileName, boolean bRemoveIfSame) {
 		int diffPoint = 0;
-		DiffConst.diffPointList = new ArrayList<Integer>();
-		DiffConst.currentDiffPointIndex = -1;
+		CommonConst.diffPointList = new ArrayList<Integer>();
+		CommonConst.currentDiffPointIndex = -1;
 		
 		int rowCount1 = colList1.size();
 		int rowCount2 = colList2.size();
@@ -310,7 +315,7 @@ public class EditorUtil {
 				
 			} else if (bEmptyLine1 || bEmptyLine2 || !lineText1.equals(lineText2)) {
 				diffPoint++;
-				DiffConst.diffPointList.add(rowNum1);
+				CommonConst.diffPointList.add(rowNum1);
 				
 				// 다른거 나오면 일단 칠한다.
 				if (rowNum1 < rowCount1) {
@@ -430,16 +435,16 @@ public class EditorUtil {
 		}
 		
 		
-		DiffConst.diffPointLabel.setText("Diff Point : " + diffPoint);
+		CommonConst.diffPointLabel.setText("Diff Point : " + diffPoint);
 		
 		if (diffPoint == 0) {
 			if (fileName != null && fileName.length() > 0) {
-				DiffConst.leftFileContent.setText("내용 동일함 : " + fileName);
-				DiffConst.rightFileContent.setText("내용 동일함 : " + fileName);
+				CommonConst.leftFileContent.setText("내용 동일함 : " + fileName);
+				CommonConst.rightFileContent.setText("내용 동일함 : " + fileName);
 				
 			} else {
-				DiffConst.leftFileContent.setText("내용 동일함");
-				DiffConst.rightFileContent.setText("내용 동일함");
+				CommonConst.leftFileContent.setText("내용 동일함");
+				CommonConst.rightFileContent.setText("내용 동일함");
 			}
 			
 			if (bRemoveIfSame) {

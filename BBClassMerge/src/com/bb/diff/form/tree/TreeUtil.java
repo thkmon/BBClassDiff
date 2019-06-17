@@ -2,7 +2,7 @@ package com.bb.diff.form.tree;
 
 import java.io.File;
 
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.data.PathData;
 import com.bb.diff.data.PathDataList;
 import com.bb.diff.file.FileDiffController;
@@ -93,7 +93,7 @@ public class TreeUtil {
 			LogUtil.appendLogFileForError("addToRootNodeByCorePath : 추가할 패스 구성요소가 없습니다. 노드를 추가할 수 없습니다. corePath is [" + corePath + "]");
 		}
 
-		BBTreeNode rootNode = DiffConst.fileTree.getRootNode();
+		BBTreeNode rootNode = CommonConst.fileTree.getRootNode();
 		BBTreeNode parentNode = rootNode;
 		BBTreeNode childNode = null;
 		
@@ -121,6 +121,27 @@ public class TreeUtil {
 			String nodeTitle = "";
 			nodeTitle = oneChunk;
 			
+			
+			if (inLeftList && intRightList) {
+				// 좌측과 우측 둘 다 해당하는 경우 띄우지 않는다.
+				if (CommonConst.bHideBothFileDir) {
+					return;
+				}
+				
+			} else if (inLeftList) {
+				// 좌측에만 있는 파일/폴더는  띄우지 않는다.
+				if (CommonConst.bHideLeftOnlyFileDir) {
+					return;
+				}
+				
+			} else if (intRightList) {
+				// 우측에만 있는 파일/폴더는  띄우지 않는다.
+				if (CommonConst.bHideRightOnlyFileDir) {
+					return;
+				}
+			}
+			
+			
 			// 파일간 용량 차이
 			long fileVolGap = 0;
 			
@@ -134,27 +155,20 @@ public class TreeUtil {
 						
 						// 용량 차이 없는 파일
 						if (fileVolGap == 0) {
-							// 용량 차이 없는 파일은  띄우지 않는다.
-							// return;
+							if (CommonConst.bHideCapacityGapIsZero) {
+								// 용량 차이 없는 파일은  띄우지 않는다.
+								return;
+							}
 						}
 					}
 					
 				} else if (inLeftList) {
 					nodeTitle = oneChunk + " " + leftMark;
-					// 좌측에만 있는 파일은  띄우지 않는다.
-					// return;
 					
 				} else if (intRightList) {
 					nodeTitle = oneChunk + " " + rightMark;
-					// 우측에만 있는 파일은  띄우지 않는다.
-					// return;
 				}
 			}
-			
-			// 좌측과 우측 둘 다 해당이 아닐 경우 띄우지 않는다.
-//			if (!inLeftList || !intRightList) {
-//				return;
-//			}
 			
 			// 중복 아닐 경우만 트리에 노드 추가하기
 			childNode = parentNode.addIfNotDupl(nodeTitle);
@@ -247,7 +261,67 @@ public class TreeUtil {
 		}
 		
 		// 그리기
-		DiffConst.fileTree.refreshTreeSet();
+		CommonConst.fileTree.refreshTreeSet();
+	}
+	
+	
+	public static void clearTree() {
+		BBTreeNode rootNode = CommonConst.fileTree.getRootNode();
+		clearNode(rootNode);
+	}
+	
+	
+	public static void clearNode(BBTreeNode node) {
+		
+		int count = node.getChildCount();
+		if (count == 0) {
+			node.removeMe();
+			
+		} else if (count > 0) {
+			int lastIndex = count - 1;
+			for (int i=lastIndex; i>=0; i--) {
+				clearNode((BBTreeNode) node.getChildAt(i));
+				
+				count = node.getChildCount();
+				if (count == 0) {
+					node.removeMe();
+				}
+			}
+		}
+	}
+	
+	
+	public static void redrawTree() {
+		clearTree();
+		TreeUtil.drawTree(CommonConst.originParentPath, CommonConst.targetParentPath);
+	}
+	
+	
+	/**
+	 * 트리 펼치기 (트리 확장)
+	 */
+	public static void expandTree() {
+		BBTree tree = CommonConst.fileTree;
+	    int j = tree.getRowCount();
+	    int i = 0;
+	    while (i < j) {
+	        tree.expandRow(i);
+	        i += 1;
+	        j = tree.getRowCount();
+	    }
+	}
+	
+	
+	/**
+	 * 트리 감추기 (트리 축소)
+	 */
+	public static void collapseTree() {
+		BBTree tree = CommonConst.fileTree;
+		int count = tree.getRowCount();
+		int lastIndex = count - 1;
+	    for (int i=lastIndex; i>=0; i--) {
+	    	tree.collapseRow(i);
+	    }
 	}
 	
 	

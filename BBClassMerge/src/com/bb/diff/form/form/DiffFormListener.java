@@ -3,10 +3,9 @@ package com.bb.diff.form.form;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.BBArrowButtonMouseListener;
 import com.bb.diff.form.button.BBDiffButtonMouseListener;
-import com.bb.diff.form.button.BBWinmergeButtonMouseListener;
 
 public class DiffFormListener implements ComponentListener {
 
@@ -31,18 +30,18 @@ public class DiffFormListener implements ComponentListener {
 		/**
 		 * 바운더리 계산
 		 */
-		DiffConst.fullWidth = DiffConst.bForm.getWidth();
-		DiffConst.fullHeight = DiffConst.bForm.getHeight();
+		CommonConst.fullWidth = CommonConst.bForm.getWidth();
+		CommonConst.fullHeight = CommonConst.bForm.getHeight();
 		
-		DiffConst.treeWidth = (int) (DiffConst.fullWidth * DiffConst.treeWidthRatio);
+		CommonConst.treeWidth = (int) (CommonConst.fullWidth * CommonConst.treeWidthRatio);
 		
-		int boxWidth = (DiffConst.fullWidth - DiffConst.treeWidth) / 2 - 16;
-		int boxHeight = DiffConst.fullHeight - DiffConst.treeTopMargin - DiffConst.bottomMargin;
+		int boxWidth = (CommonConst.fullWidth - CommonConst.treeWidth) / 2 - 16;
+		int boxHeight = CommonConst.fullHeight - CommonConst.treeTopMargin - CommonConst.bottomMargin;
 		
-		int box1Left = 4 + DiffConst.treeWidth + 4;
+		int box1Left = 4 + CommonConst.treeWidth + 4;
 		int box2Left = box1Left + boxWidth + 4;
 		
-		int arrowButtonTop = DiffConst.fullHeight - DiffConst.bottomMargin + 4;
+		int arrowButtonTop = CommonConst.fullHeight - CommonConst.bottomMargin + 4;
 		
 		
 		
@@ -51,91 +50,91 @@ public class DiffFormListener implements ComponentListener {
 		 * 바운더리 적용
 		 */
 		// 트리
-		DiffConst.fileTree.setBounds(DiffConst.treeLeftMargin, DiffConst.treeTopMargin, DiffConst.treeWidth, boxHeight);
-		DiffConst.fileTree.getScrollPane().setBounds(DiffConst.treeLeftMargin, DiffConst.treeTopMargin, DiffConst.treeWidth, boxHeight);
+		CommonConst.fileTree.setBounds(CommonConst.treeLeftMargin, CommonConst.treeTopMargin, CommonConst.treeWidth, boxHeight);
+		CommonConst.fileTree.getScrollPane().setBounds(CommonConst.treeLeftMargin, CommonConst.treeTopMargin, CommonConst.treeWidth, boxHeight);
 		
 		
 		// 좌측 파일패스
-		DiffConst.leftFilePathText.setBounds(box1Left, DiffConst.textAreaTopMargin, boxWidth, DiffConst.textAreaHeight);
-		DiffConst.leftFilePathText.setEditable(false);
+		CommonConst.leftFilePathText.setBounds(box1Left, CommonConst.textAreaTopMargin, boxWidth, CommonConst.textAreaHeight);
+		CommonConst.leftFilePathText.setEditable(false);
 		
 		// 좌측 파일내용
-		DiffConst.leftFileContent.setBounds(box1Left, DiffConst.treeTopMargin, boxWidth, boxHeight);
-		DiffConst.leftFileContent.getScrollPane().setBounds(box1Left, DiffConst.treeTopMargin, boxWidth, boxHeight);
+		CommonConst.leftFileContent.setBounds(box1Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
+		CommonConst.leftFileContent.getScrollPane().setBounds(box1Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
 		
 
 		// 좌측 버튼
 		int leftButtonLeft = box1Left;
-		DiffConst.leftUpButton.setBounds(leftButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		CommonConst.leftUpButton.setBounds(leftButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		leftButtonLeft = leftButtonLeft + DiffConst.arrowButtonWidth;
-		DiffConst.leftDownButton.setBounds(leftButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		leftButtonLeft = leftButtonLeft + CommonConst.arrowButtonWidth;
+		CommonConst.leftDownButton.setBounds(leftButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		leftButtonLeft = leftButtonLeft + DiffConst.arrowButtonWidth;
-		DiffConst.leftTopButton.setBounds(leftButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		leftButtonLeft = leftButtonLeft + CommonConst.arrowButtonWidth;
+		CommonConst.leftTopButton.setBounds(leftButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		leftButtonLeft = leftButtonLeft + DiffConst.arrowButtonWidth;
-		DiffConst.leftBottomButton.setBounds(leftButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		leftButtonLeft = leftButtonLeft + CommonConst.arrowButtonWidth;
+		CommonConst.leftBottomButton.setBounds(leftButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
 		// 버튼 액션
-		DiffConst.leftTopButton.addMouseListener(new BBArrowButtonMouseListener   (true, false, true, true));
-		DiffConst.leftBottomButton.addMouseListener(new BBArrowButtonMouseListener(true, false, false, true));
-		DiffConst.leftUpButton.addMouseListener(new BBArrowButtonMouseListener    (true, false, true, false));
-		DiffConst.leftDownButton.addMouseListener(new BBArrowButtonMouseListener  (true, false, false, false));
+		CommonConst.leftTopButton.addMouseListener(new BBArrowButtonMouseListener   (true, false, true, true));
+		CommonConst.leftBottomButton.addMouseListener(new BBArrowButtonMouseListener(true, false, false, true));
+		CommonConst.leftUpButton.addMouseListener(new BBArrowButtonMouseListener    (true, false, true, false));
+		CommonConst.leftDownButton.addMouseListener(new BBArrowButtonMouseListener  (true, false, false, false));
 		
 		
 		// 우측 파일패스
-		DiffConst.rightFilePathText.setBounds(box2Left, DiffConst.textAreaTopMargin, boxWidth, DiffConst.textAreaHeight);
-		DiffConst.rightFilePathText.setEditable(false);
+		CommonConst.rightFilePathText.setBounds(box2Left, CommonConst.textAreaTopMargin, boxWidth, CommonConst.textAreaHeight);
+		CommonConst.rightFilePathText.setEditable(false);
 		
 		// 우측 파일내용
-		DiffConst.rightFileContent.setBounds(box2Left, DiffConst.treeTopMargin, boxWidth, boxHeight);
-		DiffConst.rightFileContent.getScrollPane().setBounds(box2Left, DiffConst.treeTopMargin, boxWidth, boxHeight);
+		CommonConst.rightFileContent.setBounds(box2Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
+		CommonConst.rightFileContent.getScrollPane().setBounds(box2Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
 		
 		
 		// 우측 버튼
 		int rightButtonLeft = box2Left;
-		DiffConst.rightUpButton.setBounds(rightButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		CommonConst.rightUpButton.setBounds(rightButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		rightButtonLeft = rightButtonLeft + DiffConst.arrowButtonWidth;
-		DiffConst.rightDownButton.setBounds(rightButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		rightButtonLeft = rightButtonLeft + CommonConst.arrowButtonWidth;
+		CommonConst.rightDownButton.setBounds(rightButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		rightButtonLeft = rightButtonLeft + DiffConst.arrowButtonWidth;
-		DiffConst.rightTopButton.setBounds(rightButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		rightButtonLeft = rightButtonLeft + CommonConst.arrowButtonWidth;
+		CommonConst.rightTopButton.setBounds(rightButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		rightButtonLeft = rightButtonLeft + DiffConst.arrowButtonWidth;
-		DiffConst.rightBottomButton.setBounds(rightButtonLeft, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		rightButtonLeft = rightButtonLeft + CommonConst.arrowButtonWidth;
+		CommonConst.rightBottomButton.setBounds(rightButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
 		
 		// 버튼 액션
-		DiffConst.rightTopButton.addMouseListener(new BBArrowButtonMouseListener   (false, true, true, true));
-		DiffConst.rightBottomButton.addMouseListener(new BBArrowButtonMouseListener(false, true, false, true));
-		DiffConst.rightUpButton.addMouseListener(new BBArrowButtonMouseListener   (false, true, true, false));
-		DiffConst.rightDownButton.addMouseListener(new BBArrowButtonMouseListener  (false, true, false, false));
+		CommonConst.rightTopButton.addMouseListener(new BBArrowButtonMouseListener   (false, true, true, true));
+		CommonConst.rightBottomButton.addMouseListener(new BBArrowButtonMouseListener(false, true, false, true));
+		CommonConst.rightUpButton.addMouseListener(new BBArrowButtonMouseListener   (false, true, true, false));
+		CommonConst.rightDownButton.addMouseListener(new BBArrowButtonMouseListener  (false, true, false, false));
 		
 		
 		// 공통 버튼
-		int bothArrowButton1Left = box2Left + boxWidth - ((DiffConst.arrowButtonWidth - 4) * 4) - 46;
-		DiffConst.bothDiffButton.setBounds(bothArrowButton1Left, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		int bothArrowButton1Left = box2Left + boxWidth - ((CommonConst.arrowButtonWidth - 4) * 4) - 46;
+		CommonConst.bothDiffButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		bothArrowButton1Left = bothArrowButton1Left + DiffConst.arrowButtonWidth - 4;
-		DiffConst.bothUpButton.setBounds(bothArrowButton1Left, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth - 4;
+		CommonConst.bothUpButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		bothArrowButton1Left = bothArrowButton1Left + DiffConst.arrowButtonWidth - 4;
-		DiffConst.bothDownButton.setBounds(bothArrowButton1Left, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth - 4;
+		CommonConst.bothDownButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		bothArrowButton1Left = bothArrowButton1Left + DiffConst.arrowButtonWidth - 4;
-		DiffConst.bothTopButton.setBounds(bothArrowButton1Left, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth - 4;
+		CommonConst.bothTopButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
-		bothArrowButton1Left = bothArrowButton1Left + DiffConst.arrowButtonWidth - 4;		
-		DiffConst.bothBottomButton.setBounds(bothArrowButton1Left, arrowButtonTop, DiffConst.arrowButtonWidth, DiffConst.arrowButtonHeight);
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth - 4;		
+		CommonConst.bothBottomButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		
 		
 		// 버튼 액션
-		DiffConst.bothDiffButton.addMouseListener(new BBDiffButtonMouseListener());
-		DiffConst.bothTopButton.addMouseListener(new BBArrowButtonMouseListener      (true, true, true, true));
-		DiffConst.bothBottomButton.addMouseListener(new BBArrowButtonMouseListener   (true, true, false, true));
-		DiffConst.bothUpButton.addMouseListener(new BBArrowButtonMouseListener       (true, true, true, false));
-		DiffConst.bothDownButton.addMouseListener(new BBArrowButtonMouseListener     (true, true, false, false));
+		CommonConst.bothDiffButton.addMouseListener(new BBDiffButtonMouseListener());
+		CommonConst.bothTopButton.addMouseListener(new BBArrowButtonMouseListener      (true, true, true, true));
+		CommonConst.bothBottomButton.addMouseListener(new BBArrowButtonMouseListener   (true, true, false, true));
+		CommonConst.bothUpButton.addMouseListener(new BBArrowButtonMouseListener       (true, true, true, false));
+		CommonConst.bothDownButton.addMouseListener(new BBArrowButtonMouseListener     (true, true, false, false));
 	}
 }

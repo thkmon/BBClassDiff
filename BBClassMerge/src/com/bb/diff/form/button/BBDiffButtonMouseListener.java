@@ -3,7 +3,7 @@ package com.bb.diff.form.button;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 
 public class BBDiffButtonMouseListener implements MouseListener {
 
@@ -18,30 +18,30 @@ public class BBDiffButtonMouseListener implements MouseListener {
 		
 		beginTime = System.currentTimeMillis();
 		
-		if (DiffConst.diffPointList == null || DiffConst.diffPointList.size() == 0) {
+		if (CommonConst.diffPointList == null || CommonConst.diffPointList.size() == 0) {
 			return;
 		}
 		
 		
-		int lastIndex = DiffConst.diffPointList.size() - 1;
-		DiffConst.currentDiffPointIndex++;
+		int lastIndex = CommonConst.diffPointList.size() - 1;
+		CommonConst.currentDiffPointIndex++;
 		
-		if (DiffConst.currentDiffPointIndex > lastIndex) {
-			DiffConst.currentDiffPointIndex = 0;
+		if (CommonConst.currentDiffPointIndex > lastIndex) {
+			CommonConst.currentDiffPointIndex = 0;
 		}
 		
-		int targetRow = DiffConst.diffPointList.get(DiffConst.currentDiffPointIndex);
+		int targetRow = CommonConst.diffPointList.get(CommonConst.currentDiffPointIndex);
 		int targetY = (int) (targetRow * 17);
 		
 		try {
-			DiffConst.rightFileContent.setScrollY(targetY);
+			CommonConst.rightFileContent.setScrollY(targetY);
 			
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		
 		try {
-			DiffConst.leftFileContent.setScrollY(targetY);
+			CommonConst.leftFileContent.setScrollY(targetY);
 			
 		} catch (Exception e1) {
 			e1.printStackTrace();

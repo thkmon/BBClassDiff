@@ -9,10 +9,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.channels.FileChannel;
 
-import com.bb.diff.common.DiffConst;
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.decompile.DecompileUtil;
 import com.bb.diff.log.LogUtil;
-import com.bb.diff.string.StringUtil;
 
 public class FileUtil {
 	
@@ -348,7 +347,7 @@ public class FileUtil {
 		}
 		
 		// DIFF시 클래스의 경우 디컴파일하여 검사할지 여부
-		if (!DiffConst.doDecompileWhenClassDiff) {
+		if (!CommonConst.doDecompileWhenClassDiff) {
 			return false;
 		}
 		

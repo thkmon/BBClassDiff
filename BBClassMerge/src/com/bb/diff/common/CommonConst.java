@@ -13,7 +13,7 @@ import com.bb.diff.form.textarea.BBEditor;
 import com.bb.diff.form.tree.BBTree;
 import com.bb.diff.map.FileContentMap;
 
-public class DiffConst {
+public class CommonConst {
 	
 	public static String seqNumStr = "0";
 	public static String todayDate = DateUtil.getTodayDate();
@@ -34,7 +34,7 @@ public class DiffConst {
 	public static int fullWidth = 1024;
 	public static int fullHeight = 768;
 	public static int treeTopMargin = 30;
-	public static int bottomMargin = 80;
+	public static int bottomMargin = 110;
 	public static float treeWidthRatio = 0.18f;
 	public static int treeWidth = (int) (fullWidth * treeWidthRatio);
 	public static int treeLeftMargin = 4;
@@ -71,9 +71,9 @@ public class DiffConst {
 	// 공통로그  파일 패스
 	public static String commonLogFilePath = "";
 	// diff 후 원본 파일을 복사시킬 디렉토리 패스
-	public static String commonOriginToCopyDirPath = "_origin" + DiffConst.todayDate + "_" + DiffConst.seqNumStr;
+	public static String commonOriginToCopyDirPath = "_origin" + CommonConst.todayDate + "_" + CommonConst.seqNumStr;
 	// diff 후 대상 파일을 복사시킬 디렉토리 패스
-	public static String commonTargetToCopyDirPath = "_target" + DiffConst.todayDate + "_" + DiffConst.seqNumStr;
+	public static String commonTargetToCopyDirPath = "_target" + CommonConst.todayDate + "_" + CommonConst.seqNumStr;
 
 	public static String originParentPath = "C:\\NANUM\\workspaces\\SmartFlowOSEWork\\SmartFlowOSE3.6WORK\\classes";
 	public static String targetParentPath = "C:\\NANUM\\workspaces\\diff\\classes\\classes";
@@ -97,4 +97,16 @@ public class DiffConst {
 	public static int currentDiffPointIndex = -1;
 	
 	public static BBTree treeModel = null;
+	
+	// 용량차이가 0인 파일 숨기기 여부
+	public static boolean bHideCapacityGapIsZero = false;
+	
+	// 좌측에만 있는 파일/폴더 숨기기 여부
+	public static boolean bHideLeftOnlyFileDir = false;
+	
+	// 우측에만 있는 파일/폴더 숨기기 여부
+	public static boolean bHideRightOnlyFileDir = false;
+	
+	// 좌측과 우측 모두 있는 파일/폴더 숨기기 여부
+	public static boolean bHideBothFileDir = false;
 }

@@ -176,6 +176,12 @@ public class DiffForm {
 		
 		{
 			final JCheckBoxMenuItem subMenu1 = new JCheckBoxMenuItem("용량 차이가 0인 파일 숨기기 (Hide files that capacity difference is 0)");
+			
+			// 초기값 세팅. true일 경우 check 처리
+			if (CommonConst.bHideCapacityGapIsZero) {
+				subMenu1.doClick();
+			}
+			
 			optionMenu.add(subMenu1);
 			
 			subMenu1.addActionListener(new ActionListener() {
@@ -197,6 +203,12 @@ public class DiffForm {
 		
 		{
 			final JCheckBoxMenuItem subMenu2 = new JCheckBoxMenuItem("좌측에만 존재하는 파일/폴더 숨기기 (Hide files/dirs that exist only in left)");
+			
+			// 초기값 세팅. true일 경우 check 처리
+			if (CommonConst.bHideLeftOnlyFileDir) {
+				subMenu2.doClick();
+			}
+			
 			optionMenu.add(subMenu2);
 			
 			subMenu2.addActionListener(new ActionListener() {
@@ -218,6 +230,12 @@ public class DiffForm {
 		
 		{
 			final JCheckBoxMenuItem subMenu3 = new JCheckBoxMenuItem("우측에만 존재하는 파일/폴더 숨기기 (Hide files/dirs that exist only in right)");
+			
+			// 초기값 세팅. true일 경우 check 처리
+			if (CommonConst.bHideRightOnlyFileDir) {
+				subMenu3.doClick();
+			}
+			
 			optionMenu.add(subMenu3);
 			
 			subMenu3.addActionListener(new ActionListener() {
@@ -239,6 +257,12 @@ public class DiffForm {
 		
 		{
 			final JCheckBoxMenuItem subMenu4 = new JCheckBoxMenuItem("좌측과 우측 모두에 존재하는 파일/폴더 숨기기 (Hide files/dirs that exist in both)");
+			
+			// 초기값 세팅. true일 경우 check 처리
+			if (CommonConst.bHideBothFileDir) {
+				subMenu4.doClick();
+			}
+			
 			optionMenu.add(subMenu4);
 			
 			subMenu4.addActionListener(new ActionListener() {

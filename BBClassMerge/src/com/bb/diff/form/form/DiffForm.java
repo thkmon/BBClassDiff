@@ -116,12 +116,12 @@ public class DiffForm {
 		
 		TreeUtil.drawTree(leftClassesDir, rightClassesDir);
 		
-		CommonConst.bForm.open();
-		
 		/**
 		 * 크기 재설정
 		 */
 		formListener.doResizeForm();
+		
+		CommonConst.bForm.open();
 	}
 	
 	private void addMenuBar(BBForm form) {
@@ -170,7 +170,6 @@ public class DiffForm {
 				}
 			});
 		}
-		
 		
 		JMenu optionMenu = new JMenu("Option");
 		
@@ -276,6 +275,33 @@ public class DiffForm {
 						
 					} else {
 						CommonConst.bHideBothFileDir = false;
+						TreeUtil.redrawTree();
+					}
+				}
+			});
+		}
+		
+		{
+			final JCheckBoxMenuItem subMenu5 = new JCheckBoxMenuItem("diff 정보가 없는 빈 폴더 숨기기 (Hide empty directory with no differences)");
+			
+			// 초기값 세팅. true일 경우 check 처리
+			if (CommonConst.bHideEmptyDirWithNoDiff) {
+				subMenu5.doClick();
+			}
+			
+			optionMenu.add(subMenu5);
+			
+			subMenu5.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					boolean bState = subMenu5.getState();
+					if (bState) {
+						CommonConst.bHideEmptyDirWithNoDiff = true;
+						TreeUtil.redrawTree();
+						
+					} else {
+						CommonConst.bHideEmptyDirWithNoDiff = false;
 						TreeUtil.redrawTree();
 					}
 				}

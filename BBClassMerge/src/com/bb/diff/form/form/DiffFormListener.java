@@ -50,7 +50,7 @@ public class DiffFormListener implements ComponentListener {
 		 * 바운더리 적용
 		 */
 		// 트리
-		CommonConst.fileTree.setBounds(CommonConst.treeLeftMargin, CommonConst.treeTopMargin, CommonConst.treeWidth, boxHeight);
+		CommonConst.fileTree.setBounds(0, 0, CommonConst.treeWidth, boxHeight);
 		CommonConst.fileTree.getScrollPane().setBounds(CommonConst.treeLeftMargin, CommonConst.treeTopMargin, CommonConst.treeWidth, boxHeight);
 		
 		
@@ -59,7 +59,7 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.leftFilePathText.setEditable(false);
 		
 		// 좌측 파일내용
-		CommonConst.leftFileContent.setBounds(box1Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
+		CommonConst.leftFileContent.setBounds(0, 0, boxWidth, boxHeight);
 		CommonConst.leftFileContent.getScrollPane().setBounds(box1Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
 		
 
@@ -88,7 +88,7 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.rightFilePathText.setEditable(false);
 		
 		// 우측 파일내용
-		CommonConst.rightFileContent.setBounds(box2Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
+		CommonConst.rightFileContent.setBounds(0, 0, boxWidth, boxHeight);
 		CommonConst.rightFileContent.getScrollPane().setBounds(box2Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
 		
 		

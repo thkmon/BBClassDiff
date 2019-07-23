@@ -51,6 +51,11 @@ public class TreeUtil {
 					
 					addNodeByAbsolutePath(leftPath, rightPath, simplePath, bLeftFileExists, bRightFileExists);
 				}
+				
+				if (CommonConst.bHideEmptyDirWithNoDiff) {
+					// diff 정보가 없는 빈 폴더 숨기기 (Hide empty directory with no differences)
+					removeEmptyFoldersInTree();
+				}
 			}
 		
 		} catch (Exception e) {
@@ -265,6 +270,9 @@ public class TreeUtil {
 	}
 	
 	
+	/**
+	 * 트리 전부 지우기
+	 */
 	public static void clearTree() {
 		BBTreeNode rootNode = CommonConst.fileTree.getRootNode();
 		clearNode(rootNode);
@@ -292,7 +300,9 @@ public class TreeUtil {
 	
 	
 	public static void redrawTree() {
+		// 트리 전부 지우기
 		clearTree();
+		
 		TreeUtil.drawTree(CommonConst.originParentPath, CommonConst.targetParentPath);
 	}
 	
@@ -394,5 +404,43 @@ public class TreeUtil {
 		}
 		
 		return gap;
+	}
+	
+	
+	/**
+	 * 트리 내의 모든 빈 폴더 제거. 단, diff 정보가 있을 경우 남겨둔다.
+	 */
+	public static void removeEmptyFoldersInTree() {
+		BBTreeNode rootNode = CommonConst.fileTree.getRootNode();
+		removeEmptyFoldersInNode(rootNode);
+	}
+	
+	
+	/**
+	 * 노드 내의 모든 빈 폴더 제거. 단, diff 정보가 있을 경우 남겨둔다.
+	 */
+	public static void removeEmptyFoldersInNode(BBTreeNode node) {
+		
+		int count = node.getChildCount();
+		if (count == 0) {
+			String title = node.getTitle();
+			if (title.indexOf("[Left]") == -1 && title.indexOf("[Right]") == -1) {
+				node.removeMe();
+			}
+			
+		} else if (count > 0) {
+			int lastIndex = count - 1;
+			for (int i=lastIndex; i>=0; i--) {
+				removeEmptyFoldersInNode((BBTreeNode) node.getChildAt(i));
+				
+				count = node.getChildCount();
+				if (count == 0) {
+					String title = node.getTitle();
+					if (title.indexOf("[Left]") == -1 && title.indexOf("[Right]") == -1) {
+						node.removeMe();
+					}
+				}
+			}
+		}
 	}
 }

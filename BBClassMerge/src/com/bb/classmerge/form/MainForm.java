@@ -9,8 +9,10 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -30,6 +32,8 @@ public class MainForm extends JFrame {
 	
 	public static String labelText1 = "Left Classes Dir";
 	public static String labelText2 = "Right Classes Dir";
+	public static JButton pathButton1 = null;
+	public static JButton pathButton2 = null;
 	
 	// 우측상단 버튼
 	private static JButton decompileButton = null;
@@ -47,7 +51,8 @@ public class MainForm extends JFrame {
 	
 	
 	// 폰트 설정
-	private Font basicFont = new Font("돋움", 0, 15);
+	private Font basicFont = new Font("돋움", 0, 14);
+	private Font smallFont = new Font("돋움", 0, 12);
 	
 	// 연한회색 색상 설정
 	private Color lightGrayColor = new Color(240, 240, 240);
@@ -71,8 +76,6 @@ public class MainForm extends JFrame {
 		
 		this.setLayout(null);
 		this.setTitle(title);
-		this.setBounds(0, 0, 200, 200);
-		this.setVisible(true);
 		
 		addBasicWindowListener();
 		
@@ -81,8 +84,8 @@ public class MainForm extends JFrame {
 		addTextField();
 		addTextArea();
 		
-		// 190523. 윈도우 막 띄웠을 때 버튼, 레이블 보이지 않는 버그 수정. 한 번 더 리사이즈 처리한다.
 		this.setBounds(0, 0, 800, defaultHeight);
+		this.setVisible(true);
 	}
 	
 	
@@ -116,11 +119,19 @@ public class MainForm extends JFrame {
 				int formHeight = (int) rectangle.getHeight();
 				
 				if (textField1 != null) {
-					textField1.setBounds(150, 10, formWidth - 315, textFieldHeight);
+					textField1.setBounds(130, 10, formWidth - 335, textFieldHeight);
 				}
 				
 				if (textField2 != null) {
-					textField2.setBounds(150, 50, formWidth - 315, textFieldHeight);
+					textField2.setBounds(130, 50, formWidth - 335, textFieldHeight);
+				}
+				
+				if (pathButton1 != null) {
+					pathButton1.setBounds(formWidth - 200, 10, 35, textFieldHeight);
+				}
+				
+				if (pathButton2 != null) {
+					pathButton2.setBounds(formWidth - 200, 50, 35, textFieldHeight);
 				}
 				
 				if (decompileButton != null) {
@@ -161,20 +172,110 @@ public class MainForm extends JFrame {
 	
 	private void addLabel() {
 		// 좌측상단 레이블 추가
-		JLabel label = new JLabel(labelText1);
-		label.setFont(basicFont);
-		label.setBounds(10, 10, 150, textFieldHeight);
-		this.getContentPane().add(label);
+		JLabel label1 = new JLabel(labelText1);
+		label1.setFont(basicFont);
+		label1.setBounds(10, 10, 150, textFieldHeight);
+		this.getContentPane().add(label1);
+		
+		JLabel label2 = new JLabel("(Operation Dir)");
+		label2.setFont(smallFont);
+		label2.setBounds(10, 25, 150, textFieldHeight);
+		this.getContentPane().add(label2);
 		
 		// 좌측상단 레이블 추가
-		JLabel label2 = new JLabel(labelText2);
-		label2.setFont(basicFont);
-		label2.setBounds(10, 50, 150, textFieldHeight);
-		this.getContentPane().add(label2);
+		JLabel label3 = new JLabel(labelText2);
+		label3.setFont(basicFont);
+		label3.setBounds(10, 50, 150, textFieldHeight);
+		this.getContentPane().add(label3);
+		
+		JLabel label4 = new JLabel("(Development Dir)");
+		label4.setFont(smallFont);
+		label4.setBounds(10, 65, 150, textFieldHeight);
+		this.getContentPane().add(label4);
 	}
 	
 	
 	private void addButton() {
+		
+		pathButton1 = new JButton("...");
+		pathButton1.setFont(basicFont);
+		pathButton1.setBounds(600, 10, 35, textFieldHeight);
+		this.getContentPane().add(pathButton1);
+		
+		pathButton2 = new JButton("...");
+		pathButton2.setFont(basicFont);
+		pathButton2.setBounds(600, 50, 35, textFieldHeight);
+		this.getContentPane().add(pathButton2);
+		
+		pathButton1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 파일 선택 다이얼로그 정의
+				JFileChooser fileDialog = new JFileChooser();
+
+				// 폴더만 선택
+				fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+				// 파일만 선택
+				// fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+				// 기본 폴더 위치 변경
+				File dirObj = new File(textField1.getText());
+				if (dirObj.exists()) {
+				    fileDialog.setCurrentDirectory(dirObj);
+				} else {
+					dirObj = new File("C:\\");
+					if (dirObj.exists()) {
+					    fileDialog.setCurrentDirectory(dirObj);
+					}
+				}
+
+				// 파일 선택 다이얼로그 열기
+				int returnVal = fileDialog.showOpenDialog(null);
+				if (returnVal == 0) {
+				    // 파일 선택
+					String selectedPath = fileDialog.getSelectedFile().getAbsolutePath();
+					textField1.setText(selectedPath);
+				}
+			}
+		});
+		
+		pathButton2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// 파일 선택 다이얼로그 정의
+				JFileChooser fileDialog = new JFileChooser();
+
+				// 폴더만 선택
+				fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+				// 파일만 선택
+				// fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+				// 기본 폴더 위치 변경
+				File dirObj = new File(textField2.getText());
+				if (dirObj.exists()) {
+				    fileDialog.setCurrentDirectory(dirObj);
+				} else {
+					dirObj = new File("C:\\");
+					if (dirObj.exists()) {
+					    fileDialog.setCurrentDirectory(dirObj);
+					}
+				}
+
+				// 파일 선택 다이얼로그 열기
+				int returnVal = fileDialog.showOpenDialog(null);
+				if (returnVal == 0) {
+				    // 파일 선택
+					String selectedPath = fileDialog.getSelectedFile().getAbsolutePath();
+					textField2.setText(selectedPath);
+				}
+			}
+		});
+		
+		
 		// 우측상단 버튼 추가
 		decompileButton = new JButton("Decompile");
 		decompileButton.setFont(basicFont);
@@ -258,17 +359,17 @@ public class MainForm extends JFrame {
 	private void addTextField() {
 		// 상단 클래스 폴더경로 추가
 		textField1 = new JTextField();
-		textField1.setFont(basicFont);
+		textField1.setFont(smallFont);
 		this.getContentPane().add(textField1);
 		textField1.setText(BBClassMerge.defaultDirPath1);
-		textField1.setBounds(150, 10, 485, 35);
+		textField1.setBounds(130, 10, 465, 35);
 		
 		// 상단 클래스 폴더경로 추가
 		textField2 = new JTextField();
-		textField2.setFont(basicFont);
+		textField2.setFont(smallFont);
 		this.getContentPane().add(textField2);
 		textField2.setText(BBClassMerge.defaultDirPath2);
-		textField2.setBounds(150, 50, 485, 35);
+		textField2.setBounds(130, 50, 465, 35);
 		
 		// 포커싱
 		textField1.requestFocus();
@@ -297,6 +398,9 @@ public class MainForm extends JFrame {
 		textField1.setEnabled(false);
 		textField2.setEnabled(false);
 		
+		pathButton1.setEnabled(false);
+		pathButton2.setEnabled(false);
+		
 		decompileButton.setEnabled(false);
 		mergeButton.setEnabled(false);
 		diffButton.setEnabled(false);
@@ -306,6 +410,9 @@ public class MainForm extends JFrame {
 	public static void setFormEnable() {
 		textField1.setEnabled(true);
 		textField2.setEnabled(true);
+		
+		pathButton1.setEnabled(true);
+		pathButton2.setEnabled(true);
 		
 		decompileButton.setEnabled(true);
 		mergeButton.setEnabled(true);

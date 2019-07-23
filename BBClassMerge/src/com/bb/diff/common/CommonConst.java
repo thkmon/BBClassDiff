@@ -75,8 +75,8 @@ public class CommonConst {
 	// diff 후 대상 파일을 복사시킬 디렉토리 패스
 	public static String commonTargetToCopyDirPath = "_target" + CommonConst.todayDate + "_" + CommonConst.seqNumStr;
 
-	public static String originParentPath = "C:\\NANUM\\workspaces\\SmartFlowOSEWork\\SmartFlowOSE3.6WORK\\classes";
-	public static String targetParentPath = "C:\\NANUM\\workspaces\\diff\\classes\\classes";
+	public static String originParentPath = "";
+	public static String targetParentPath = "";
 
 	
 	// DIFF시 클래스의 경우 디컴파일하여 검사할지 여부
@@ -109,4 +109,7 @@ public class CommonConst {
 	
 	// 좌측과 우측 모두 있는 파일/폴더 숨기기 여부
 	public static boolean bHideBothFileDir = false;
+	
+	// diff 정보가 없는 빈 폴더 숨기기 여부
+	public static boolean bHideEmptyDirWithNoDiff = true;
 }

@@ -421,6 +421,10 @@ public class TreeUtil {
 	 */
 	public static void removeEmptyFoldersInNode(BBTreeNode node) {
 		
+		if (node == null || !node.isDir()) {
+			return;
+		}
+		
 		int count = node.getChildCount();
 		if (count == 0) {
 			String title = node.getTitle();

@@ -20,6 +20,21 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 	private boolean isFile = false;
 	private boolean isDir = false;
 	
+	private String corePath = "";
+	
+	private String leftAbsoulutePath = "";
+	private String rightAbsoulutePath = "";
+	
+	
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+		refreshNode(this);
+	}
+	
 	public boolean isFile() {
 		return isFile;
 	}
@@ -35,15 +50,31 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 	public void setDir(boolean isDir) {
 		this.isDir = isDir;
 	}
-
-	public String getTitle() {
-		return title;
+	
+	public String getCorePath() {
+		return corePath;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-		refreshNode(this);
+	public void setCorePath(String corePath) {
+		this.corePath = corePath;
 	}
+
+	public String getLeftAbsoulutePath() {
+		return leftAbsoulutePath;
+	}
+
+	public void setLeftAbsoulutePath(String leftAbsoulutePath) {
+		this.leftAbsoulutePath = leftAbsoulutePath;
+	}
+
+	public String getRightAbsoulutePath() {
+		return rightAbsoulutePath;
+	}
+
+	public void setRightAbsoulutePath(String rightAbsoulutePath) {
+		this.rightAbsoulutePath = rightAbsoulutePath;
+	}
+	
 
 	public BBTreeNode(Object arg0) {
 		super(arg0, true);
@@ -52,6 +83,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 			setTitle(String.valueOf(arg0));
 		}
 	}
+	
 	
 	/**
 	 * 특정 노드를 새로고침 한다.
@@ -62,6 +94,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 			CommonConst.treeModel.refreshNode(node);
 		}
 	}
+	
 	
 	/**
 	 * 특정 노드를 제거한다.
@@ -74,9 +107,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		}
 	}
 	
-	private String leftAbsoulutePath = "";
-	private String rightAbsoulutePath = "";
-
+	
 	public String getAbsoultePath(boolean isLeft) {
 		if (isLeft) {
 			return leftAbsoulutePath;
@@ -93,21 +124,6 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		}
 	}
 	
-	public String getLeftAbsoulutePath() {
-		return leftAbsoulutePath;
-	}
-
-	public void setLeftAbsoulutePath(String leftAbsoulutePath) {
-		this.leftAbsoulutePath = leftAbsoulutePath;
-	}
-
-	public String getRightAbsoulutePath() {
-		return rightAbsoulutePath;
-	}
-
-	public void setRightAbsoulutePath(String rightAbsoulutePath) {
-		this.rightAbsoulutePath = rightAbsoulutePath;
-	}
 
 	/**
 	 * 중복없이 추가

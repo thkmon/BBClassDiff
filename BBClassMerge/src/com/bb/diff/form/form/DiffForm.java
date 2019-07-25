@@ -1,9 +1,11 @@
 package com.bb.diff.form.form;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.io.File;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
@@ -11,7 +13,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import com.bb.classmerge.main.BBClassMerge;
+import com.bb.classmerge.util.FileNameUtil;
 import com.bb.diff.common.CommonConst;
+import com.bb.diff.copy.CopyPath;
+import com.bb.diff.copy.CopyPathList;
+import com.bb.diff.copy.CopyUtil;
+import com.bb.diff.date.DateUtil;
+import com.bb.diff.decompile.DecompileUtil;
+import com.bb.diff.file.FileUtil;
 import com.bb.diff.form.button.BBWinmergeButtonMouseListener;
 import com.bb.diff.form.textarea.EditorListener;
 import com.bb.diff.form.tree.BBTree;
@@ -159,14 +168,126 @@ public class DiffForm {
 		}
 		
 		{
-			final JMenuItem subMenu1 = new JMenuItem("전체 축소 (Collapse All)");
-			treeMenu.add(subMenu1);
+			final JMenuItem subMenu2 = new JMenuItem("전체 축소 (Collapse All)");
+			treeMenu.add(subMenu2);
 			
-			subMenu1.addActionListener(new ActionListener() {
+			subMenu2.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					TreeUtil.collapseTree();
+				}
+			});
+		}
+		
+		{
+			final JMenuItem subMenu3 = new JMenuItem("트리의 모든 파일 추출(Extract all files in tree)");
+			treeMenu.add(subMenu3);
+			
+			subMenu3.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// 트리의 표시된 모든 파일들을 가져온다.
+					CopyPathList pathList = TreeUtil.getAllFilePathInTree(null);
+					if (pathList != null && pathList.size() > 0) {
+						
+						try {
+							String tempFolderName = "files_" + DateUtil.getTodayDateTime();
+							File tempDir = new File("temp\\" + tempFolderName);
+							if (!tempDir.exists()) {
+								tempDir.mkdirs();
+							} else {
+								return;
+							}
+							
+							CopyPath oneCopy = null;
+							int pathCount = pathList.size();
+							for (int i=0; i<pathCount; i++) {
+								oneCopy = pathList.get(i);
+								
+								File originFile = new File(oneCopy.getOriginPath());
+								File newFile = new File("temp\\" + tempFolderName + "\\" + oneCopy.getCorePath());
+								
+								CopyUtil.copyFileCore(originFile, newFile);
+							}
+							
+							if (Desktop.getDesktop() != null) {
+								Desktop.getDesktop().open(tempDir);
+							}
+							
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+			});
+		}
+		
+		{
+			final JMenuItem subMenu4 = new JMenuItem("클래스로 자바 파일 추출(Extract java files from classes in tree)");
+			treeMenu.add(subMenu4);
+			
+			subMenu4.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// 트리의 표시된 파일 중 클래스 파일들만 가져온다.
+					CopyPathList pathList = TreeUtil.getAllFilePathInTree("class");
+					if (pathList != null && pathList.size() > 0) {
+						
+						try {
+							String tempFolderName = "files_" + DateUtil.getTodayDateTime();
+							File tempDir = new File("temp\\" + tempFolderName);
+							if (!tempDir.exists()) {
+								tempDir.mkdirs();
+							} else {
+								return;
+							}
+							
+							CopyPath oneCopy = null;
+							int pathCount = pathList.size();
+							for (int i=0; i<pathCount; i++) {
+								oneCopy = pathList.get(i);
+								
+								StringBuffer decompiledContent = DecompileUtil.readClassFile(oneCopy.getOriginPath());
+								
+								// 디컴파일 성공시
+								if (decompiledContent != null && decompiledContent.length() > 0) {
+									File newFile = new File("temp\\" + tempFolderName + "\\" + FileNameUtil.replaceExtension(oneCopy.getCorePath(), "java"));
+									
+									// 폴더 만들기
+									CopyUtil.makeParentDir(newFile.getAbsolutePath());
+									
+									// 파일 만들기
+									newFile.createNewFile();
+									
+									FileUtil.writeFile(newFile, decompiledContent.toString());
+									System.out.println("Decompiled : " + oneCopy.getOriginPath() + " => " + newFile.getAbsolutePath());
+								}
+							}
+							
+							if (Desktop.getDesktop() != null) {
+								Desktop.getDesktop().open(tempDir);
+							}
+							
+						} catch (Exception e1) {
+							e1.printStackTrace();
+						}
+					}
+				}
+			});
+		}
+		
+		{
+			final JMenuItem subMenuLast = new JMenuItem("새로고침 (Refresh)");
+			treeMenu.add(subMenuLast);
+			
+			subMenuLast.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					TreeUtil.redrawTree();
 				}
 			});
 		}

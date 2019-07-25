@@ -270,7 +270,7 @@ public class EditorUtil {
 	
 	public static void diffForHighlight(BBTreeNode node, String fileName, boolean bRemoveIfSame) {
 		
-		String fileExt = FileNameUtil.getExtensionFromNameOnly(fileName);
+		String fileExt = FileNameUtil.getExtensionFromPath(fileName);
 		boolean bClassFile = fileExt.equalsIgnoreCase("class");
 		
 		int diffPoint = 0;

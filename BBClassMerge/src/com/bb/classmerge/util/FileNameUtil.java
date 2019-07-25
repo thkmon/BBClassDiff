@@ -57,17 +57,30 @@ public class FileNameUtil {
 	}
 	
 	
-	public static String getExtensionFromNameOnly(String fileName) {
-		if (fileName == null || fileName.length() == 0) {
+	public static String getExtensionFromPath(String filePath) {
+		if (filePath == null || filePath.length() == 0) {
 			return "";
 		}
 		
-		int lastDotIndex = fileName.lastIndexOf(".");
+		// 가장 뒤쪽의 슬래시 위치를 찾는다.
+		int lastSlashIndex = filePath.lastIndexOf("/");
+		int lastBackSlashIndex = filePath.lastIndexOf("\\");
+		if (lastBackSlashIndex > lastSlashIndex) {
+			lastSlashIndex = lastBackSlashIndex;
+		}
+		
+		int lastDotIndex = filePath.lastIndexOf(".");
+		
+		// 점이 슬래시보다 뒤에 있어야만 확장자를 가져온다.
+		if (lastDotIndex < lastSlashIndex) {
+			return "";
+		}
+		
 		if (lastDotIndex < 0) {
 			return "";
 		}
 		
-		return fileName.substring(lastDotIndex + 1);
+		return filePath.substring(lastDotIndex + 1);
 	}
 	
 	

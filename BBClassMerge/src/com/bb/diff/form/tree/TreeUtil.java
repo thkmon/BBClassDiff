@@ -2,7 +2,10 @@ package com.bb.diff.form.tree;
 
 import java.io.File;
 
+import com.bb.classmerge.util.FileNameUtil;
 import com.bb.diff.common.CommonConst;
+import com.bb.diff.copy.CopyPath;
+import com.bb.diff.copy.CopyPathList;
 import com.bb.diff.data.PathData;
 import com.bb.diff.data.PathDataList;
 import com.bb.diff.file.FileDiffController;
@@ -177,6 +180,7 @@ public class TreeUtil {
 			
 			// 중복 아닐 경우만 트리에 노드 추가하기
 			childNode = parentNode.addIfNotDupl(nodeTitle);
+			childNode.setCorePath(corePath);
 			
 			if (childNode.getLeftAbsoulutePath() == null || childNode.getLeftAbsoulutePath().length() == 0) {
 				if (leftAbsolutePath != null && leftAbsolutePath.length() > 0) {
@@ -446,6 +450,80 @@ public class TreeUtil {
 							node.removeMe();
 						}
 					}
+				}
+			}
+		}
+	}
+	
+	
+	/**
+	 * 트리의 모든 파일 가져오기. 확장자(extension)를 지정할 경우 특정 확장자만 가져온다.
+	 * 
+	 * @param extension
+	 * @return
+	 */
+	public static CopyPathList getAllFilePathInTree(String extension) {
+		BBTreeNode rootNode = CommonConst.fileTree.getRootNode();
+		
+		CopyPathList copyList = new CopyPathList();
+		addFilePath(copyList, rootNode, extension, true);
+		return copyList;
+	}
+	
+	
+	/**
+	 * 재귀 방식으로 CopyPathList 에 파일 경로 객체(CopyPath)를 추가한다.
+	 * 
+	 * @param copyList
+	 * @param node
+	 * @param extension
+	 * @param bRootFolder
+	 */
+	private static void addFilePath(CopyPathList copyList, BBTreeNode node, String extension, boolean bRootFolder) {
+		if (copyList == null) {
+			return;
+		}
+		
+		if (node == null) {
+			return;
+		}
+		
+		if (bRootFolder || node.isDir()) {
+			BBTreeNode oneNode = null;
+			int count = node.getChildCount();
+			for (int i=0; i<count; i++) {
+				oneNode = (BBTreeNode) node.getChildAt(i);
+				addFilePath(copyList, oneNode, extension, false);
+			}
+			
+		} else if (node.isFile()) {
+			String originPath = "";
+			String corePath = "";
+			String title = node.getTitle();
+			if (title != null && title.indexOf("[Right]") > -1) {
+				originPath = node.getRightAbsoulutePath();
+				corePath = node.getCorePath();
+			} else {
+				originPath = node.getLeftAbsoulutePath();
+				corePath = node.getCorePath();
+			}
+			
+			if (originPath != null && originPath.length() > 0) {
+				if (corePath != null && corePath.length() > 0) {
+					
+					// 확장자 인자로 넘어왔을 경우, 확장자 검사
+					if (extension != null && extension.length() > 0) {
+						String oneExt = FileNameUtil.getExtensionFromPath(corePath);
+						if (!extension.equalsIgnoreCase(oneExt)) {
+							return;
+						}
+					}
+					
+					// 패스 담기
+					CopyPath copyPath = new CopyPath();
+					copyPath.setCorePath(corePath);
+					copyPath.setOriginPath(originPath);
+					copyList.add(copyPath);
 				}
 			}
 		}

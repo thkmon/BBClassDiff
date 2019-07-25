@@ -120,7 +120,7 @@ public class FileUtil {
 			}
 			
 			if (!file.exists()) {
-				LogUtil.appendLogFileForError(file.getAbsolutePath() + " : 파일이 존재하지 않습빈다.");
+				LogUtil.appendLogFileForError(file.getAbsolutePath() + " : 파일이 존재하지 않습니다.");
 				return false;
 			}
 			

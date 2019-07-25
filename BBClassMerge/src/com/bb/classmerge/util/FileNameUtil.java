@@ -57,6 +57,20 @@ public class FileNameUtil {
 	}
 	
 	
+	public static String getExtensionFromNameOnly(String fileName) {
+		if (fileName == null || fileName.length() == 0) {
+			return "";
+		}
+		
+		int lastDotIndex = fileName.lastIndexOf(".");
+		if (lastDotIndex < 0) {
+			return "";
+		}
+		
+		return fileName.substring(lastDotIndex + 1);
+	}
+	
+	
 	public static String getParentDirPath(String filePath) {
 		if (filePath == null || filePath.length() == 0) {
 			return "";

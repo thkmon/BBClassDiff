@@ -308,6 +308,33 @@ public class DiffForm {
 			});
 		}
 		
+		{
+			final JCheckBoxMenuItem subMenu6 = new JCheckBoxMenuItem("디컴파일시 손상을 고려한 비교하기 (Diff considering breakage of decompile)");
+			
+			// 초기값 세팅. true일 경우 check 처리
+			// 디컴파일시 손상을 고려한 비교하기 사용 여부
+			if (CommonConst.bDiffConsideringBreakage) {
+				subMenu6.doClick();
+			}
+			
+			optionMenu.add(subMenu6);
+			
+			subMenu6.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					boolean bState = subMenu6.getState();
+					if (bState) {
+						CommonConst.bDiffConsideringBreakage = true;
+						TreeUtil.redrawTree();
+						
+					} else {
+						CommonConst.bDiffConsideringBreakage = false;
+						TreeUtil.redrawTree();
+					}
+				}
+			});
+		}
 		
 		menuBar.add(treeMenu);
 		menuBar.add(optionMenu);

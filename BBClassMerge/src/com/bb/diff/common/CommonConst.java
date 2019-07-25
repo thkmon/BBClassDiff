@@ -112,4 +112,7 @@ public class CommonConst {
 	
 	// diff 정보가 없는 빈 폴더 숨기기 여부
 	public static boolean bHideEmptyDirWithNoDiff = true;
+	
+	// 디컴파일시 손상을 고려한 비교하기 사용 여부
+	public static boolean bDiffConsideringBreakage = true;
 }

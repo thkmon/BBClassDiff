@@ -412,16 +412,15 @@ public class TreeUtil {
 	 */
 	public static void removeEmptyFoldersInTree() {
 		BBTreeNode rootNode = CommonConst.fileTree.getRootNode();
-		removeEmptyFoldersInNode(rootNode);
+		removeEmptyFoldersInNode(rootNode, true);
 	}
 	
 	
 	/**
 	 * 노드 내의 모든 빈 폴더 제거. 단, diff 정보가 있을 경우 남겨둔다.
 	 */
-	public static void removeEmptyFoldersInNode(BBTreeNode node) {
-		
-		if (node == null || !node.isDir()) {
+	public static void removeEmptyFoldersInNode(BBTreeNode node, boolean bRootFolder) {
+		if (node == null) {
 			return;
 		}
 		
@@ -429,19 +428,23 @@ public class TreeUtil {
 		if (count == 0) {
 			String title = node.getTitle();
 			if (title.indexOf("[Left]") == -1 && title.indexOf("[Right]") == -1) {
-				node.removeMe();
+				if (!bRootFolder && node.isDir()) {
+					node.removeMe();
+				}
 			}
 			
 		} else if (count > 0) {
 			int lastIndex = count - 1;
 			for (int i=lastIndex; i>=0; i--) {
-				removeEmptyFoldersInNode((BBTreeNode) node.getChildAt(i));
+				removeEmptyFoldersInNode((BBTreeNode) node.getChildAt(i), false);
 				
 				count = node.getChildCount();
 				if (count == 0) {
 					String title = node.getTitle();
 					if (title.indexOf("[Left]") == -1 && title.indexOf("[Right]") == -1) {
-						node.removeMe();
+						if (!bRootFolder && node.isDir()) {
+							node.removeMe();
+						}
 					}
 				}
 			}

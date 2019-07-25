@@ -8,6 +8,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.bb.classmerge.util.FileNameUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.tree.BBTreeNode;
 import com.bb.diff.form.tree.TreeUtil;
@@ -268,6 +269,10 @@ public class EditorUtil {
 	
 	
 	public static void diffForHighlight(BBTreeNode node, String fileName, boolean bRemoveIfSame) {
+		
+		String fileExt = FileNameUtil.getExtensionFromNameOnly(fileName);
+		boolean bClassFile = fileExt.equalsIgnoreCase("class");
+		
 		int diffPoint = 0;
 		CommonConst.diffPointList = new ArrayList<Integer>();
 		CommonConst.currentDiffPointIndex = -1;
@@ -313,7 +318,7 @@ public class EditorUtil {
 				rowNum2++;
 				continue;
 				
-			} else if (bEmptyLine1 || bEmptyLine2 || !lineText1.equals(lineText2)) {
+			} else if (bEmptyLine1 || bEmptyLine2 || !(equalsForClass(lineText1, lineText2, bClassFile))) {
 				diffPoint++;
 				CommonConst.diffPointList.add(rowNum1);
 				
@@ -421,7 +426,7 @@ public class EditorUtil {
 				//}}}}}
 				//}}}}}				
 				
-			} else if (lineText1.equals(lineText2)) {
+			} else if (equalsForClass(lineText1, lineText2, bClassFile)) {
 				if (rowNum1 < rowCount1) {
 					paintLeftDocWhite(rowNum1);
 				}
@@ -536,5 +541,60 @@ public class EditorUtil {
 		StringBuffer con = node.getFileContentString(false, null);
 		setRightFileContentText(con.toString(), true);
 		return true;
+	}
+	
+	
+	private static boolean equalsForClass(String str1, String str2, boolean bClassFile) {
+		if (str1 == null) {
+			str1 = "";
+		}
+		
+		if (str2 == null) {
+			str2 = "";
+		}
+		
+		if (str1.equals(str2)) {
+			return true;
+		}
+		
+		if (!bClassFile || !CommonConst.bDiffConsideringBreakage) {
+			return false;
+		}
+		
+		// 클래스 파일이고, CommonConst.bDiffConsideringBreakage == true 일 경우만 아래 로직을 탄다.
+		
+		// 디컴파일은 동일한 파일도 어떻게 빌드되었느냐에 따라 다르게 디컴파일되기 때문에, 이를 고려하여 비교해본다.
+		
+		// MISSING_BLOCK_LABEL_ 고려
+		if (str1.indexOf("MISSING_BLOCK_LABEL_") > -1 || str2.indexOf("MISSING_BLOCK_LABEL_") > -1) {
+			return true;
+		}
+		
+		// new StringBuilder 는 편의를 위해 적당히 비교한다.
+		if (str1.indexOf("new StringBuilder") > -1) {
+			str1 = str1.replace(".append(\"\")", "");
+			str2 = str2.replace(".append(\"\")", "");
+			
+			str1 = str1.replace("new StringBuilder", "");
+			str2 = str2.replace("new StringBuilder", "");
+			
+			str1 = str1.replace(".append", "");
+			str2 = str2.replace(".append", "");
+			
+			str1 = str1.replace("String.valueOf", "");
+			str2 = str2.replace("String.valueOf", "");
+			
+			str1 = str1.replace(".toString()", "");
+			str2 = str2.replace(".toString()", "");
+			
+			str1 = str1.replace("(", "").replace(")", "");
+			str2 = str2.replace("(", "").replace(")", "");
+			
+			if (str1.equals(str2)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

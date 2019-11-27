@@ -41,7 +41,7 @@ public class MainForm extends JFrame {
 	private static JButton diffButton = null;
 	
 	private int textFieldHeight = 35;
-	private int buttonHeight = 30;
+	private int buttonHeight = 35;
 	
 	// 콘솔용 텍스트영역
 	public static JTextArea textArea = null;
@@ -138,12 +138,13 @@ public class MainForm extends JFrame {
 					decompileButton.setBounds(formWidth - 155, 10, 120, buttonHeight);
 				}
 				
-				if (mergeButton != null) {
-					mergeButton.setBounds(formWidth - 155, 45, 120, buttonHeight);
-				}
+				// 191128. 머지 버튼은 꼭 필요한지 애매하므로 숨긴다.
+//				if (mergeButton != null) {
+//					mergeButton.setBounds(formWidth - 155, 45, 120, buttonHeight);
+//				}
 				
 				if (diffButton != null) {
-					diffButton.setBounds(formWidth - 155, 80, 120, buttonHeight);
+					diffButton.setBounds(formWidth - 155, 50, 120, buttonHeight);
 				}
 				
 				if (scrollPane != null) {
@@ -282,14 +283,15 @@ public class MainForm extends JFrame {
 		decompileButton.setBounds(645, 10, 120, buttonHeight);
 		this.getContentPane().add(decompileButton);
 		
+		// 191128. 머지 버튼은 꼭 필요한지 애매하므로 숨긴다.
 		mergeButton = new JButton("Merge");
 		mergeButton.setFont(basicFont);
-		mergeButton.setBounds(645, 45, 120, buttonHeight);
-		this.getContentPane().add(mergeButton);
+//		mergeButton.setBounds(645, 45, 120, buttonHeight);
+//		this.getContentPane().add(mergeButton);
 		
 		diffButton = new JButton("Diff");
 		diffButton.setFont(basicFont);
-		diffButton.setBounds(645, 80, 120, buttonHeight);
+		diffButton.setBounds(645, 50, 120, buttonHeight);
 		this.getContentPane().add(diffButton);
 		
 		

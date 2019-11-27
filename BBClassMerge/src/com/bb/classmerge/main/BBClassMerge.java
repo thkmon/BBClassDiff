@@ -11,7 +11,7 @@ public class BBClassMerge {
 	public static String defaultDirPath1 = "";
 	public static String defaultDirPath2 = "";
 	
-	public static String version = "190725";
+	public static String version = "191128";
 	public static String title = "BBClassMerge";
 	public static MainForm mainForm = null;
 	

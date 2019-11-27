@@ -561,13 +561,17 @@ public class EditorUtil {
 			return false;
 		}
 		
-		// 클래스 파일이고, CommonConst.bDiffConsideringBreakage == true 일 경우만 아래 로직을 탄다.
+		// 클래스 파일이고, CommonConst.bDiffConsideringBreakage == true(디컴파일시 손상을 고려한 비교하기)일 경우만 아래 로직을 탄다.
 		
 		// 디컴파일은 동일한 파일도 어떻게 빌드되었느냐에 따라 다르게 디컴파일되기 때문에, 이를 고려하여 비교해본다.
 		
 		// MISSING_BLOCK_LABEL_ 고려
-		if (str1.indexOf("MISSING_BLOCK_LABEL_") > -1 || str2.indexOf("MISSING_BLOCK_LABEL_") > -1) {
-			return true;
+		if (str1.indexOf("MISSING_BLOCK_LABEL_") > -1 && str2.indexOf("MISSING_BLOCK_LABEL_") > -1) {
+			String str1RemovedBlockLabel = str1.replaceAll("MISSING_BLOCK_LABEL\\_[0-9]*", "");
+			String str2RemovedBlockLabel = str1.replaceAll("MISSING_BLOCK_LABEL\\_[0-9]*", "");
+			if (str1RemovedBlockLabel.equals(str2RemovedBlockLabel)) {
+				return true;
+			}
 		}
 		
 		// new StringBuilder 는 편의를 위해 적당히 비교한다.
@@ -592,6 +596,50 @@ public class EditorUtil {
 			
 			if (str1.equals(str2)) {
 				return true;
+			}
+		}
+		
+		// " = (타입명[])null;" 패턴을 " = null;" 과 같다고 판단한다.
+		// ex 1) saveFileName = (String[])null; 과 saveFileName = null; 을 같게 판단한다.
+		// ex 2) int rt[] = (int[])null; 과 int rt[] = null; 을 같게 판단한다.
+		// ex 3) String groupNameList[] = (String[])null; 과 String groupNameList[] = null; 을 같게 판단한다.
+		// ex 4) File subFiles[] = (File[])null; 과 File subFiles[] = null; 을 같게 판단한다.
+		if (str1.indexOf(" = ") > -1 && str2.indexOf(" = ") > -1) {
+			
+			boolean b1 = str1.matches(".* = \\(.*\\[\\]\\)null;");
+			boolean b2 = str2.matches(".* = \\(.*\\[\\]\\)null;");
+			
+			// 둘 중 하나만 패턴에 맞아 떨어져야 한다. 둘 다 패턴이 동일하면 애초에 문자열이 같았어야 했다.
+			if (!(b1 && b2) && (b1 || b2)) {
+				String targetString = "";
+				String otherString = "";
+				if (b1) {
+					targetString = str1;
+					otherString = str2;
+				} else if (b2) {
+					targetString = str2;
+					otherString = str1;
+				}
+				
+				String beginMark = " = (";
+				int idx1 = targetString.indexOf(beginMark);
+				int idx2 = targetString.indexOf(")", idx1 + 1);
+				if (idx1 > -1 && idx2 > -1) {
+					// " = (타입명[])null;" 패턴과 일치하는 문자열을 " = null;" 로 치환해서 비교해본다.
+					String variableTypeArr = targetString.substring(idx1 + beginMark.length(), idx2);
+					if (variableTypeArr.endsWith("[]")) {
+						
+						// variableType 은 int, String, File 등이 될 수 있다.
+						String variableType = variableTypeArr.substring(0, variableTypeArr.length() - 2);
+						if (variableType.matches("[a-zA-Z0-9]")) {
+							String tempStr1 = targetString.replace(" = (" + variableType + "[])null;", " = null;");
+							
+							if (tempStr1.equals(otherString)) {
+								return true;
+							}
+						}
+					}
+				}
 			}
 		}
 		

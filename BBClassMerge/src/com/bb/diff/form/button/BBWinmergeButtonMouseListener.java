@@ -16,7 +16,7 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 	/**
 	 * 윈머지 경로를 프로퍼티 파일에서 가져오도록 처리한다.
 	 */
-	private static String winmergePath = "";
+	private static String compareToolPath = "";
 	
 	
 	/**
@@ -24,22 +24,22 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 	 * @return
 	 */
 	private static String getWinmergePath() {
-		if (winmergePath != null && winmergePath.length() > 0) {
-			return winmergePath;
+		if (compareToolPath != null && compareToolPath.length() > 0) {
+			return compareToolPath;
 		}
 		
 		// 윈머지 경로를 프로퍼티 파일에서 가져오도록 처리한다.
-		if (winmergePath == null || winmergePath.trim().length() == 0) {
-			winmergePath = PropertiesUtil.getValueFromProperties("winmergePath");
-			winmergePath = PathUtil.reviseStandardPath(winmergePath);
+		if (compareToolPath == null || compareToolPath.trim().length() == 0) {
+			compareToolPath = PropertiesUtil.getValueFromProperties("compareToolPath");
+			compareToolPath = PathUtil.reviseStandardPath(compareToolPath);
 		}
 		
 		// 프로퍼티 내에 값이 없다면, 윈머지 기본경로를 넣어준다.
-		if (winmergePath == null || winmergePath.trim().length() == 0) {
-			winmergePath = "C:\\Program Files (x86)\\WinMerge\\WinMergeU.exe";
+		if (compareToolPath == null || compareToolPath.trim().length() == 0) {
+			compareToolPath = "C:\\Program Files (x86)\\WinMerge\\WinMergeU.exe";
 		}
 		
-		return winmergePath;
+		return compareToolPath;
 	}
 	
 	

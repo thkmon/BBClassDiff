@@ -65,10 +65,10 @@ public class DiffForm {
 		CommonConst.leftFilePathText = CommonConst.bForm.addTextInput(0, 0, 0, 0);
 		CommonConst.rightFilePathText = CommonConst.bForm.addTextInput(0, 0, 0, 0);
 		
-		CommonConst.winmergeButton = CommonConst.bForm.addButton(0, 0, 80, 24, "Winmerge");
+		CommonConst.winmergeButton = CommonConst.bForm.addButton(0, 0, 85, 24, "Compare");
 		CommonConst.winmergeButton.addMouseListener(new BBWinmergeButtonMouseListener());
 		
-		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(90, 0, 80, 24, "Diff Point : ");
+		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(95, 0, 80, 24, "Diff Point : ");
 		
 		
 		/**

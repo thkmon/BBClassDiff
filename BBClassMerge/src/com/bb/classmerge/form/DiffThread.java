@@ -23,8 +23,8 @@ public class DiffThread extends Thread {
 		
 		try {
 			// 폴더경로 밸리드 체크
-			fileConverter.checkDirectoryIsValid(classesDirText1);
-			fileConverter.checkDirectoryIsValid(classesDirText2);
+			fileConverter.checkDirectoryIsValid(classesDirText1, "[Left Classes Path]");
+			fileConverter.checkDirectoryIsValid(classesDirText2, "[Right Classes Path]");
 			
 			File dir1 = new File(classesDirText1);
 			File dir2 = new File(classesDirText2);

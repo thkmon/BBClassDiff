@@ -25,10 +25,10 @@ public class DecompileThead extends Thread {
 		
 		try {
 			// 폴더경로 밸리드 체크
-			fileConverter.checkDirectoryIsValid(classesDirText1);
+			fileConverter.checkDirectoryIsValid(classesDirText1, "[Left Classes Path]");
 			ConsoleUtil.print("[Left Classes Path] is valid.");
 			if (bDecompileDir2) {
-				fileConverter.checkDirectoryIsValid(classesDirText2);
+				fileConverter.checkDirectoryIsValid(classesDirText2, "[Right Classes Path]");
 				ConsoleUtil.print("[Right Classes Path] is valid.");
 			} else {
 				ConsoleUtil.print("[Right Classes Path] is empty. (skip)");
@@ -39,9 +39,9 @@ public class DecompileThead extends Thread {
 			String destDirPath1 = "";
 			String destDirPath2 = "";
 			
-			destDirPath1 = fileConverter.convertClassToJava(classesDirText1);
+			destDirPath1 = fileConverter.convertClassToJava(classesDirText1, "[Left Classes Path]");
 			if (bDecompileDir2) {
-				destDirPath2 = fileConverter.convertClassToJava(classesDirText2);
+				destDirPath2 = fileConverter.convertClassToJava(classesDirText2, "[Right Classes Path]");
 			}
 			
 			

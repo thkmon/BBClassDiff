@@ -20,36 +20,36 @@ public class FileConverter {
 	 * @throws MsgException
 	 * @throws Exception
 	 */
-	public boolean checkDirectoryIsValid(String dirPath) throws MsgException, Exception {
+	public boolean checkDirectoryIsValid(String dirPath, String prefix) throws MsgException, Exception {
 		if (dirPath == null || dirPath.trim().length() == 0) {
-			throw new MsgException("폴더 경로를 입력해주세요.");
+			throw new MsgException(prefix + " 폴더 경로를 입력해주세요.");
 		} else {
 			dirPath = dirPath.trim();
 		}
 		
 		File dir = new File(dirPath);
 		if (!dir.exists()) {
-			throw new MsgException("해당 경로가 존재하지 않습니다. [" + StringUtil.revisePath(dir.getAbsolutePath()) + "]");
+			throw new MsgException(prefix + " 해당 경로가 존재하지 않습니다. [" + StringUtil.revisePath(dir.getAbsolutePath()) + "]");
 		}
 		
 		if (dir.isFile() || !dir.isDirectory()) {
-			throw new MsgException("해당 경로는 디렉토리가 아닙니다. [" + StringUtil.revisePath(dir.getAbsolutePath()) + "]");
+			throw new MsgException(prefix + " 해당 경로는 디렉토리가 아닙니다. [" + StringUtil.revisePath(dir.getAbsolutePath()) + "]");
 		}
 		
 		FileCollector fileCollector = new FileCollector();
 		FileList fileList = fileCollector.getFilesAndDirsList(dirPath, false);
 		if (fileList == null || fileList.size() == 0) {
-			throw new MsgException("해당 경로 안에 파일이 존재하지 않습니다. [" + StringUtil.revisePath(dir.getAbsolutePath()) + "]");
+			throw new MsgException(prefix + " 해당 경로 안에 파일이 존재하지 않습니다. [" + StringUtil.revisePath(dir.getAbsolutePath()) + "]");
 		}
 		
 		return true;
 	}
 	
 	
-	public String convertClassToJava(String dirPath) throws MsgException, Exception {
+	public String convertClassToJava(String dirPath, String prefix) throws MsgException, Exception {
 		
 		// 폴더경로 밸리드 체크
-		checkDirectoryIsValid(dirPath);
+		checkDirectoryIsValid(dirPath, prefix);
 		
 		File dir = new File(dirPath);
 		String oldDirPath = dir.getAbsolutePath();

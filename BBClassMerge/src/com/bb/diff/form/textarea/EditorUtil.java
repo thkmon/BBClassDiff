@@ -631,7 +631,7 @@ public class EditorUtil {
 						
 						// variableType 은 int, String, File 등이 될 수 있다.
 						String variableType = variableTypeArr.substring(0, variableTypeArr.length() - 2);
-						if (variableType.matches("[a-zA-Z0-9]")) {
+						if (variableType.matches("[a-zA-Z]*")) {
 							String tempStr1 = targetString.replace(" = (" + variableType + "[])null;", " = null;");
 							
 							if (tempStr1.equals(otherString)) {

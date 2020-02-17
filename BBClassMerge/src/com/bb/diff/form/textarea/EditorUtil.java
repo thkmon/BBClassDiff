@@ -604,6 +604,7 @@ public class EditorUtil {
 		// ex 2) int rt[] = (int[])null; 과 int rt[] = null; 을 같게 판단한다.
 		// ex 3) String groupNameList[] = (String[])null; 과 String groupNameList[] = null; 을 같게 판단한다.
 		// ex 4) File subFiles[] = (File[])null; 과 File subFiles[] = null; 을 같게 판단한다.
+		// ex 5) String ret[][] = (String[][])null; 을 같게 판단한다.
 		if (str1.indexOf(" = ") > -1 && str2.indexOf(" = ") > -1) {
 			
 			boolean b1 = str1.matches(".* = \\(.*\\[\\]\\)null;");
@@ -629,10 +630,17 @@ public class EditorUtil {
 					String variableTypeArr = targetString.substring(idx1 + beginMark.length(), idx2);
 					if (variableTypeArr.endsWith("[]")) {
 						
+						int arrCount = 0;
+						String arrString = "";
+						while (variableTypeArr.endsWith(arrString + "[]")) {
+							arrString = arrString + "[]";
+							arrCount++;
+						}
+						
 						// variableType 은 int, String, File 등이 될 수 있다.
-						String variableType = variableTypeArr.substring(0, variableTypeArr.length() - 2);
+						String variableType = variableTypeArr.substring(0, variableTypeArr.length() - arrString.length());
 						if (variableType.matches("[a-zA-Z]*")) {
-							String tempStr1 = targetString.replace(" = (" + variableType + "[])null;", " = null;");
+							String tempStr1 = targetString.replace(" = (" + variableType + "" + arrString + ")null;", " = null;");
 							
 							if (tempStr1.equals(otherString)) {
 								return true;

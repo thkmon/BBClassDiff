@@ -252,11 +252,19 @@ public class EditorUtil {
 		StyleConstants.setBackground(strongStyle2, new Color(200, 200, 255));
 		StyleConstants.setBackground(normalStyle1, new Color(200, 200, 200));
 		StyleConstants.setBackground(normalStyle2, new Color(200, 200, 200));
-		
+
+		// bCheckDiff == true일 때만 비교하자. 내용이 완전히 같을 경우 비교할 필요 없다.
+		boolean bCheckDiff = true;
+		if (content1 != null && content2 != null) {
+			if (content1.toString().trim().equals(content2.toString().trim())) {
+				bCheckDiff = false;
+			}
+		}
+
 		/**
 		 * 비교해서 색칠한다. (DIFF)
 		 */
-		diffForHighlight(node, fileName, bRemoveIfSame);
+		diffForHighlight(bCheckDiff, node, fileName, bRemoveIfSame);
 		
 		/**
 		 * 디폴트로 최상단 보여주기
@@ -268,177 +276,180 @@ public class EditorUtil {
 	}
 	
 	
-	public static void diffForHighlight(BBTreeNode node, String fileName, boolean bRemoveIfSame) {
+	public static void diffForHighlight(boolean bCheckDiff, BBTreeNode node, String fileName, boolean bRemoveIfSame) {
 		
 		String fileExt = FileNameUtil.getExtensionFromPath(fileName);
 		boolean bClassFile = fileExt.equalsIgnoreCase("class");
 		
 		int diffPoint = 0;
-		CommonConst.diffPointList = new ArrayList<Integer>();
-		CommonConst.currentDiffPointIndex = -1;
 		
-		int rowCount1 = colList1.size();
-		int rowCount2 = colList2.size();
-		
-		int lastRowNum1 = rowCount1 - 1;
-		int lastRowNum2 = rowCount2 - 1;
-		
-		int bigRowCount = rowCount1;
-		if (rowCount2 > bigRowCount) {
-			rowCount2 = bigRowCount;
-		}
-		
-		int rowNum1 = 0;
-		int rowNum2 = 0;
-		String lineText1 = null;
-		String lineText2 = null;
-		boolean bEmptyLine1 = false;
-		boolean bEmptyLine2 = false;
-		
-		for (int i=0; i<bigRowCount; i++) {
+		// bCheckDiff == true일 때만 비교하자. 내용이 완전히 같을 경우 비교할 필요 없다.
+		if (bCheckDiff) {
+			CommonConst.diffPointList = new ArrayList<Integer>();
+			CommonConst.currentDiffPointIndex = -1;
 			
-			if ((rowNum1 > lastRowNum1) && (rowNum2 > lastRowNum2)) {
-				break;
+			int rowCount1 = colList1.size();
+			int rowCount2 = colList2.size();
+			
+			int lastRowNum1 = rowCount1 - 1;
+			int lastRowNum2 = rowCount2 - 1;
+			
+			int bigRowCount = rowCount1;
+			if (rowCount2 > bigRowCount) {
+				rowCount2 = bigRowCount;
 			}
 			
-			lineText1 = (rowNum1 > lastRowNum1) ? "" : colList1.get(rowNum1).getText();
-			lineText2 = (rowNum2 > lastRowNum2) ? "" : colList2.get(rowNum2).getText();
+			int rowNum1 = 0;
+			int rowNum2 = 0;
+			String lineText1 = null;
+			String lineText2 = null;
+			boolean bEmptyLine1 = false;
+			boolean bEmptyLine2 = false;
 			
-			bEmptyLine1 = (lineText1 == null || lineText1.length() == 0);
-			bEmptyLine2 = (lineText2 == null || lineText2.length() == 0);
-			
-			if (bEmptyLine1 && bEmptyLine2) {
-				if (rowNum1 < rowCount1) {
-					paintLeftDocWhite(rowNum1);
-				}
-				if (rowNum2 < rowCount2) {
-					paintRightDocWhite(rowNum2);
-				}
-				rowNum1++;
-				rowNum2++;
-				continue;
+			for (int i=0; i<bigRowCount; i++) {
 				
-			} else if (bEmptyLine1 || bEmptyLine2 || !(equalsForClass(lineText1, lineText2, bClassFile))) {
-				diffPoint++;
-				CommonConst.diffPointList.add(rowNum1);
-				
-				// 다른거 나오면 일단 칠한다.
-				if (rowNum1 < rowCount1) {
-					paintLeftDocStrong(rowNum1);
-				}
-				if (rowNum2 < rowCount2) {
-					paintRightDocStrong(rowNum2);
-				}
-
-				//{{{{{
-				//{{{{{
-				//{{{{{
-				//{{{{{
-				//{{{{{
-				
-				int tempNum1 = rowNum1;
-				int tempNum2 = rowNum2;
-				HashMap<String, Integer> leftMap = new HashMap<String, Integer>();
-				HashMap<String, Integer> rightMap = new HashMap<String, Integer>();
-				
-				int newNum1 = 0;
-				int newNum2 = 0;
-				boolean bFound = false;
-				
-				while (true) {
-					if ((tempNum1 > lastRowNum1) && (tempNum2 > lastRowNum2)) {
-						break;
-					}
-					
-					lineText1 = (tempNum1 > lastRowNum1) ? "" : colList1.get(tempNum1).getText();
-					lineText2 = (tempNum2 > lastRowNum2) ? "" : colList2.get(tempNum2).getText();
-					
-					if (lineText1 != null && lineText1.length() > 0) {
-						if (rightMap.get(lineText1) != null) {
-							newNum1 = tempNum1;
-							newNum2 = rightMap.get(lineText1);
-							
-							paintLeftDocWhite(newNum1);
-							paintRightDocWhite(newNum2);
-							
-							bFound = true;
-							break;
-							
-						} else {
-							leftMap.put(lineText1, tempNum1);
-						}
-					}
-					
-					if (lineText2 != null && lineText2.length() > 0) {
-						if (leftMap.get(lineText2) != null) {
-							newNum1 = leftMap.get(lineText2);
-							newNum2 = tempNum2;
-							
-							paintLeftDocWhite(newNum1);
-							paintRightDocWhite(newNum2);
-							
-							bFound = true;
-							break;
-							
-						} else {
-							rightMap.put(lineText2, tempNum2);
-						}
-					}
-					
-					tempNum1++;
-					tempNum2++;
-				}
-				
-				if (bFound) {
-					// 찾았다면 탐색을 계속한다.
-					
-					// 1. 찾았다면 그 직전 라인까지 색칠해준다.
-					for (int rr=rowNum1+1; rr<newNum1; rr++) {
-						paintLeftDocNormal(rr);
-					}
-					
-					for (int rr=rowNum2+1; rr<newNum2; rr++) {
-						paintRightDocNormal(rr);
-					}
-					
-					// 2. 탐색을 계속한다.
-					rowNum1 = newNum1;
-					rowNum2 = newNum2;
-					continue;
-					
-				} else {
-					// 찾지 못했다면 탐색을 그만둔다.
-					
-					// 1. 전체색칠
-					for (int rr=rowNum1+1; rr<=lastRowNum1; rr++) {
-						paintLeftDocNormal(rr);
-					}
-					
-					for (int rr=rowNum2+1; rr<=lastRowNum2; rr++) {
-						paintRightDocNormal(rr);
-					}
+				if ((rowNum1 > lastRowNum1) && (rowNum2 > lastRowNum2)) {
 					break;
 				}
 				
-				//}}}}}
-				//}}}}}
-				//}}}}}
-				//}}}}}
-				//}}}}}				
+				lineText1 = (rowNum1 > lastRowNum1) ? "" : colList1.get(rowNum1).getText();
+				lineText2 = (rowNum2 > lastRowNum2) ? "" : colList2.get(rowNum2).getText();
 				
-			} else if (equalsForClass(lineText1, lineText2, bClassFile)) {
-				if (rowNum1 < rowCount1) {
-					paintLeftDocWhite(rowNum1);
+				bEmptyLine1 = (lineText1 == null || lineText1.length() == 0);
+				bEmptyLine2 = (lineText2 == null || lineText2.length() == 0);
+				
+				if (bEmptyLine1 && bEmptyLine2) {
+					if (rowNum1 < rowCount1) {
+						paintLeftDocWhite(rowNum1);
+					}
+					if (rowNum2 < rowCount2) {
+						paintRightDocWhite(rowNum2);
+					}
+					rowNum1++;
+					rowNum2++;
+					continue;
+					
+				} else if (bEmptyLine1 || bEmptyLine2 || !(equalsForClass(lineText1, lineText2, bClassFile))) {
+					diffPoint++;
+					CommonConst.diffPointList.add(rowNum1);
+					
+					// 다른거 나오면 일단 칠한다.
+					if (rowNum1 < rowCount1) {
+						paintLeftDocStrong(rowNum1);
+					}
+					if (rowNum2 < rowCount2) {
+						paintRightDocStrong(rowNum2);
+					}
+	
+					//{{{{{
+					//{{{{{
+					//{{{{{
+					//{{{{{
+					//{{{{{
+					
+					int tempNum1 = rowNum1;
+					int tempNum2 = rowNum2;
+					HashMap<String, Integer> leftMap = new HashMap<String, Integer>();
+					HashMap<String, Integer> rightMap = new HashMap<String, Integer>();
+					
+					int newNum1 = 0;
+					int newNum2 = 0;
+					boolean bFound = false;
+					
+					while (true) {
+						if ((tempNum1 > lastRowNum1) && (tempNum2 > lastRowNum2)) {
+							break;
+						}
+						
+						lineText1 = (tempNum1 > lastRowNum1) ? "" : colList1.get(tempNum1).getText();
+						lineText2 = (tempNum2 > lastRowNum2) ? "" : colList2.get(tempNum2).getText();
+						
+						if (lineText1 != null && lineText1.length() > 0) {
+							if (rightMap.get(lineText1) != null) {
+								newNum1 = tempNum1;
+								newNum2 = rightMap.get(lineText1);
+								
+								paintLeftDocWhite(newNum1);
+								paintRightDocWhite(newNum2);
+								
+								bFound = true;
+								break;
+								
+							} else {
+								leftMap.put(lineText1, tempNum1);
+							}
+						}
+						
+						if (lineText2 != null && lineText2.length() > 0) {
+							if (leftMap.get(lineText2) != null) {
+								newNum1 = leftMap.get(lineText2);
+								newNum2 = tempNum2;
+								
+								paintLeftDocWhite(newNum1);
+								paintRightDocWhite(newNum2);
+								
+								bFound = true;
+								break;
+								
+							} else {
+								rightMap.put(lineText2, tempNum2);
+							}
+						}
+						
+						tempNum1++;
+						tempNum2++;
+					}
+					
+					if (bFound) {
+						// 찾았다면 탐색을 계속한다.
+						
+						// 1. 찾았다면 그 직전 라인까지 색칠해준다.
+						for (int rr=rowNum1+1; rr<newNum1; rr++) {
+							paintLeftDocNormal(rr);
+						}
+						
+						for (int rr=rowNum2+1; rr<newNum2; rr++) {
+							paintRightDocNormal(rr);
+						}
+						
+						// 2. 탐색을 계속한다.
+						rowNum1 = newNum1;
+						rowNum2 = newNum2;
+						continue;
+						
+					} else {
+						// 찾지 못했다면 탐색을 그만둔다.
+						
+						// 1. 전체색칠
+						for (int rr=rowNum1+1; rr<=lastRowNum1; rr++) {
+							paintLeftDocNormal(rr);
+						}
+						
+						for (int rr=rowNum2+1; rr<=lastRowNum2; rr++) {
+							paintRightDocNormal(rr);
+						}
+						break;
+					}
+					
+					//}}}}}
+					//}}}}}
+					//}}}}}
+					//}}}}}
+					//}}}}}				
+					
+				} else if (equalsForClass(lineText1, lineText2, bClassFile)) {
+					if (rowNum1 < rowCount1) {
+						paintLeftDocWhite(rowNum1);
+					}
+					if (rowNum2 < rowCount2) {
+						paintRightDocWhite(rowNum2);
+					}
+					rowNum1++;
+					rowNum2++;
+					continue;
 				}
-				if (rowNum2 < rowCount2) {
-					paintRightDocWhite(rowNum2);
-				}
-				rowNum1++;
-				rowNum2++;
-				continue;
 			}
 		}
-		
 		
 		CommonConst.diffPointLabel.setText("Diff Point : " + diffPoint);
 		

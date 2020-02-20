@@ -586,7 +586,7 @@ public class EditorUtil {
 		}
 		
 		// new StringBuilder 는 편의를 위해 적당히 비교한다.
-		if (str1.indexOf("new StringBuilder") > -1) {
+		if (str1.indexOf("new StringBuilder") > -1 || str2.indexOf("new StringBuilder") > -1) {
 			str1 = str1.replace(".append(\"\")", "");
 			str2 = str2.replace(".append(\"\")", "");
 			
@@ -605,6 +605,11 @@ public class EditorUtil {
 			str1 = str1.replace("(", "").replace(")", "");
 			str2 = str2.replace("(", "").replace(")", "");
 			
+			str1 = str1.replace(" + ", "");
+			str2 = str2.replace(" + ", "");
+			
+			System.out.println("str1 : " + str1);
+			System.out.println("str2 : " + str2);
 			if (str1.equals(str2)) {
 				return true;
 			}

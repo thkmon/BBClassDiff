@@ -585,30 +585,43 @@ public class EditorUtil {
 			}
 		}
 		
-		// new StringBuilder 는 편의를 위해 적당히 비교한다.
-		if (str1.indexOf("new StringBuilder") > -1 || str2.indexOf("new StringBuilder") > -1) {
-			str1 = str1.replace(".append(\"\")", "");
-			str2 = str2.replace(".append(\"\")", "");
+		// new StringBuilder 와 new StringBuffer 는 편의를 위해 적당히 비교한다.
+		// 예를 들어 좌측 클래스는 StringBuilder, 우측 클래스는 단순 String 으로 컴파일 되었을 경우
+		// 사실상 같은 내용인데 diff 로 체크되면 사람이 눈으로 일일히 대조해봐야 한다.
+		// 문자열을 적당히 잘라내어 유사하다고 판단되면 동일한 문자열로 본다.
+		if (str1.indexOf("new StringBuilder") > -1 ||
+			str2.indexOf("new StringBuilder") > -1 ||
+			str1.indexOf("new StringBuffer") > -1 ||
+			str2.indexOf("new StringBuffer") > -1) {
 			
-			str1 = str1.replace("new StringBuilder", "");
-			str2 = str2.replace("new StringBuilder", "");
+			String tmpStr1 = str1;
+			String tmpStr2 = str2;
 			
-			str1 = str1.replace(".append", "");
-			str2 = str2.replace(".append", "");
+			tmpStr1 = tmpStr1.replace(".append(\"\")", "");
+			tmpStr2 = tmpStr2.replace(".append(\"\")", "");
 			
-			str1 = str1.replace("String.valueOf", "");
-			str2 = str2.replace("String.valueOf", "");
+			tmpStr1 = tmpStr1.replace("new StringBuilder", "");
+			tmpStr2 = tmpStr2.replace("new StringBuilder", "");
 			
-			str1 = str1.replace(".toString()", "");
-			str2 = str2.replace(".toString()", "");
+			tmpStr1 = tmpStr1.replace("new StringBuffer", "");
+			tmpStr2 = tmpStr2.replace("new StringBuffer", "");
 			
-			str1 = str1.replace("(", "").replace(")", "");
-			str2 = str2.replace("(", "").replace(")", "");
+			tmpStr1 = tmpStr1.replace(".append", "");
+			tmpStr2 = tmpStr2.replace(".append", "");
 			
-			str1 = str1.replace(" + ", "");
-			str2 = str2.replace(" + ", "");
+			tmpStr1 = tmpStr1.replace("String.valueOf", "");
+			tmpStr2 = tmpStr2.replace("String.valueOf", "");
 			
-			if (str1.equals(str2)) {
+			tmpStr1 = tmpStr1.replace(".toString()", "");
+			tmpStr2 = tmpStr2.replace(".toString()", "");
+			
+			tmpStr1 = tmpStr1.replace("(", "").replace(")", "");
+			tmpStr2 = tmpStr2.replace("(", "").replace(")", "");
+			
+			tmpStr1 = tmpStr1.replace(" + ", "");
+			tmpStr2 = tmpStr2.replace(" + ", "");
+			
+			if (tmpStr1.equals(tmpStr2)) {
 				return true;
 			}
 		}

@@ -608,8 +608,6 @@ public class EditorUtil {
 			str1 = str1.replace(" + ", "");
 			str2 = str2.replace(" + ", "");
 			
-			System.out.println("str1 : " + str1);
-			System.out.println("str2 : " + str2);
 			if (str1.equals(str2)) {
 				return true;
 			}

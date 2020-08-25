@@ -11,6 +11,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
+import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.BBButton;
 import com.bb.diff.form.textarea.BBEditor;
 import com.bb.diff.form.tree.BBTree;
@@ -110,7 +111,7 @@ public class BBForm extends JFrame {
 	
 	public BBButton addButton(int left, int top, int width, int height, String value) {
 		BBButton obj = new BBButton();
-		obj.setBackground(new Color(255, 255, 200));
+		obj.setBackground(CommonConst.buttonColor);
 		obj.setBounds(left, top, width, height);
 		obj.setText(value);
 		obj.setFont(font);

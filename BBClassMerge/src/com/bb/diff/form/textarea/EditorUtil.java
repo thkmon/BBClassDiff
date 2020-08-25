@@ -128,24 +128,33 @@ public class EditorUtil {
 	}
 	
 	
-	public static void loadDirByNode(BBTreeNode dirNode, boolean bRemoveIfSame, boolean bLoop) {
-		int childCount = dirNode.getChildCount();
-		int lastIndex = childCount - 1;
-		
-		if (childCount == 0 && bRemoveIfSame) {
-			dirNode.removeMe();
+	public static void loadDirByNode(BBTreeNode node, boolean bRemoveIfSame, boolean bLoop) {
+		if (node == null) {
+			return;
 		}
 		
-		for (int i=lastIndex; i>=0; i--) {
-			BBTreeNode oneNode = (BBTreeNode) dirNode.getChildAt(i);
-			if (oneNode.isFile()) {
-				System.out.println("loadDirByNode : " + i + ": " + oneNode);
-				EditorUtil.loadFileByNode(oneNode, bRemoveIfSame);
-			} else if (oneNode.isDir()) {
-				if (bLoop) {
-					loadDirByNode(oneNode, true, bRemoveIfSame);
+		if (node.isDir()) {
+			int childCount = node.getChildCount();
+			int lastIndex = childCount - 1;
+			
+			if (childCount == 0 && bRemoveIfSame) {
+				node.removeMe();
+			}
+			
+			for (int i=lastIndex; i>=0; i--) {
+				BBTreeNode oneNode = (BBTreeNode) node.getChildAt(i);
+				if (oneNode.isFile()) {
+					System.out.println("loadDirByNode : " + i + ": " + oneNode);
+					EditorUtil.loadFileByNode(oneNode, bRemoveIfSame);
+				} else if (oneNode.isDir()) {
+					if (bLoop) {
+						loadDirByNode(oneNode, bRemoveIfSame, true);
+					}
 				}
 			}
+		} else if (node.isFile()) {
+			System.out.println("loadDirByNode : " + node);
+			EditorUtil.loadFileByNode(node, bRemoveIfSame);
 		}
 	}
 	
@@ -578,12 +587,25 @@ public class EditorUtil {
 		
 		// MISSING_BLOCK_LABEL_ 고려
 		if (str1.indexOf("MISSING_BLOCK_LABEL_") > -1 && str2.indexOf("MISSING_BLOCK_LABEL_") > -1) {
-			String str1RemovedBlockLabel = str1.replaceAll("MISSING_BLOCK_LABEL\\_[0-9]*", "");
-			String str2RemovedBlockLabel = str1.replaceAll("MISSING_BLOCK_LABEL\\_[0-9]*", "");
-			if (str1RemovedBlockLabel.equals(str2RemovedBlockLabel)) {
+			String revisedStr1 = str1.replaceAll("MISSING_BLOCK_LABEL\\_[0-9]*", "");
+			String revisedStr2 = str2.replaceAll("MISSING_BLOCK_LABEL\\_[0-9]*", "");
+			if (revisedStr1.equals(revisedStr2)) {
 				return true;
 			}
 		}
+		
+		// JVM INSTR new #96  <Class StringBuilder>; 와 JVM INSTR new #95  <Class StringBuilder>; 같게 인식하도록 처리
+		if (str1.indexOf("JVM INSTR new #") > -1 && str2.indexOf("JVM INSTR new #") > -1) {
+			String revisedStr1 = str1.replaceAll("#[0-9]*", "");
+			String revisedStr2 = str2.replaceAll("#[0-9]*", "");
+			if (revisedStr1.equals(revisedStr2)) {
+				return true;
+			}
+		}
+		
+//		if (str1.indexOf("\\uFFFD") > -1 && str2.indexOf("\\uFFFD") > -1) {
+//			return true;
+//		}
 		
 		// new StringBuilder 와 new StringBuffer 는 편의를 위해 적당히 비교한다.
 		// 예를 들어 좌측 클래스는 StringBuilder, 우측 클래스는 단순 String 으로 컴파일 되었을 경우

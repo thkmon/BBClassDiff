@@ -125,12 +125,12 @@ public class DiffForm {
 		
 		TreeUtil.drawTree(leftClassesDir, rightClassesDir);
 		
+		CommonConst.bForm.open();
+		
 		/**
 		 * 크기 재설정
 		 */
 		formListener.doResizeForm();
-		
-		CommonConst.bForm.open();
 	}
 	
 	private void addMenuBar(BBForm form) {

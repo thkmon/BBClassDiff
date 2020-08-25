@@ -1,5 +1,6 @@
 package com.bb.diff.common;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -38,6 +39,8 @@ public class CommonConst {
 	public static float treeWidthRatio = 0.18f;
 	public static int treeWidth = (int) (fullWidth * treeWidthRatio);
 	public static int treeLeftMargin = 4;
+	
+	public static Color buttonColor = new Color(255, 255, 200);
 	
 	public static BBButton winmergeButton = null;
 	public static JLabel diffPointLabel = null;

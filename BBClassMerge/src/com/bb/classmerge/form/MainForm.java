@@ -21,7 +21,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-import com.bb.classmerge.main.BBClassMerge;
+import com.bb.classmerge.main.BBClassDiff;
 import com.bb.classmerge.util.ConsoleUtil;
 import com.bb.diff.common.CommonConst;
 
@@ -370,7 +370,7 @@ public class MainForm extends JFrame {
 		textField1 = new JTextField();
 		textField1.setFont(smallFont);
 		this.getContentPane().add(textField1);
-		textField1.setText(BBClassMerge.defaultDirPath1);
+		textField1.setText(BBClassDiff.defaultDirPath1);
 		textField1.setBounds(130, 10, 465, 35);
 		textField1.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		
@@ -378,7 +378,7 @@ public class MainForm extends JFrame {
 		textField2 = new JTextField();
 		textField2.setFont(smallFont);
 		this.getContentPane().add(textField2);
-		textField2.setText(BBClassMerge.defaultDirPath2);
+		textField2.setText(BBClassDiff.defaultDirPath2);
 		textField2.setBounds(130, 50, 465, 35);
 		textField2.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		

@@ -118,4 +118,10 @@ public class CommonConst {
 	
 	// 디컴파일시 손상을 고려한 비교하기 사용 여부
 	public static boolean bDiffConsideringBreakage = true;
+	
+	// CVS/SVN 리비전 문자열 제외하고 비교하기 여부
+	public static boolean bDiffExceptingRivisionString = true;
+	
+	// 클래스 핵심 라인만 비교하기 여부
+	public static boolean bDiffCoreContents = true;
 }

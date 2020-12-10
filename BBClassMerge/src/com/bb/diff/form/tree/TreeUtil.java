@@ -303,11 +303,21 @@ public class TreeUtil {
 	}
 	
 	
-	public static void redrawTree() {
+	public static void redrawTree(boolean bEraseRightContents) {
 		// 트리 전부 지우기
 		clearTree();
 		
+		// 트리 그리기
 		TreeUtil.drawTree(CommonConst.originParentPath, CommonConst.targetParentPath);
+
+		// 우측 콘텐츠 내용 비우기
+		if (bEraseRightContents) {
+			CommonConst.leftFilePathText.setText("");
+			CommonConst.rightFilePathText.setText("");
+			
+			CommonConst.leftFileContent.setText("");
+			CommonConst.rightFileContent.setText("");
+		}
 	}
 	
 	

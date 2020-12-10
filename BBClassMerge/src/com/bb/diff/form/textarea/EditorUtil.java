@@ -269,7 +269,41 @@ public class EditorUtil {
 				bCheckDiff = false;
 			}
 		}
-
+		
+		
+		// CVS/SVN 리비전 문자열 제외하고 비교하기 여부
+		// 다른 부분은 모두 동일하고 CVS/SVN 리비전 정보만 불일치할 경우, 같은 내용으로 판단하도록 처리
+		if (CommonConst.bDiffExceptingRivisionString) {
+			String strContent1 = content1.toString();
+			String strContent2 = content2.toString();
+			
+			// (1) CVS 리비전 문자열을 제거한다.
+			/*
+			public static String getCVSRevision() {
+		        return "$Revision: 1.6 $";
+		    }
+		    */
+			String regBlank = "[\\s\\t\\r\\n]*";
+			String regCVSRevision = "public static String getCVSRevision\\(\\)" + regBlank + "\\{" + regBlank + "return \"\\$Revision: [\\.0-9]* \\$\";" + regBlank + "}";
+			strContent1 = strContent1.replaceAll(regCVSRevision, "");
+			strContent2 = strContent2.replaceAll(regCVSRevision, "");
+			
+			// (2) SVN 리비전 문자열을 제거한다.
+			// public static final String SVNFILEINFO = "$Id: FileName.java 2400 2019-05-03 06:52:35Z userid $";
+			String regSVNRevision = "public static final String SVNFILEINFO" + regBlank + "=" + regBlank + "\"\\$Id: [a-zA-Z0-9\\.\\-:\\s]* \\$\";";
+			strContent1 = strContent1.replaceAll(regSVNRevision, "");
+			strContent2 = strContent2.replaceAll(regSVNRevision, "");
+			
+			// (3) 모든공백을 제거한다.
+			strContent1 = strContent1.replaceAll("[\\s\\t\\r\\n]*", "");
+			strContent2 = strContent2.replaceAll("[\\s\\t\\r\\n]*", "");
+			
+			if (strContent1.equals(strContent2)) {
+				bCheckDiff = false;
+			}
+		}
+		
+		
 		/**
 		 * 비교해서 색칠한다. (DIFF)
 		 */
@@ -573,7 +607,7 @@ public class EditorUtil {
 			str2 = "";
 		}
 		
-		if (str1.equals(str2)) {
+		if (str1.trim().equals(str2.trim())) {
 			return true;
 		}
 		
@@ -603,9 +637,13 @@ public class EditorUtil {
 			}
 		}
 		
-//		if (str1.indexOf("\\uFFFD") > -1 && str2.indexOf("\\uFFFD") > -1) {
-//			return true;
-//		}
+		if (str1.replace("org.w3c.dom.Document", "Document").equals(str2.replace("org.w3c.dom.Document", "Document"))) {
+			return true;
+		}
+		
+		if (str1.replace("super.", "").equals(str2.replace("super.", ""))) {
+			return true;
+		}
 		
 		// new StringBuilder 와 new StringBuffer 는 편의를 위해 적당히 비교한다.
 		// 예를 들어 좌측 클래스는 StringBuilder, 우측 클래스는 단순 String 으로 컴파일 되었을 경우

@@ -1,6 +1,6 @@
 package com.bb.diff.main;
 
-import com.bb.classmerge.main.BBClassMerge;
+import com.bb.classmerge.main.BBClassDiff;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.date.DateUtil;
 import com.bb.diff.form.form.DiffForm;
@@ -58,8 +58,8 @@ public class DiffHelperMain {
 		showDiffForm(CommonConst.originParentPath, CommonConst.targetParentPath);
 		
 		// 기존 메인폼 숨김처리
-		if (BBClassMerge.mainForm != null) {
-			BBClassMerge.mainForm.setVisible(false);
+		if (BBClassDiff.mainForm != null) {
+			BBClassDiff.mainForm.setVisible(false);
 		}
 	}
 	

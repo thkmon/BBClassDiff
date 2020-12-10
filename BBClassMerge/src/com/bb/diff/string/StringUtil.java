@@ -156,4 +156,108 @@ public class StringUtil {
 		
 		return strList;
 	}
+	
+	
+	/**
+	 * n개의 딜리미터로 split 처리
+	 * 
+	 * @param fullStr
+	 * @param delimeters
+	 * @return
+	 */
+	public static StringList splitMulti(String fullStr, String... delimeters) {
+
+		StringList resList = new StringList();
+
+		if (fullStr == null || fullStr.length() == 0) {
+			return null;
+		}
+
+		if (delimeters == null) {
+			System.out.println("splitMulti : delimeters are null");
+			return null;
+		}
+
+		int deliCount = delimeters.length;
+		if (deliCount < 1) {
+			System.out.println("splitMulti : delimeters' count is 0");
+			return null;
+		}
+
+		StringBuffer contentStack = new StringBuffer();
+
+		int fullLen = fullStr.length();
+		String oneDeli = "";
+
+		boolean isDeli = false;
+
+		for (int i = 0; i < fullLen; i++) {
+			isDeli = false;
+
+			for (int k = 0; k < deliCount; k++) {
+				oneDeli = delimeters[k];
+				if (oneDeli == null || oneDeli.length() == 0) {
+					continue;
+				}
+
+				if (i + oneDeli.length() > fullLen) {
+					continue;
+				}
+
+				if (fullStr.substring(i, i + oneDeli.length()).equals(oneDeli)) {
+					resList.add(contentStack.toString());
+					contentStack.delete(0, contentStack.length());
+
+					// oneDeli 로 자른다.
+					isDeli = true;
+					break;
+				}
+			}
+
+			if (!isDeli) {
+				contentStack.append(fullStr.substring(i, i + 1));
+			}
+		}
+
+		if (contentStack.length() > 0) {
+			resList.add(contentStack.toString());
+		}
+
+		return resList;
+	}
+	
+	
+	public static boolean containsOutsideDoubleQuotes(String str, String slice) {
+		if (str == null || str.length() == 0) {
+			return false;
+		}
+		
+		if (slice == null || slice.length() == 0) {
+			return false;
+		}
+		
+		StringBuffer buff = new StringBuffer();
+		
+		boolean bOutsideDoubleQuotes = false;
+		String oneChar = "";
+		int len = str.length();
+		for (int i=0; i<len; i++) {
+			oneChar = str.substring(i, i+1);
+			if (oneChar.equals("\"")) {
+				bOutsideDoubleQuotes = !bOutsideDoubleQuotes;
+				continue;
+			}
+			
+			if (!bOutsideDoubleQuotes) {
+				buff.append(oneChar);
+			}
+		}
+		
+		if (buff.toString().contains(slice)) {
+			return true;
+		}
+		
+		return false;
+		
+	}
 }

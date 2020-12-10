@@ -12,7 +12,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import com.bb.classmerge.main.BBClassMerge;
+import com.bb.classmerge.main.BBClassDiff;
 import com.bb.classmerge.util.FileNameUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.copy.CopyPath;
@@ -49,12 +49,12 @@ public class DiffForm {
 	 */
 	public void initDiffForm(String leftClassesDir, String rightClassesDir) {
 		
-		String title = BBClassMerge.title;
+		String title = BBClassDiff.title;
 		if (title == null) {
 			title = "";
 		}
 		
-		String version = BBClassMerge.version;
+		String version = BBClassDiff.version;
 		if (version != null && version.length() > 0) {
 			title = title + "_" + version;
 		}
@@ -287,7 +287,7 @@ public class DiffForm {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					TreeUtil.redrawTree();
+					TreeUtil.redrawTree(true);
 				}
 			});
 		}
@@ -311,11 +311,11 @@ public class DiffForm {
 					boolean bState = subMenu1.getState();
 					if (bState) {
 						CommonConst.bHideCapacityGapIsZero = true;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 						
 					} else {
 						CommonConst.bHideCapacityGapIsZero = false;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 					}
 				}
 			});
@@ -338,11 +338,11 @@ public class DiffForm {
 					boolean bState = subMenu2.getState();
 					if (bState) {
 						CommonConst.bHideLeftOnlyFileDir = true;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 						
 					} else {
 						CommonConst.bHideLeftOnlyFileDir = false;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 					}
 				}
 			});
@@ -365,11 +365,11 @@ public class DiffForm {
 					boolean bState = subMenu3.getState();
 					if (bState) {
 						CommonConst.bHideRightOnlyFileDir = true;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 						
 					} else {
 						CommonConst.bHideRightOnlyFileDir = false;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 					}
 				}
 			});
@@ -392,11 +392,11 @@ public class DiffForm {
 					boolean bState = subMenu4.getState();
 					if (bState) {
 						CommonConst.bHideBothFileDir = true;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 						
 					} else {
 						CommonConst.bHideBothFileDir = false;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 					}
 				}
 			});
@@ -419,11 +419,11 @@ public class DiffForm {
 					boolean bState = subMenu5.getState();
 					if (bState) {
 						CommonConst.bHideEmptyDirWithNoDiff = true;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 						
 					} else {
 						CommonConst.bHideEmptyDirWithNoDiff = false;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 					}
 				}
 			});
@@ -447,11 +447,67 @@ public class DiffForm {
 					boolean bState = subMenu6.getState();
 					if (bState) {
 						CommonConst.bDiffConsideringBreakage = true;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
 						
 					} else {
 						CommonConst.bDiffConsideringBreakage = false;
-						TreeUtil.redrawTree();
+						TreeUtil.redrawTree(true);
+					}
+				}
+			});
+		}
+		
+		{
+			final JCheckBoxMenuItem subMenu7 = new JCheckBoxMenuItem("CVS/SVN 리비전 문자열 제외하고 비교하기 (Diff Excepting CVS/SVN revision string)");
+			
+			// 초기값 세팅. true일 경우 check 처리
+			// CVS/SVN 리비전 문자열 제외하고 비교하기 여부
+			if (CommonConst.bDiffExceptingRivisionString) {
+				subMenu7.doClick();
+			}
+			
+			optionMenu.add(subMenu7);
+			
+			subMenu7.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					boolean bState = subMenu7.getState();
+					if (bState) {
+						CommonConst.bDiffExceptingRivisionString = true;
+						TreeUtil.redrawTree(true);
+						
+					} else {
+						CommonConst.bDiffExceptingRivisionString = false;
+						TreeUtil.redrawTree(true);
+					}
+				}
+			});
+		}
+		
+		{
+			final JCheckBoxMenuItem subMenu8 = new JCheckBoxMenuItem("클래스 핵심 라인만 비교하기 (Diff core lines of classes only)");
+			
+			// 초기값 세팅. true일 경우 check 처리
+			// 클래스 핵심 라인만 비교하기 여부
+			if (CommonConst.bDiffCoreContents) {
+				subMenu8.doClick();
+			}
+			
+			optionMenu.add(subMenu8);
+			
+			subMenu8.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					boolean bState = subMenu8.getState();
+					if (bState) {
+						CommonConst.bDiffCoreContents = true;
+						TreeUtil.redrawTree(true);
+						
+					} else {
+						CommonConst.bDiffCoreContents = false;
+						TreeUtil.redrawTree(true);
 					}
 				}
 			});

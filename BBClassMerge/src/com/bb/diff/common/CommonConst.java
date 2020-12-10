@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import com.bb.diff.date.DateUtil;
+import com.bb.classmerge.util.DateUtil;
 import com.bb.diff.form.button.BBButton;
 import com.bb.diff.form.form.BBForm;
 import com.bb.diff.form.form.DiffForm;
@@ -120,8 +120,8 @@ public class CommonConst {
 	public static boolean bDiffConsideringBreakage = true;
 	
 	// CVS/SVN 리비전 문자열 제외하고 비교하기 여부
-	public static boolean bDiffExceptingRivisionString = true;
+	public static boolean bDiffExceptingRivisionString = false;
 	
 	// 클래스 핵심 라인만 비교하기 여부
-	public static boolean bDiffCoreContents = true;
+	public static boolean bDiffCoreContents = false;
 }

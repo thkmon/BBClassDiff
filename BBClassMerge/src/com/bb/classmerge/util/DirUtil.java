@@ -2,8 +2,6 @@ package com.bb.classmerge.util;
 
 import java.io.File;
 
-import com.bb.classmerge.date.DateUtil;
-
 public class DirUtil {
 	
 	public static String makeDestinationDir(String parentFolderName) throws Exception {

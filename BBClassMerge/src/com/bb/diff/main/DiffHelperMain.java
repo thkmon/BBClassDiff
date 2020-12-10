@@ -1,8 +1,8 @@
 package com.bb.diff.main;
 
 import com.bb.classmerge.main.BBClassDiff;
+import com.bb.classmerge.util.DateUtil;
 import com.bb.diff.common.CommonConst;
-import com.bb.diff.date.DateUtil;
 import com.bb.diff.form.form.DiffForm;
 import com.bb.diff.log.LogUtil;
 import com.bb.diff.path.PathMaker;

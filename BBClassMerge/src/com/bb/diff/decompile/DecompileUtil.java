@@ -2,13 +2,12 @@ package com.bb.diff.decompile;
 
 import java.io.File;
 
+import com.bb.classmerge.util.StringUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.map.FileContentInfo;
 import com.bb.diff.path.PathUtil;
 import com.bb.diff.prototype.StringList;
-import com.bb.diff.string.StringUtil;
-//import com.strobel.decompiler.Decompiler;
 
 public class DecompileUtil {
 	

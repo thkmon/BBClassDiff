@@ -5,7 +5,7 @@ import java.io.File;
 import com.bb.classmerge.util.StringUtil;
 import com.bb.diff.data.PathData;
 import com.bb.diff.data.PathDataList;
-import com.bb.diff.data.StringList;
+import com.bb.diff.prototype.StringList;
 
 public class FileDiffController {
 	

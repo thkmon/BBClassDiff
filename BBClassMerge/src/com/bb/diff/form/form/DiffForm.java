@@ -13,12 +13,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import com.bb.classmerge.main.BBClassDiff;
+import com.bb.classmerge.util.DateUtil;
 import com.bb.classmerge.util.FileNameUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.copy.CopyPath;
 import com.bb.diff.copy.CopyPathList;
 import com.bb.diff.copy.CopyUtil;
-import com.bb.diff.date.DateUtil;
 import com.bb.diff.decompile.DecompileUtil;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.form.button.BBWinmergeButtonMouseListener;
@@ -193,7 +193,7 @@ public class DiffForm {
 					if (pathList != null && pathList.size() > 0) {
 						
 						try {
-							String tempFolderName = "files_" + DateUtil.getTodayDateTime();
+							String tempFolderName = "files_" + DateUtil.getTodayDateTimeWithUnderbar();
 							File tempDir = new File("temp\\" + tempFolderName);
 							if (!tempDir.exists()) {
 								tempDir.mkdirs();
@@ -237,7 +237,7 @@ public class DiffForm {
 					if (pathList != null && pathList.size() > 0) {
 						
 						try {
-							String tempFolderName = "files_" + DateUtil.getTodayDateTime();
+							String tempFolderName = "files_" + DateUtil.getTodayDateTimeWithUnderbar();
 							File tempDir = new File("temp\\" + tempFolderName);
 							if (!tempDir.exists()) {
 								tempDir.mkdirs();

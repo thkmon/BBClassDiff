@@ -3,6 +3,7 @@ package com.bb.diff.form.tree;
 import java.io.File;
 
 import com.bb.classmerge.util.FileNameUtil;
+import com.bb.classmerge.util.StringUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.copy.CopyPath;
 import com.bb.diff.copy.CopyPathList;
@@ -13,7 +14,6 @@ import com.bb.diff.file.FileUtil;
 import com.bb.diff.log.LogUtil;
 import com.bb.diff.path.PathUtil;
 import com.bb.diff.prototype.StringList;
-import com.bb.diff.string.StringUtil;
 
 public class TreeUtil {
 	public static String leftMark = "[Left]";

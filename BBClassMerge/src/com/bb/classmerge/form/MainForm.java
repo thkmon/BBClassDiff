@@ -216,31 +216,8 @@ public class MainForm extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 파일 선택 다이얼로그 정의
-				JFileChooser fileDialog = new JFileChooser();
-
-				// 폴더만 선택
-				fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-				// 파일만 선택
-				// fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-				// 기본 폴더 위치 변경
-				File dirObj = new File(textField1.getText());
-				if (dirObj.exists()) {
-				    fileDialog.setCurrentDirectory(dirObj);
-				} else {
-					dirObj = new File("C:\\");
-					if (dirObj.exists()) {
-					    fileDialog.setCurrentDirectory(dirObj);
-					}
-				}
-
-				// 파일 선택 다이얼로그 열기
-				int returnVal = fileDialog.showOpenDialog(null);
-				if (returnVal == 0) {
-				    // 파일 선택
-					String selectedPath = fileDialog.getSelectedFile().getAbsolutePath();
+				String selectedPath = new DialogWrapper().openFolderDialog(textField1.getText());
+				if (selectedPath != null && selectedPath.length() > 0) {
 					textField1.setText(selectedPath);
 				}
 			}
@@ -250,31 +227,8 @@ public class MainForm extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// 파일 선택 다이얼로그 정의
-				JFileChooser fileDialog = new JFileChooser();
-
-				// 폴더만 선택
-				fileDialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-
-				// 파일만 선택
-				// fileDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
-
-				// 기본 폴더 위치 변경
-				File dirObj = new File(textField2.getText());
-				if (dirObj.exists()) {
-				    fileDialog.setCurrentDirectory(dirObj);
-				} else {
-					dirObj = new File("C:\\");
-					if (dirObj.exists()) {
-					    fileDialog.setCurrentDirectory(dirObj);
-					}
-				}
-
-				// 파일 선택 다이얼로그 열기
-				int returnVal = fileDialog.showOpenDialog(null);
-				if (returnVal == 0) {
-				    // 파일 선택
-					String selectedPath = fileDialog.getSelectedFile().getAbsolutePath();
+				String selectedPath = new DialogWrapper().openFolderDialog(textField2.getText());
+				if (selectedPath != null && selectedPath.length() > 0) {
 					textField2.setText(selectedPath);
 				}
 			}

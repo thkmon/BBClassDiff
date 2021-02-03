@@ -111,6 +111,12 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 			String txtPath1 = PathUtil.reviseStandardPath(destDirPath + "/" + fileName1 + ".txt");
 			String txtPath2 = PathUtil.reviseStandardPath(destDirPath + "/" + fileName2 + ".txt");
 			
+			String winmergePath = getWinmergePath();
+			File winmergeObj = new File(winmergePath);
+			if (!winmergeObj.exists()) {
+				System.err.println("The program does not exists. (" + winmergeObj.getAbsolutePath() + ") Please modify option.properties.");
+				return;
+			}
 			
 			/**
 			 * 파일 쓰기
@@ -131,7 +137,7 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 			ProcessBuilder builder = new ProcessBuilder();
 			
 			ArrayList<String> argList = new ArrayList<String>();
-			argList.add(getWinmergePath());
+			argList.add(winmergePath);
 			argList.add(file1.getAbsolutePath());
 			argList.add(file2.getAbsolutePath());
 	

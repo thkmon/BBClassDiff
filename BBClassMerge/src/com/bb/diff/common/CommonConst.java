@@ -40,8 +40,14 @@ public class CommonConst {
 	public static int treeWidth = (int) (fullWidth * treeWidthRatio);
 	public static int treeLeftMargin = 4;
 	
+	public static int errLogWidth = 600;
+	public static int errLogHeight = 520;
+	
 	// gray color
 	public static Color buttonColor = new Color(230, 230, 230);
+	
+	public static Color formBackgroundColor = new Color(238, 238, 238);
+	public static Color buttonTextColor = new Color(0, 0, 0);
 	
 	public static BBButton winmergeButton = null;
 	public static JLabel diffPointLabel = null;

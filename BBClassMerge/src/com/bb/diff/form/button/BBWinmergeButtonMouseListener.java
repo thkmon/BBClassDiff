@@ -9,6 +9,7 @@ import com.bb.classmerge.util.DirUtil;
 import com.bb.classmerge.util.PropertiesUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.file.FileUtil;
+import com.bb.diff.form.alert.AlterForm;
 import com.bb.diff.path.PathUtil;
 
 public class BBWinmergeButtonMouseListener implements MouseListener {
@@ -103,10 +104,17 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 			String txtPath1 = PathUtil.reviseStandardPath(destDirPath + "/" + fileName1 + ".txt");
 			String txtPath2 = PathUtil.reviseStandardPath(destDirPath + "/" + fileName2 + ".txt");
 			
+			// diff 프로그램이 존재하지 않을 경우 에러 메시지 표시
 			String winmergePath = getWinmergePath();
 			File winmergeObj = new File(winmergePath);
 			if (!winmergeObj.exists()) {
-				System.err.println("The program does not exists. (" + winmergeObj.getAbsolutePath() + ") Please modify option.properties.");
+				String korErrMsg = "프로그램이 존재하지 않습니다. (" + winmergeObj.getAbsolutePath() + ") option.properties 파일 내의 경로를 수정해주세요.";
+				String enErrMsg = "The program does not exists. (" + winmergeObj.getAbsolutePath() + ") Please modify option.properties.";
+				
+				System.err.println(korErrMsg);
+				System.err.println(enErrMsg);
+				
+				AlterForm.open(korErrMsg);
 				return;
 			}
 			

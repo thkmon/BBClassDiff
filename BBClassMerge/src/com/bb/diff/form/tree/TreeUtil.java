@@ -539,7 +539,13 @@ public class TreeUtil {
 		}
 	}
 	
-	public static void find(BBTree fileTree, String inputText) {
-		TreeFindUtil.find(fileTree, inputText);
+	/**
+	 * 빠른 찾기 기능
+	 * 
+	 * @param fileTree
+	 * @param inputText
+	 */
+	public static void quickFind(BBTree fileTree, String inputText) {
+		TreeFindUtil.quickFind(fileTree, inputText);
 	}
 }

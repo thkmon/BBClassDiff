@@ -131,6 +131,10 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 				file2.createNewFile();
 			}
 			
+			// 보다 수월한 winmerge 비교를 위해 내용 보정
+			leftText = reviseFileContentForWinmerge(leftText);
+			rightText = reviseFileContentForWinmerge(rightText);
+			
 			FileUtil.writeFile(file1, leftText);
 			FileUtil.writeFile(file2, rightText);
 			
@@ -147,5 +151,47 @@ public class BBWinmergeButtonMouseListener implements MouseListener {
 		} catch (Exception e0) {
 			e0.printStackTrace();
 		}
+	}
+	
+	/**
+	 * 보다 수월한 winmerge 비교를 위해 내용 보정
+	 * 
+	 * @param str1
+	 * @return
+	 */
+	private String reviseFileContentForWinmerge(String str1) {
+		if (str1 == null || str1.length() == 0) {
+			return "";
+		}
+		
+		/*
+		// MISSING_BLOCK_LABEL_ 고려
+		str1 = str1.replaceAll("MISSING_BLOCK_LABEL\\_[0-9]*", "");
+		
+		// JVM INSTR new #96  <Class StringBuilder>; 와 JVM INSTR new #95  <Class StringBuilder>; 같게 인식하도록 처리
+		str1 = str1.replaceAll("JVM INSTR #[0-9]*", "");
+		
+		str1 = str1.replace("org.w3c.dom.Document", "Document");
+		
+		str1 = str1.replace("super.", "");
+		
+		// new StringBuilder 와 new StringBuffer 는 편의를 위해 적당히 비교한다.
+		// 예를 들어 좌측 클래스는 StringBuilder, 우측 클래스는 단순 String 으로 컴파일 되었을 경우
+		// 사실상 같은 내용인데 diff 로 체크되면 사람이 눈으로 일일히 대조해봐야 한다.
+		// 문자열을 적당히 잘라내어 유사하다고 판단되면 동일한 문자열로 본다.
+		str1 = str1.replace(".append(\"\")", "");
+		str1 = str1.replace("new StringBuilder", "");
+		str1 = str1.replace("new StringBuffer", "");
+		str1 = str1.replace(".append", "");
+		str1 = str1.replace("String.valueOf", "");
+		str1 = str1.replace(".toString()", "");
+		
+		str1 = str1.replace("(", "").replace(")", "");
+		
+		str1 = str1.replace(" + ", "");
+		str1 = str1.replace("// Misplaced declaration of an exception variable", "");
+		*/
+		
+		return str1;
 	}
 }

@@ -3,6 +3,7 @@ package com.bb.diff.form.form;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -45,6 +46,23 @@ public class BBForm extends JFrame {
 	
 	public void close() {
 		setVisible(false);
+	}
+	
+	public void focus() {
+		// 윈도우 실행되어있을 때만 동작
+		if (!this.isVisible()) {
+			return;
+		}
+		
+		// 최소화되어 있을 경우 윈도우 복원
+		if (this.getState() == Frame.ICONIFIED) {
+			this.setState(Frame.NORMAL);
+		}
+		
+		// 윈도우 포커싱
+		if (this.getFocusableWindowState()) {
+			this.requestFocus();
+		}
 	}
 	
 	public BBEditor addTextArea(int left, int top, int width, int height) {

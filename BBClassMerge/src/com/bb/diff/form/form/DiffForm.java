@@ -292,6 +292,25 @@ public class DiffForm {
 			});
 		}
 		
+		JMenu findMenu = new JMenu("Find");
+		
+		{
+			final JMenuItem subMenu1 = new JMenuItem("빠른 찾기(Quick Find)");
+			findMenu.add(subMenu1);
+			
+			subMenu1.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (CommonConst.quickFinderForm != null) {
+						CommonConst.quickFinderForm.open();
+					} else {
+						CommonConst.quickFinderForm = new QuickFinderForm("Quick Finder");
+					}
+				}
+			});
+		}
+		
 		JMenu optionMenu = new JMenu("Option");
 		
 		{
@@ -514,6 +533,7 @@ public class DiffForm {
 		}
 		
 		menuBar.add(treeMenu);
+		menuBar.add(findMenu);
 		menuBar.add(optionMenu);
 		
 		

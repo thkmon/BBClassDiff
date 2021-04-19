@@ -10,6 +10,7 @@ import com.bb.classmerge.util.DateUtil;
 import com.bb.diff.form.button.BBButton;
 import com.bb.diff.form.form.BBForm;
 import com.bb.diff.form.form.DiffForm;
+import com.bb.diff.form.form.QuickFinderForm;
 import com.bb.diff.form.textarea.BBEditor;
 import com.bb.diff.form.tree.BBTree;
 import com.bb.diff.map.FileContentMap;
@@ -50,6 +51,7 @@ public class CommonConst {
 	public static Color buttonTextColor = new Color(0, 0, 0);
 	
 	public static BBButton winmergeButton = null;
+	
 	public static JLabel diffPointLabel = null;
 	
 	public static BBButton leftUpButton = null;
@@ -131,4 +133,7 @@ public class CommonConst {
 	
 	// 클래스 핵심 라인만 비교하기 여부
 	public static boolean bDiffCoreContents = false;
+	
+	// 빠른 찾기 창
+	public static QuickFinderForm quickFinderForm = null;
 }

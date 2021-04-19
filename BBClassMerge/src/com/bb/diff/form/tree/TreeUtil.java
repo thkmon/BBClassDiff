@@ -538,4 +538,8 @@ public class TreeUtil {
 			}
 		}
 	}
+	
+	public static void find(BBTree fileTree, String inputText) {
+		TreeFindUtil.find(fileTree, inputText);
+	}
 }

@@ -29,6 +29,13 @@ public class TreeFindUtil {
 	 * @param inputText
 	 */
 	protected static void quickFind(BBTree fileTree, String inputText) {
+		if (inputText == null || inputText.trim().length() == 0) {
+			CommonConst.quickFinderForm.doWhenFailToFind("");
+			return;
+		} else {
+			inputText = inputText.trim();
+		}
+		
 		if (findMode) {
 			return;
 		}
@@ -48,7 +55,10 @@ public class TreeFindUtil {
 
 					CommonConst.quickFinderForm.close();
 				}
+			} else {
+				CommonConst.quickFinderForm.doWhenFailToFind(inputText);
 			}
+			
 		} finally {
 			findMode = false;
 		}
@@ -147,7 +157,7 @@ public class TreeFindUtil {
 	/**
 	 * 유사도 가져오기
 	 * 두 문자열이 유사할수록 작은 숫자를 리턴한다(같은 문자열이면 0을 리턴).
-	 * 단, 0 미만이면 상이한 문자열이다.
+	 * 단, 0 미만이면 유사도가 없는 문자열이다.
 	 * 
 	 * @param str1
 	 * @param str2

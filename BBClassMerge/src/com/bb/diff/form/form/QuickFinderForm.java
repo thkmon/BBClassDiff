@@ -1,10 +1,8 @@
 package com.bb.diff.form.form;
 
-import com.bb.diff.common.CommonConst;
-import com.bb.diff.form.tree.TreeUtil;
-import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -13,64 +11,97 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-public class QuickFinderForm extends JFrame {
-	public static JTextField textField1 = null;
+import com.bb.diff.common.CommonConst;
+import com.bb.diff.form.tree.TreeUtil;
 
-	private static JButton findButton = null;
+/**
+ * 빠른 찾기 윈도우
+ *
+ */
+public class QuickFinderForm extends JFrame {
+	private final String DEFAULT_TITLE = "Quick Finder";
+	private final int DEFAULT_HEIGHT = 110;
+	
+	private JTextField textField1 = null;
+
+	private JButton findButton = null;
 
 	private int buttonHeight = 35;
 
 	private Font basicFont = new Font("돋움", 0, 14);
 	private Font smallFont = new Font("돋움", 0, 12);
-
-	private int defaultHeight = 110;
-
-	public QuickFinderForm(String title) {
-		if (title == null) {
-			title = "";
-		}
-
+	
+	/**
+	 * 빠른 찾기 윈도우 초기화
+	 */
+	public QuickFinderForm() {
 		setLayout(null);
-		setTitle(title);
+		setTitle(DEFAULT_TITLE);
 
 		addBasicWindowListener();
 
 		addButton();
 		addTextField();
 
-		setBounds(0, 0, 800, this.defaultHeight);
+		setBounds(0, 0, 800, this.DEFAULT_HEIGHT);
 		setVisible(true);
-
+		
+		// 텍스트 박스 포커싱
 		textField1.requestFocus();
 	}
-
+	
+	/**
+	 * 빠른 찾기 윈도우 열기
+	 */
 	public void open() {
-		if (getState() == 1) {
-			setState(0);
+		setTitle(DEFAULT_TITLE);
+		
+		// 최소화되어 있을 경우 윈도우 복원
+		if (this.getState() == Frame.ICONIFIED) {
+			this.setState(Frame.NORMAL);
 		}
-
-		setVisible(true);
-
-		if (getFocusableWindowState()) {
-			requestFocus();
+		
+		// 윈도우 표시
+		this.setVisible(true);
+		
+		// 윈도우 포커싱
+		if (this.getFocusableWindowState()) {
+			this.requestFocus();
 		}
-
+		
+		// 텍스트 박스 포커싱
 		textField1.requestFocus();
 	}
-
+	
+	/**
+	 * 빠른 찾기 윈도우 닫기
+	 */
 	public void close() {
 		setVisible(false);
 	}
-
+	
+	/**
+	 * 찾기 실패 시 실행
+	 * @param inputText
+	 */
+	public void doWhenFailToFind(String inputText) {
+		this.setTitle("Fail to find \"" + inputText + "\"");
+	}
+	
+	/**
+	 * 윈도우 리스너 추가
+	 */
 	private void addBasicWindowListener() {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 			}
 		});
+		
 		addComponentListener(new ComponentListener() {
 			public void componentShown(ComponentEvent e) {
 			}
@@ -85,7 +116,10 @@ public class QuickFinderForm extends JFrame {
 			}
 		});
 	}
-
+	
+	/**
+	 * 버튼 추가
+	 */
 	private void addButton() {
 		findButton = new JButton("Find");
 		findButton.setBackground(CommonConst.buttonColor);
@@ -95,7 +129,7 @@ public class QuickFinderForm extends JFrame {
 
 		findButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				QuickFinderForm.doQuickFind();
+				CommonConst.quickFinderForm.doQuickFind();
 			}
 		});
 		
@@ -105,16 +139,19 @@ public class QuickFinderForm extends JFrame {
 
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == 10) {
-					QuickFinderForm.doQuickFind();
+					CommonConst.quickFinderForm.doQuickFind();
 				} else if (e.getKeyCode() == 27)
-					QuickFinderForm.doCancel();
+					CommonConst.quickFinderForm.doCancel();
 			}
 
 			public void keyPressed(KeyEvent e) {
 			}
 		});
 	}
-
+	
+	/**
+	 * 텍스트박스 추가
+	 */
 	private void addTextField() {
 		textField1 = new JTextField();
 		textField1.setFont(this.smallFont);
@@ -131,39 +168,27 @@ public class QuickFinderForm extends JFrame {
 
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == 10) {
-					QuickFinderForm.doQuickFind();
+					CommonConst.quickFinderForm.doQuickFind();
 				} else if (e.getKeyCode() == 27)
-					QuickFinderForm.doCancel();
+					CommonConst.quickFinderForm.doCancel();
 			}
 
 			public void keyPressed(KeyEvent e) {
 			}
 		});
 	}
-
-	public static void setFormDisable() {
-		textField1.setEnabled(false);
-
-		findButton.setEnabled(false);
-	}
-
-	public static void setFormEnable() {
-		textField1.setEnabled(true);
-
-		findButton.setEnabled(true);
-	}
-
+	
 	/**
 	 * 빠른 찾기
 	 */
-	private static void doQuickFind() {
+	private void doQuickFind() {
 		TreeUtil.quickFind(CommonConst.fileTree, textField1.getText());
 	}
 
 	/**
 	 * 취소(창 닫기)
 	 */
-	private static void doCancel() {
+	private void doCancel() {
 		CommonConst.quickFinderForm.close();
 		CommonConst.bForm.focus();
 	}

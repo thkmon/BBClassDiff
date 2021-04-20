@@ -305,7 +305,7 @@ public class DiffForm {
 					if (CommonConst.quickFinderForm != null) {
 						CommonConst.quickFinderForm.open();
 					} else {
-						CommonConst.quickFinderForm = new QuickFinderForm("Quick Finder");
+						CommonConst.quickFinderForm = new QuickFinderForm();
 					}
 				}
 			});

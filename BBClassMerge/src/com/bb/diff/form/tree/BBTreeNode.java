@@ -210,11 +210,9 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		
 		// 기존값 검사
 		FileContentInfo info = CommonConst.fileContentMap.get(absolPath);
-
-		// 190409. 무조건 새걸로 가져온다.
-		info = null;
-				
-		if (info == null) {
+		
+		// 파일 열기 시 항상 최신 파일을 가져오도록 처리
+		if (info == null || CommonConst.ALWAYS_GET_RECENT_FILE) {
 			info = new FileContentInfo();
 			
 		} else {
@@ -286,11 +284,9 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		
 		// 기존값 검사
 		FileContentInfo info = CommonConst.fileContentMap.get(absolPath);
-
-		// 190409. 무조건 새걸로 가져온다.
-		info = null;
-				
-		if (info == null) {
+		
+		// 파일 열기 시 항상 최신 파일을 가져오도록 처리
+		if (info == null || CommonConst.ALWAYS_GET_RECENT_FILE) {
 			info = new FileContentInfo();
 			
 		} else {
@@ -357,10 +353,8 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 		// 기존값 검사
 		FileContentInfo info = CommonConst.fileContentMap.get(absolPath);
 		
-		// 190409. 무조건 새걸로 가져온다.
-		info = null;
-
-		if (info == null) {
+		// 파일 열기 시 항상 최신 파일을 가져오도록 처리
+		if (info == null || CommonConst.ALWAYS_GET_RECENT_FILE) {
 			info = new FileContentInfo();
 			
 		} else {

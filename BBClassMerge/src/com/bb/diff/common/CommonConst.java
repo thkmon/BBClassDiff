@@ -136,4 +136,7 @@ public class CommonConst {
 	
 	// 빠른 찾기 창
 	public static QuickFinderForm quickFinderForm = null;
+	
+	// 파일 열기 시 항상 최신 파일을 가져오도록 처리
+	public static boolean ALWAYS_GET_RECENT_FILE = true;
 }

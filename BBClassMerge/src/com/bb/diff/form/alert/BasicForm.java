@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import com.bb.classmerge.form.JFrameUtil;
 import com.bb.diff.common.CommonConst;
 
 public class BasicForm extends JFrame {
@@ -80,6 +81,7 @@ public class BasicForm extends JFrame {
 		JScrollPane scrollPane = new JScrollPane(obj);
 		scrollPane.setBackground(Color.white);
 		scrollPane.setBounds(left, top, width, height);
+		JFrameUtil.setColorToJScrollPane(scrollPane);
 		
 		addComponentObj(scrollPane);
 		return scrollPane;

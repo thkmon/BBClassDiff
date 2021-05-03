@@ -10,10 +10,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -348,6 +346,7 @@ public class MainForm extends JFrame {
 		scrollPane.setBackground(lightGrayColor);
 		this.getContentPane().add(scrollPane);
 		scrollPane.setBounds(10, textAreaTop, 755, defaultHeight - textAreaHeightGap);
+		JFrameUtil.setColorToJScrollPane(scrollPane);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	}

@@ -346,7 +346,7 @@ public class MainForm extends JFrame {
 		scrollPane.setBackground(lightGrayColor);
 		this.getContentPane().add(scrollPane);
 		scrollPane.setBounds(10, textAreaTop, 755, defaultHeight - textAreaHeightGap);
-		JFrameUtil.setColorToJScrollPane(scrollPane);
+		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	}

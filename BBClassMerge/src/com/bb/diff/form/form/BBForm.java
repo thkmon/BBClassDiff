@@ -12,7 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import com.bb.classmerge.form.JFrameUtil;
+import com.bb.classmerge.form.JFrameDesignUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.BBButton;
 import com.bb.diff.form.textarea.BBEditor;
@@ -81,7 +81,7 @@ public class BBForm extends JFrame {
 		// 스크롤판 추가
 		JScrollPane scrollPane = new JScrollPane(obj);
 		scrollPane.setBounds(left, top, width, height);
-		JFrameUtil.setColorToJScrollPane(scrollPane);
+		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
 		
 		//화면에는 스크롤판 추가
 		container.add(scrollPane);
@@ -124,7 +124,7 @@ public class BBForm extends JFrame {
 		// 스크롤판 추가
 		JScrollPane scrollPane = new JScrollPane(obj);
 		scrollPane.setBounds(left, top, width, height);
-		JFrameUtil.setColorToJScrollPane(scrollPane);
+		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
 		
 		// 화면에는 스크롤판 추가
 		container.add(scrollPane);

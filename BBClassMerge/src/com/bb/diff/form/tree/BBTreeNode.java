@@ -90,7 +90,7 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 	 * @param node
 	 */
 	public void refreshNode(BBTreeNode node) {
-		if (CommonConst.treeModel != null) {
+		if (CommonConst.treeModel != null && node != null) {
 			CommonConst.treeModel.refreshNode(node);
 		}
 	}
@@ -99,11 +99,17 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 	/**
 	 * 특정 노드를 제거한다.
 	 */
-	public void removeMe() {
+	public void removeMe(boolean removeParentNodeAlso) {
 		if (this.getParent() != null) {
 			BBTreeNode parentNode = (BBTreeNode) this.getParent();
 			parentNode.remove(this);
-			refreshNode(this);
+			refreshNode(parentNode);
+			
+			if (removeParentNodeAlso) {
+				if (parentNode.getChildCount() == 0) {
+					parentNode.removeMe(removeParentNodeAlso);
+				}
+			}
 		}
 	}
 	
@@ -410,17 +416,13 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 			// 인포에서 값을 다시 가져온다.
 			if (isClassFile) {
 				resultBuffer = info.getFileDecompileContent();
-				if (resultBuffer == null || resultBuffer.length() == 0) {
-					// 내용 없으면 안됨
-					System.err.println("파일을 세팅할 수 없습니다. (1)");
-				}
-				
 			} else {
 				resultBuffer = info.getFileContent();
-				if (resultBuffer == null || resultBuffer.length() == 0) {
-					// 내용 없으면 안됨
-					System.err.println("파일을 세팅할 수 없습니다. (2)");
-				}
+			}
+			
+			if (resultBuffer == null || resultBuffer.length() == 0) {
+				// 내용 없으면 안됨
+				System.err.println("파일 내용을 가져올 수 없습니다. [" + absolPath + "]");
 			}
 		}
 		

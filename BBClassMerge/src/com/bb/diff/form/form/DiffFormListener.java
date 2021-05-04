@@ -62,7 +62,9 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.leftFileContent.setBounds(0, 0, boxWidth, boxHeight);
 		CommonConst.leftFileContent.getScrollPane().setBounds(box1Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
 		
-
+		// 좌측 하단 프로그레스 레이블 추가
+		CommonConst.progressLabel.setBounds(10, arrowButtonTop, CommonConst.progressLabelWidth, CommonConst.progressLabelHeight);
+		
 		// 좌측 버튼
 		int leftButtonLeft = box1Left;
 		CommonConst.leftUpButton.setBounds(leftButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);

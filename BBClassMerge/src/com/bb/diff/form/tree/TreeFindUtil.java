@@ -51,7 +51,7 @@ public class TreeFindUtil {
 
 			if ((foundNode != null) && (foundNode.isFile())) {
 				if (selectTreeNode(fileTree, foundNode)) {
-					EditorUtil.loadFileByNode(foundNode, false);
+					EditorUtil.loadFileByNode(foundNode, false, true);
 
 					CommonConst.quickFinderForm.close();
 				}

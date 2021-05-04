@@ -287,7 +287,7 @@ public class TreeUtil {
 		
 		int count = node.getChildCount();
 		if (count == 0) {
-			node.removeMe();
+			node.removeMe(true);
 			
 		} else if (count > 0) {
 			int lastIndex = count - 1;
@@ -296,7 +296,7 @@ public class TreeUtil {
 				
 				count = node.getChildCount();
 				if (count == 0) {
-					node.removeMe();
+					node.removeMe(true);
 				}
 			}
 		}
@@ -443,7 +443,7 @@ public class TreeUtil {
 			String title = node.getTitle();
 			if (title.indexOf("[Left]") == -1 && title.indexOf("[Right]") == -1) {
 				if (!bRootFolder && node.isDir()) {
-					node.removeMe();
+					node.removeMe(true);
 				}
 			}
 			
@@ -457,7 +457,7 @@ public class TreeUtil {
 					String title = node.getTitle();
 					if (title.indexOf("[Left]") == -1 && title.indexOf("[Right]") == -1) {
 						if (!bRootFolder && node.isDir()) {
-							node.removeMe();
+							node.removeMe(true);
 						}
 					}
 				}

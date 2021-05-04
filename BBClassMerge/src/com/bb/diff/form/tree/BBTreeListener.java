@@ -27,7 +27,7 @@ public class BBTreeListener implements MouseListener {
 //            	System.out.println("0 : rightAbsolutePath : " + node.getRightAbsoulutePath());
 
         		if (node.isFile()) {
-        			EditorUtil.loadFileByNode(node, false);
+        			EditorUtil.loadFileByNode(node, false, true);
         		}
             }
         }
@@ -49,7 +49,7 @@ public class BBTreeListener implements MouseListener {
 					}
 				} else if (node.isDir()) {
 					// 사용자가 폴더를 마우스 우클릭했을 경우
-					EditorUtil.loadDirByNode(node, true, true);
+					EditorUtil.loadDirByNode(node, true);
 				}
 			}
 		}

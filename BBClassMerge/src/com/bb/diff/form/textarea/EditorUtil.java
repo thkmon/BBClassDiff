@@ -2,6 +2,7 @@ package com.bb.diff.form.textarea;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import javax.swing.text.Style;
@@ -11,6 +12,7 @@ import javax.swing.text.StyledDocument;
 import com.bb.classmerge.util.FileNameUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.tree.BBTreeNode;
+import com.bb.diff.form.tree.BBTreeNodeList;
 import com.bb.diff.form.tree.TreeUtil;
 import com.bb.diff.map.FileContentUtil;
 import com.bb.diff.path.PathUtil;
@@ -127,34 +129,63 @@ public class EditorUtil {
 		}
 	}
 	
+	public static void loadDirByNode(BBTreeNode node, final boolean bRemoveIfSame) {
+		final BBTreeNodeList treeNodeList = new BBTreeNodeList();	
+		getNodeListFromDir(treeNodeList, node);
+		
+		final int treeNodeCount = treeNodeList.size();
+		if (treeNodeCount < 1) {
+			return;
+		}
+		
+		Collections.reverse(treeNodeList);
+		
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				super.run();
+				
+				CommonConst.leftFilePathText.setText("");
+				CommonConst.rightFilePathText.setText("");
+				
+				CommonConst.leftFileContent.setText("");
+				CommonConst.rightFileContent.setText("");
+				
+				try {
+					for (int i=0; i<treeNodeCount; i++) {
+						loadFileByNode(treeNodeList.get(i), bRemoveIfSame, false);
+						
+						// 좌측 하단 프로그레스 레이블에 개수 표시
+						int index = i + 1;
+						// System.out.println(index + "/" + treeNodeCount);
+						CommonConst.progressLabel.setText(index + "/" + treeNodeCount);
+					}
+				} finally {
+					CommonConst.progressLabel.setText("");
+				}
+			}
+		};
+		thread.start();
+	}
 	
-	public static void loadDirByNode(BBTreeNode node, boolean bRemoveIfSame, boolean bLoop) {
+	private static void getNodeListFromDir(BBTreeNodeList treeNodeList, BBTreeNode node) {
 		if (node == null) {
 			return;
 		}
 		
 		if (node.isDir()) {
 			int childCount = node.getChildCount();
-			int lastIndex = childCount - 1;
-			
-			if (childCount == 0 && bRemoveIfSame) {
-				node.removeMe();
-			}
-			
-			for (int i=lastIndex; i>=0; i--) {
-				BBTreeNode oneNode = (BBTreeNode) node.getChildAt(i);
-				if (oneNode.isFile()) {
-					System.out.println("loadDirByNode : " + i + ": " + oneNode);
-					EditorUtil.loadFileByNode(oneNode, bRemoveIfSame);
-				} else if (oneNode.isDir()) {
-					if (bLoop) {
-						loadDirByNode(oneNode, bRemoveIfSame, true);
-					}
+			if (childCount > 0) {
+				for (int i=(childCount - 1); i>=0; i--) {
+					BBTreeNode oneNode = (BBTreeNode) node.getChildAt(i);
+					getNodeListFromDir(treeNodeList, oneNode);
 				}
+			} else {
+				node.removeMe(true);
 			}
+			
 		} else if (node.isFile()) {
-			System.out.println("loadDirByNode : " + node);
-			EditorUtil.loadFileByNode(node, bRemoveIfSame);
+			treeNodeList.add(node);
 		}
 	}
 	
@@ -162,7 +193,7 @@ public class EditorUtil {
 	 * 노드 속의 정보를 활용해서 파일 열기
 	 * @param node
 	 */
-	public static boolean loadFileByNode(BBTreeNode node, boolean bRemoveIfSame) {
+	public static boolean loadFileByNode(BBTreeNode node, boolean bRemoveIfSame, boolean showOnEditor) {
 		
 		/**
 		 * 좌측 파일 출력
@@ -172,7 +203,9 @@ public class EditorUtil {
 		
 		if (leftFileExists) {
 			content1 = node.getFileContentString(true, null);
-			setLeftFileContentText(content1.toString(), true);
+			if (showOnEditor) {
+				setLeftFileContentText(content1.toString(), true);
+			}
 		}
 		
 		/**
@@ -183,16 +216,22 @@ public class EditorUtil {
 		
 		if (rightFileExists) {
 			content2 = node.getFileContentString(false, null);
-			setRightFileContentText(content2.toString(), true);
+			if (showOnEditor) {
+				setRightFileContentText(content2.toString(), true);
+			}
 		}
 		
 		
 		if (!leftFileExists) {
-			setLeftFileContentText("좌측 파일 내용이 없습니다.", true);
+			if (showOnEditor) {
+				setLeftFileContentText("좌측 파일 내용이 없습니다.", true);
+			}
 			return false;
 			
 		} else if (!rightFileExists) {
-			setRightFileContentText("우측 파일 내용이 없습니다.", true);
+			if (showOnEditor) {
+				setRightFileContentText("우측 파일 내용이 없습니다.", true);
+			}
 			return false;
 		}
 		
@@ -228,98 +267,99 @@ public class EditorUtil {
 			node.setTitle(newTitle);
 		}
 		
-		/**
-		 * col 위치 계산해서 저장해둔다.
-		 */
-		
-		colList1 = FileContentUtil.createColList(content1);
-		colList2 = FileContentUtil.createColList(content2);
-		
-		if (colList1 == null || colList1.size() == 0) {
-			return false;
-		}
-		
-		if (colList2 == null || colList2.size() == 0) {
-			return false;
-		}
-		
-		// 색칠용
-		leftDoc = CommonConst.leftFileContent.getStyledDocument();
-		rightDoc = CommonConst.rightFileContent.getStyledDocument();
-		
-		strongStyle1 = CommonConst.leftFileContent.addStyle("1", null);
-		strongStyle2 = CommonConst.rightFileContent.addStyle("2", null);
-		
-		normalStyle1 = CommonConst.leftFileContent.addStyle("3", null);
-		normalStyle2 = CommonConst.rightFileContent.addStyle("4", null);
-		
-		whiteStyle = CommonConst.leftFileContent.addStyle("5", null);
-		whiteStyle = CommonConst.rightFileContent.addStyle("6", null);
-		
-		StyleConstants.setBackground(whiteStyle, new Color(255, 255, 255));
-		StyleConstants.setBackground(strongStyle1, new Color(200, 200, 255));
-		StyleConstants.setBackground(strongStyle2, new Color(200, 200, 255));
-		StyleConstants.setBackground(normalStyle1, new Color(200, 200, 200));
-		StyleConstants.setBackground(normalStyle2, new Color(200, 200, 200));
-
 		// bCheckDiff == true일 때만 비교하자. 내용이 완전히 같을 경우 비교할 필요 없다.
-		boolean bCheckDiff = true;
-		if (content1 != null && content2 != null) {
-			if (content1.toString().trim().equals(content2.toString().trim())) {
-				bCheckDiff = false;
-			}
+		boolean bCheckDiff = shouldCheckDiff(content1, content2);
+		
+		if (showOnEditor) {
+			// 색칠용
+			leftDoc = CommonConst.leftFileContent.getStyledDocument();
+			rightDoc = CommonConst.rightFileContent.getStyledDocument();
+			
+			strongStyle1 = CommonConst.leftFileContent.addStyle("1", null);
+			strongStyle2 = CommonConst.rightFileContent.addStyle("2", null);
+			
+			normalStyle1 = CommonConst.leftFileContent.addStyle("3", null);
+			normalStyle2 = CommonConst.rightFileContent.addStyle("4", null);
+			
+			whiteStyle = CommonConst.leftFileContent.addStyle("5", null);
+			whiteStyle = CommonConst.rightFileContent.addStyle("6", null);
+			
+			StyleConstants.setBackground(whiteStyle, new Color(255, 255, 255));
+			StyleConstants.setBackground(strongStyle1, new Color(200, 200, 255));
+			StyleConstants.setBackground(strongStyle2, new Color(200, 200, 255));
+			StyleConstants.setBackground(normalStyle1, new Color(200, 200, 200));
+			StyleConstants.setBackground(normalStyle2, new Color(200, 200, 200));
 		}
-		
-		
-		// CVS/SVN 리비전 문자열 제외하고 비교하기 여부
-		// 다른 부분은 모두 동일하고 CVS/SVN 리비전 정보만 불일치할 경우, 같은 내용으로 판단하도록 처리
-		if (CommonConst.bDiffExceptingRivisionString) {
-			String strContent1 = content1.toString();
-			String strContent2 = content2.toString();
-			
-			// (1) CVS 리비전 문자열을 제거한다.
-			/*
-			public static String getCVSRevision() {
-		        return "$Revision: 1.6 $";
-		    }
-		    */
-			String regBlank = "[\\s\\t\\r\\n]*";
-			String regCVSRevision = "public static String getCVSRevision\\(\\)" + regBlank + "\\{" + regBlank + "return \"\\$Revision: [\\.0-9]* \\$\";" + regBlank + "}";
-			strContent1 = strContent1.replaceAll(regCVSRevision, "");
-			strContent2 = strContent2.replaceAll(regCVSRevision, "");
-			
-			// (2) SVN 리비전 문자열을 제거한다.
-			// public static final String SVNFILEINFO = "$Id: FileName.java 2400 2019-05-03 06:52:35Z userid $";
-			String regSVNRevision = "public static final String SVNFILEINFO" + regBlank + "=" + regBlank + "\"\\$Id: [a-zA-Z0-9\\.\\-:\\s]* \\$\";";
-			strContent1 = strContent1.replaceAll(regSVNRevision, "");
-			strContent2 = strContent2.replaceAll(regSVNRevision, "");
-			
-			// (3) 모든공백을 제거한다.
-			strContent1 = strContent1.replaceAll("[\\s\\t\\r\\n]*", "");
-			strContent2 = strContent2.replaceAll("[\\s\\t\\r\\n]*", "");
-			
-			if (strContent1.equals(strContent2)) {
-				bCheckDiff = false;
-			}
-		}
-		
 		
 		/**
 		 * 비교해서 색칠한다. (DIFF)
 		 */
-		diffForHighlight(bCheckDiff, node, fileName, bRemoveIfSame);
+		diffForHighlight(bCheckDiff, content1, content2, node, fileName, bRemoveIfSame, showOnEditor);
 		
-		/**
-		 * 디폴트로 최상단 보여주기
-		 */
-		CommonConst.leftFileContent.setScrollTop();
-		CommonConst.rightFileContent.setScrollTop();
-
+		if (showOnEditor) {
+			/**
+			 * 디폴트로 최상단 보여주기
+			 */
+			CommonConst.leftFileContent.setScrollTop();
+			CommonConst.rightFileContent.setScrollTop();
+		}
+		
 		return true;
 	}
 	
+	/**
+	 * 차이점을 검사(diff)해야 하는지 여부
+	 * 
+	 * @param content1
+	 * @param content2
+	 * @return
+	 */
+	private static boolean shouldCheckDiff(StringBuffer content1, StringBuffer content2) {
+		boolean bCheckDiff = true;
+		
+		String strContent1 = content1 != null ? content1.toString() : "";
+		String strContent2 = content2 != null ? content2.toString() : "";
+		
+		if (strContent1.trim().equals(strContent2.trim())) {
+			bCheckDiff = false;
+		}
+		
+		// CVS/SVN 리비전 문자열 제외하고 비교하기 여부
+		// 다른 부분은 모두 동일하고 CVS/SVN 리비전 정보만 불일치할 경우, 같은 내용으로 판단하도록 처리
+		if (bCheckDiff) {
+			if (CommonConst.bDiffExceptingRivisionString) {
+				// (1) CVS 리비전 문자열을 제거한다.
+				/*
+				public static String getCVSRevision() {
+			        return "$Revision: 1.6 $";
+			    }
+			    */
+				String regBlank = "[\\s\\t\\r\\n]*";
+				String regCVSRevision = "public static String getCVSRevision\\(\\)" + regBlank + "\\{" + regBlank + "return \"\\$Revision: [\\.0-9]* \\$\";" + regBlank + "}";
+				strContent1 = strContent1.replaceAll(regCVSRevision, "");
+				strContent2 = strContent2.replaceAll(regCVSRevision, "");
+				
+				// (2) SVN 리비전 문자열을 제거한다.
+				// public static final String SVNFILEINFO = "$Id: FileName.java 2400 2019-05-03 06:52:35Z userid $";
+				String regSVNRevision = "public static final String SVNFILEINFO" + regBlank + "=" + regBlank + "\"\\$Id: [a-zA-Z0-9\\.\\-:\\s]* \\$\";";
+				strContent1 = strContent1.replaceAll(regSVNRevision, "");
+				strContent2 = strContent2.replaceAll(regSVNRevision, "");
+				
+				// (3) 모든공백을 제거한다.
+				strContent1 = strContent1.replaceAll("[\\s\\t\\r\\n]*", "");
+				strContent2 = strContent2.replaceAll("[\\s\\t\\r\\n]*", "");
+				
+				if (strContent1.equals(strContent2)) {
+					bCheckDiff = false;
+				}
+			}
+		}
+		
+		return bCheckDiff;
+	}
 	
-	public static void diffForHighlight(boolean bCheckDiff, BBTreeNode node, String fileName, boolean bRemoveIfSame) {
+	
+	private static void diffForHighlight(boolean bCheckDiff, StringBuffer content1, StringBuffer content2, BBTreeNode node, String fileName, boolean bRemoveIfSame, boolean showOnEditor) {
 		
 		String fileExt = FileNameUtil.getExtensionFromPath(fileName);
 		boolean bClassFile = fileExt.equalsIgnoreCase("class");
@@ -328,6 +368,20 @@ public class EditorUtil {
 		
 		// bCheckDiff == true일 때만 비교하자. 내용이 완전히 같을 경우 비교할 필요 없다.
 		if (bCheckDiff) {
+			/**
+			 * col 위치 계산해서 저장해둔다.
+			 */
+			colList1 = FileContentUtil.createColList(content1);
+			if (colList1 == null) {
+				colList1 = new ColList();
+			}
+			
+			colList2 = FileContentUtil.createColList(content2);
+			if (colList2 == null) {
+				colList2 = new ColList();
+			}
+			
+			
 			CommonConst.diffPointList = new ArrayList<Integer>();
 			CommonConst.currentDiffPointIndex = -1;
 			
@@ -363,10 +417,14 @@ public class EditorUtil {
 				
 				if (bEmptyLine1 && bEmptyLine2) {
 					if (rowNum1 < rowCount1) {
-						paintLeftDocWhite(rowNum1);
+						if (showOnEditor) {
+							paintLeftDocWhite(rowNum1);
+						}
 					}
 					if (rowNum2 < rowCount2) {
-						paintRightDocWhite(rowNum2);
+						if (showOnEditor) {
+							paintRightDocWhite(rowNum2);
+						}
 					}
 					rowNum1++;
 					rowNum2++;
@@ -378,10 +436,14 @@ public class EditorUtil {
 					
 					// 다른거 나오면 일단 칠한다.
 					if (rowNum1 < rowCount1) {
-						paintLeftDocStrong(rowNum1);
+						if (showOnEditor) {
+							paintLeftDocStrong(rowNum1);
+						}
 					}
 					if (rowNum2 < rowCount2) {
-						paintRightDocStrong(rowNum2);
+						if (showOnEditor) {
+							paintRightDocStrong(rowNum2);
+						}
 					}
 	
 					//{{{{{
@@ -412,8 +474,10 @@ public class EditorUtil {
 								newNum1 = tempNum1;
 								newNum2 = rightMap.get(lineText1);
 								
-								paintLeftDocWhite(newNum1);
-								paintRightDocWhite(newNum2);
+								if (showOnEditor) {
+									paintLeftDocWhite(newNum1);
+									paintRightDocWhite(newNum2);
+								}
 								
 								bFound = true;
 								break;
@@ -428,8 +492,10 @@ public class EditorUtil {
 								newNum1 = leftMap.get(lineText2);
 								newNum2 = tempNum2;
 								
-								paintLeftDocWhite(newNum1);
-								paintRightDocWhite(newNum2);
+								if (showOnEditor) {
+									paintLeftDocWhite(newNum1);
+									paintRightDocWhite(newNum2);
+								}
 								
 								bFound = true;
 								break;
@@ -448,11 +514,15 @@ public class EditorUtil {
 						
 						// 1. 찾았다면 그 직전 라인까지 색칠해준다.
 						for (int rr=rowNum1+1; rr<newNum1; rr++) {
-							paintLeftDocNormal(rr);
+							if (showOnEditor) {
+								paintLeftDocNormal(rr);
+							}
 						}
 						
 						for (int rr=rowNum2+1; rr<newNum2; rr++) {
-							paintRightDocNormal(rr);
+							if (showOnEditor) {
+								paintRightDocNormal(rr);
+							}
 						}
 						
 						// 2. 탐색을 계속한다.
@@ -465,11 +535,15 @@ public class EditorUtil {
 						
 						// 1. 전체색칠
 						for (int rr=rowNum1+1; rr<=lastRowNum1; rr++) {
-							paintLeftDocNormal(rr);
+							if (showOnEditor) {
+								paintLeftDocNormal(rr);
+							}
 						}
 						
 						for (int rr=rowNum2+1; rr<=lastRowNum2; rr++) {
-							paintRightDocNormal(rr);
+							if (showOnEditor) {
+								paintRightDocNormal(rr);
+							}
 						}
 						break;
 					}
@@ -482,10 +556,14 @@ public class EditorUtil {
 					
 				} else if (equalsForClass(lineText1, lineText2, bClassFile)) {
 					if (rowNum1 < rowCount1) {
-						paintLeftDocWhite(rowNum1);
+						if (showOnEditor) {
+							paintLeftDocWhite(rowNum1);
+						}
 					}
 					if (rowNum2 < rowCount2) {
-						paintRightDocWhite(rowNum2);
+						if (showOnEditor) {
+							paintRightDocWhite(rowNum2);
+						}
 					}
 					rowNum1++;
 					rowNum2++;
@@ -494,39 +572,27 @@ public class EditorUtil {
 			}
 		}
 		
-		CommonConst.diffPointLabel.setText("Diff Point : " + diffPoint);
+		if (showOnEditor) {
+			CommonConst.diffPointLabel.setText("Diff Point : " + diffPoint);
+		}
 		
 		if (diffPoint == 0) {
 			if (fileName != null && fileName.length() > 0) {
-				CommonConst.leftFileContent.setText("내용 동일함 : " + fileName);
-				CommonConst.rightFileContent.setText("내용 동일함 : " + fileName);
+				if (showOnEditor) {
+					CommonConst.leftFileContent.setText("내용 동일함 : " + fileName);
+					CommonConst.rightFileContent.setText("내용 동일함 : " + fileName);
+				}
 				
 			} else {
-				CommonConst.leftFileContent.setText("내용 동일함");
-				CommonConst.rightFileContent.setText("내용 동일함");
+				if (showOnEditor) {
+					CommonConst.leftFileContent.setText("내용 동일함");
+					CommonConst.rightFileContent.setText("내용 동일함");
+				}
 			}
 			
 			if (bRemoveIfSame) {
-				// 부모 노드가 비었는지 미리 검사한다.
-				boolean bParentIsEmpty = false;
-				BBTreeNode parentNode = null;
-				if (node.getParent() != null) {
-					parentNode = (BBTreeNode) node.getParent();
-					
-					if (parentNode.getChildCount() < 2) {
-						// 1개 일경우도 비었다고 판단한다. 왜? 곧 자식을 지울 예정이기 때문에.
-						bParentIsEmpty = true;
-					}
-				}
-				
 				// 특정 노드를 삭제한다.
-				node.removeMe();
-				
-				if (bParentIsEmpty) {
-					// 부모 노드가 비었을 경우, 부모 노드를 삭제한다.
-					parentNode.removeMe();
-				}
-				
+				node.removeMe(true);
 				
 			} else {
 				// 차이점 없이 내용 동일할 경우 {●} 마크를 앞에 붙여준다.
@@ -638,6 +704,10 @@ public class EditorUtil {
 		}
 		
 		if (str1.replace("org.w3c.dom.Document", "Document").equals(str2.replace("org.w3c.dom.Document", "Document"))) {
+			return true;
+		}
+		
+		if (str1.replace("driver.OracleResultSet", "OracleResultSet").equals(str2.replace("driver.OracleResultSet", "OracleResultSet"))) {
 			return true;
 		}
 		

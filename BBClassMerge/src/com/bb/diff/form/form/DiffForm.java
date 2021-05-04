@@ -104,6 +104,9 @@ public class DiffForm {
 			}
 		});
 		
+		// 좌측 하단 프로그레스 레이블 추가
+		CommonConst.progressLabel = CommonConst.bForm.addLabel(0, 0, 0, 0, "");
+		
 		CommonConst.leftUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, "▲");
 		CommonConst.leftDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, "▼");
 		CommonConst.leftTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, "B");

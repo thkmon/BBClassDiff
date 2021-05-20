@@ -1,6 +1,7 @@
 package com.bb.diff.form.textarea;
 
 import java.awt.Color;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,43 +64,70 @@ public class EditorUtil {
 		rightDoc.setCharacterAttributes(oneCol.getBeginCol(), oneCol.getGapCol(), normalStyle2, true);
 	}
 	
-	private static boolean setLeftPathText(String str) {
-		if (str == null) {
-			CommonConst.leftFilePathText.setText(CommonConst.FNULL);
+	private static boolean checkLeftFileExists(BBTreeNode node) {
+		String leftPath = node.getLeftAbsoulutePath();
+		if (leftPath == null || leftPath.length() == 0) {
 			return false;
 		}
 		
-		if (str.length() == 0) {
+		File file = new File(leftPath);
+		if (!file.exists()) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private static boolean checkRightFileExists(BBTreeNode node) {
+		String rightPath = node.getRightAbsoulutePath();
+		if (rightPath == null || rightPath.length() == 0) {
+			return false;
+		}
+		
+		File file = new File(rightPath);
+		if (!file.exists()) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private static boolean setLeftPathText(BBTreeNode node) {
+		String leftPath = node.getLeftAbsoulutePath();
+		if (leftPath == null || leftPath.length() == 0) {
 			CommonConst.leftFilePathText.setText(CommonConst.FEMPTY);
 			return false;
 		}
 		
-		CommonConst.leftFilePathText.setText(str);
-		return true;
-	}
-	
-	private static boolean setRightPathText(String str) {
-		if (str == null) {
-			CommonConst.rightFilePathText.setText(CommonConst.FNULL);
+		File file = new File(leftPath);
+		if (!file.exists()) {
+			CommonConst.leftFilePathText.setText(CommonConst.FEMPTY);
 			return false;
 		}
 		
-		if (str.length() == 0) {
+		CommonConst.leftFilePathText.setText(leftPath);
+		return true;
+	}
+	
+	private static boolean setRightPathText(BBTreeNode node) {
+		String rightPath = node.getRightAbsoulutePath();
+		if (rightPath == null || rightPath.length() == 0) {
 			CommonConst.rightFilePathText.setText(CommonConst.FEMPTY);
 			return false;
 		}
 		
-		CommonConst.rightFilePathText.setText(str);
+		File file = new File(rightPath);
+		if (!file.exists()) {
+			CommonConst.rightFilePathText.setText(CommonConst.FEMPTY);
+			return false;
+		}
+		
+		CommonConst.rightFilePathText.setText(rightPath);
 		return true;
 	}
 	
 	private static void setLeftFileContentText(String str, boolean setScrollToTop) {
-		if (str == null) {
-			CommonConst.leftFileContent.setText(CommonConst.FNULL);
-			return;
-		}
-		
-		if (str.length() == 0) {
+		if (str == null || str.length() == 0) {
 			CommonConst.leftFileContent.setText(CommonConst.FEMPTY);
 			return;
 		}
@@ -112,12 +140,7 @@ public class EditorUtil {
 	}
 	
 	private static void setRightFileContentText(String str, boolean setScrollToTop) {
-		if (str == null) {
-			CommonConst.rightFileContent.setText(CommonConst.FNULL);
-			return;
-		}
-		
-		if (str.length() == 0) {
+		if (str == null || str.length() == 0) {
 			CommonConst.rightFileContent.setText(CommonConst.FEMPTY);
 			return;
 		}
@@ -195,10 +218,12 @@ public class EditorUtil {
 	 */
 	public static boolean loadFileByNode(BBTreeNode node, boolean bRemoveIfSame, boolean showOnEditor) {
 		
+		refreshNodeInfo(node, bRemoveIfSame, showOnEditor);
+		
 		/**
 		 * 좌측 파일 출력
 		 */
-		boolean leftFileExists = setLeftPathText(node.getLeftAbsoulutePath());
+		boolean leftFileExists = setLeftPathText(node);
 		StringBuffer content1 = null;
 		
 		if (leftFileExists) {
@@ -211,7 +236,7 @@ public class EditorUtil {
 		/**
 		 * 우측 파일 출력
 		 */
-		boolean rightFileExists = setRightPathText(node.getRightAbsoulutePath());
+		boolean rightFileExists = setRightPathText(node);
 		StringBuffer content2 = null;
 		
 		if (rightFileExists) {
@@ -221,50 +246,34 @@ public class EditorUtil {
 			}
 		}
 		
-		
-		if (!leftFileExists) {
+		if (!leftFileExists && !rightFileExists) {
 			if (showOnEditor) {
-				setLeftFileContentText("좌측 파일 내용이 없습니다.", true);
+				setLeftFileContentText("좌측 파일이 존재하지 않습니다.", true);
+				setRightFileContentText("우측 파일이 존재하지 않습니다.", true);
+			}
+			
+			if (bRemoveIfSame) {
+				// 특정 노드를 삭제한다.
+				node.removeMe(true);
+			}
+			return false;
+			
+		} else if (!leftFileExists) {
+			if (showOnEditor) {
+				setLeftFileContentText("좌측 파일이 존재하지 않습니다.", true);
 			}
 			return false;
 			
 		} else if (!rightFileExists) {
 			if (showOnEditor) {
-				setRightFileContentText("우측 파일 내용이 없습니다.", true);
+				setRightFileContentText("우측 파일이 존재하지 않습니다.", true);
 			}
 			return false;
 		}
 		
-		
 		String fileName = PathUtil.getFileNameWithExt(node.getLeftAbsoulutePath());
 		if (fileName == null || fileName.length() == 0) {
 			fileName = PathUtil.getFileNameWithExt(node.getRightAbsoulutePath());
-		}
-		
-		/**
-		 * 용량을 다시 계산한다.
-		 */
-		String oldTitle = node.getTitle();
-		if (oldTitle.lastIndexOf("[") > -1) {
-			oldTitle = oldTitle.substring(0, oldTitle.lastIndexOf("[")).trim();
-		}
-		
-		if (leftFileExists && rightFileExists) {
-			// 양쪽에 있는 파일은 용량비교해서 gap을 표시한다.
-			String leftAbsolutePath = node.getLeftAbsoulutePath();
-			String rightAbsolutePath = node.getRightAbsoulutePath();
-			long volGap = TreeUtil.getVolumeGap(leftAbsolutePath, rightAbsolutePath);
-			
-			String newTitle = oldTitle + " " + "[" + volGap + "]";
-			node.setTitle(newTitle);
-			
-		} else if (leftFileExists) {
-			String newTitle = oldTitle + " " + TreeUtil.leftMark;
-			node.setTitle(newTitle);
-			
-		} else if (rightFileExists) {
-			String newTitle = oldTitle + " " + TreeUtil.rightMark;
-			node.setTitle(newTitle);
 		}
 		
 		// bCheckDiff == true일 때만 비교하자. 내용이 완전히 같을 경우 비교할 필요 없다.
@@ -305,6 +314,64 @@ public class EditorUtil {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * 노드 속의 정보를 활용해서 파일 열기
+	 * @param node
+	 */
+	public static void refreshNodeInfo(BBTreeNode node, boolean bRemoveIfSame, boolean showOnEditor) {
+		
+		/**
+		 * 좌측 파일 출력
+		 */
+		boolean leftFileExists = checkLeftFileExists(node);
+		
+		/**
+		 * 우측 파일 출력
+		 */
+		boolean rightFileExists = checkRightFileExists(node);
+		
+		/**
+		 * 용량을 다시 계산한다.
+		 */
+		String oldTitle = node.getTitle();
+		if (oldTitle.lastIndexOf("[") > -1) {
+			oldTitle = oldTitle.substring(0, oldTitle.lastIndexOf("[")).trim();
+		}
+		
+		if (leftFileExists && rightFileExists) {
+			// 양쪽에 있는 파일은 용량비교해서 gap을 표시한다.
+			String leftAbsolutePath = node.getLeftAbsoulutePath();
+			String rightAbsolutePath = node.getRightAbsoulutePath();
+			long volGap = TreeUtil.getVolumeGap(leftAbsolutePath, rightAbsolutePath);
+			
+			String newTitle = oldTitle + " " + "[" + volGap + "]";
+			node.setTitle(newTitle);
+			
+		} else if (leftFileExists) {
+			String newTitle = oldTitle + " " + TreeUtil.leftMark;
+			node.setTitle(newTitle);
+			
+		} else if (rightFileExists) {
+			String newTitle = oldTitle + " " + TreeUtil.rightMark;
+			node.setTitle(newTitle);
+			
+		} else {
+			
+			int middleBracketIndex = oldTitle.lastIndexOf("}");
+			if (middleBracketIndex > -1) {
+				String newTitle = "{●}" + oldTitle.substring(middleBracketIndex + 1) + " " + TreeUtil.noneMark;
+				// 사용자가 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여주는 기능이 있으므로, 이 점을 고려하여 처리한다.
+				if (oldTitle.startsWith("{◎}")) {
+					newTitle = "{◎}" + newTitle;
+				}
+				node.setTitle(newTitle);
+			} else {
+				String newTitle = "{●}" + oldTitle + " " + TreeUtil.noneMark;
+				node.setTitle(newTitle);
+			}
+		}
 	}
 	
 	/**
@@ -634,10 +701,10 @@ public class EditorUtil {
 		/**
 		 * 좌측 파일 출력
 		 */
-		boolean leftFileExists = setLeftPathText(node.getLeftAbsoulutePath());
+		boolean leftFileExists = setLeftPathText(node);
 		
 		if (!leftFileExists) {
-			 setLeftFileContentText("좌측 파일 내용이 없습니다.", true);
+			 setLeftFileContentText("좌측 파일이 존재하지 않습니다.", true);
 			return false;
 		}
 		
@@ -651,10 +718,10 @@ public class EditorUtil {
 		/**
 		 * 우측 파일 출력
 		 */
-		boolean rightFileExists = setRightPathText(node.getRightAbsoulutePath());
+		boolean rightFileExists = setRightPathText(node);
 		
 		if (!rightFileExists) {
-			setRightFileContentText("우측 파일 내용이 없습니다.", true);
+			setRightFileContentText("우측 파일이 존재하지 않습니다.", true);
 			return false;
 		}
 		

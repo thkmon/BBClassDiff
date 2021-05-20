@@ -74,7 +74,9 @@ public class DiffForm {
 		/**
 		 * 기존 트리 추가하는 코드 (상속버전)
 		 */
-		BBTreeNode rootNode = new BBTreeNode("Root");		
+		BBTreeNode rootNode = new BBTreeNode("Root");
+		rootNode.setDir(true);
+		
 		BBTree bbTree = new BBTree(rootNode);
 		CommonConst.treeModel = bbTree;
 		bbTree.setCellRenderer(new BBTreeCellRenderer());

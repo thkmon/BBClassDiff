@@ -82,11 +82,11 @@ public class FileDiffController {
 				pathDataList.addNotDupl(pathData);
 				
 			} else if (existing1) {
-				PathData pathData = new PathData(onePath, path1, "", 0);
+				PathData pathData = new PathData(onePath, path1, path2, 0);
 				pathDataList.addNotDupl(pathData);
 				
 			} else if (existing2) {
-				PathData pathData = new PathData(onePath, "", path2, 0);
+				PathData pathData = new PathData(onePath, path1, path2, 0);
 				pathDataList.addNotDupl(pathData);
 			}
 		}

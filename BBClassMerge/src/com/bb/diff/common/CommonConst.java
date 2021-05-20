@@ -78,7 +78,6 @@ public class CommonConst {
 	public static int arrowButtonWidth = 44;
 	public static int arrowButtonHeight = 24;
 	
-	public static final String FNULL = "{null}";
 	public static final String FEMPTY = "{empty}";
 	
 	public static int movingValueOfTextArea = 40;

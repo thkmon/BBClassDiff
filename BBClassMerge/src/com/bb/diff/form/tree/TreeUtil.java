@@ -18,6 +18,7 @@ import com.bb.diff.prototype.StringList;
 public class TreeUtil {
 	public static String leftMark = "[Left]";
 	public static String rightMark = "[Right]";
+	public static String noneMark = "[None]";
 	
 	public static void drawTree(String leftClassesDir, String rightClassesDir) {
 		
@@ -189,7 +190,9 @@ public class TreeUtil {
 						childNode.setLeftAbsoulutePath(leftAbsolutePath);
 						// 마지막 청크일 때만 파일인지 검사한다. (전체 패스가 C:/aaa/bbb/temp.java 일 경우, 마지막 청크는 temp.java 임)
 						if (lastChunkElement && oneFile == null) {
-							oneFile = new File(leftAbsolutePath);
+							if (new File(leftAbsolutePath).exists()) {
+								oneFile = new File(leftAbsolutePath);
+							}
 						}
 					}
 				}
@@ -202,7 +205,9 @@ public class TreeUtil {
 						childNode.setRightAbsoulutePath(rightAbsolutePath);
 						// 마지막 청크일 때만 파일인지 검사한다. (전체 패스가 C:/aaa/bbb/temp.java 일 경우, 마지막 청크는 temp.java 임)
 						if (lastChunkElement && oneFile == null) {
-							oneFile = new File(rightAbsolutePath);
+							if (new File(rightAbsolutePath).exists()) {
+								oneFile = new File(rightAbsolutePath);
+							}
 						}
 					}
 				}

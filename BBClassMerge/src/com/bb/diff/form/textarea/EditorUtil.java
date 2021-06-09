@@ -19,6 +19,9 @@ import com.bb.diff.map.FileContentUtil;
 import com.bb.diff.path.PathUtil;
 import com.bb.diff.prototype.Col;
 import com.bb.diff.prototype.ColList;
+import com.thkmon.bbj3.io.file.prototype.FileContent;
+import com.thkmon.bbj3.io.file.util.FileReadUtil;
+import com.thkmon.bbj3.parser.buff.prototype.ParsedContent;
 
 public class EditorUtil {
 	
@@ -277,7 +280,7 @@ public class EditorUtil {
 		}
 		
 		// bCheckDiff == true일 때만 비교하자. 내용이 완전히 같을 경우 비교할 필요 없다.
-		boolean bCheckDiff = shouldCheckDiff(content1, content2);
+		boolean bCheckDiff = shouldCheckDiff(node, content1, content2);
 		
 		if (showOnEditor) {
 			// 색칠용
@@ -381,7 +384,7 @@ public class EditorUtil {
 	 * @param content2
 	 * @return
 	 */
-	private static boolean shouldCheckDiff(StringBuffer content1, StringBuffer content2) {
+	private static boolean shouldCheckDiff(BBTreeNode node, StringBuffer content1, StringBuffer content2) {
 		boolean bCheckDiff = true;
 		
 		String strContent1 = content1 != null ? content1.toString() : "";
@@ -418,6 +421,56 @@ public class EditorUtil {
 				
 				if (strContent1.equals(strContent2)) {
 					bCheckDiff = false;
+				}
+			}
+		}
+		
+		// JAVA 파일의 경우 내용 파싱해서 주석제외하고 비교하기
+		if (bCheckDiff) {
+			String fileExtOnly = node.getLeftFileNameExtOnly();
+			if (fileExtOnly == null || fileExtOnly.length() == 0) {
+				fileExtOnly = node.getRightFileNameExtOnly();
+			}
+			
+			if (fileExtOnly != null && fileExtOnly.equalsIgnoreCase("java")) {
+				try {
+					FileContent leftFileContent = FileReadUtil.getInstance().readFile(node.getLeftAbsoulutePath());
+					FileContent rightFileContent = FileReadUtil.getInstance().readFile(node.getRightAbsoulutePath());
+					
+					ParsedContent leftParsedContent = leftFileContent.parse();
+					ParsedContent rightParsedContent = rightFileContent.parse();
+					
+					StringBuffer leftTypeBuffer = leftParsedContent.getTypeBuffer();
+					StringBuffer leftContentBuffer = leftParsedContent.getContentBuffer();
+					if (leftTypeBuffer.length() == leftContentBuffer.length()) {
+						for (int i=leftContentBuffer.length() - 1; i>=0; i--) {
+							// 뒤에서부터 주석에 해당하는 문자열 제거
+							if (leftTypeBuffer.substring(i, i+1).equalsIgnoreCase("c")) {
+								leftContentBuffer.deleteCharAt(i);
+							}
+						}
+					}
+				
+					StringBuffer rightTypeBuffer = rightParsedContent.getTypeBuffer();
+					StringBuffer rightContentBuffer = rightParsedContent.getContentBuffer();
+					if (rightTypeBuffer.length() == rightContentBuffer.length()) {
+						for (int i=rightContentBuffer.length() - 1; i>=0; i--) {
+							// 뒤에서부터 주석에 해당하는 문자열 제거
+							if (rightTypeBuffer.substring(i, i+1).equalsIgnoreCase("c")) {
+								rightContentBuffer.deleteCharAt(i);
+							}
+						}	
+					}
+					
+					String leftContent = leftContentBuffer.toString().replace(" ", "").replace("\r", "").replace("\n", "").trim();
+					String rightContent = rightContentBuffer.toString().replace(" ", "").replace("\r", "").replace("\n", "").trim();
+					
+					if (leftContent.equals(rightContent)) {
+						bCheckDiff = false;
+					}
+					
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		}

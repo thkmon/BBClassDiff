@@ -8,6 +8,7 @@ import com.bb.diff.common.CommonConst;
 import com.bb.diff.decompile.DecompileUtil;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.map.FileContentInfo;
+import com.bb.diff.path.PathUtil;
 
 public class BBTreeNode extends DefaultMutableTreeNode {
 	
@@ -434,4 +435,19 @@ public class BBTreeNode extends DefaultMutableTreeNode {
 	}
 	
 	
+	public String getLeftFileNameWithExt() {
+		return PathUtil.getFileNameWithExt(getLeftAbsoulutePath());
+	}
+	
+	public String getRightFileNameWithExt() {
+		return PathUtil.getFileNameWithExt(getRightAbsoulutePath());
+	}
+	
+	public String getLeftFileNameExtOnly() {
+		return PathUtil.getFileExtOnly(getLeftAbsoulutePath());
+	}
+	
+	public String getRightFileNameExtOnly() {
+		return PathUtil.getFileExtOnly(getRightAbsoulutePath());
+	}
 }

@@ -37,6 +37,12 @@ public class PathUtil {
 	}
 	
 	
+	/**
+	 * 확장자 부분을 포함한 파일명 가져오기
+	 * 
+	 * @param path
+	 * @return
+	 */
 	public static String getFileNameWithExt(String path) {
 		if (path == null || path.length() == 0) {
 			return "";
@@ -49,5 +55,30 @@ public class PathUtil {
 		}
 		
 		return path;
+	}
+	
+	/**
+	 * 확장자 부분만 가져오기
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static String getFileExtOnly(String path) {
+		if (path == null || path.length() == 0) {
+			return "";
+		}
+		
+		path = reviseStandardPath(path);
+		
+		if (path.lastIndexOf("\\") > -1) {
+			path = path.substring(path.lastIndexOf("\\") + 1);
+		}
+		
+		int lastIndexDot = path.lastIndexOf(".");
+		if (lastIndexDot < 0) {
+			return "";
+		}
+		
+		return path.substring(lastIndexDot + 1);
 	}
 }

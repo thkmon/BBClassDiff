@@ -3,6 +3,7 @@ package com.bb.diff.form.form;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.io.File;
@@ -11,6 +12,9 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.UIManager;
+import javax.swing.border.LineBorder;
+import javax.swing.plaf.IconUIResource;
 
 import com.bb.classmerge.main.BBClassDiff;
 import com.bb.classmerge.util.DateUtil;
@@ -26,6 +30,7 @@ import com.bb.diff.form.textarea.EditorListener;
 import com.bb.diff.form.tree.BBTree;
 import com.bb.diff.form.tree.BBTreeCellRenderer;
 import com.bb.diff.form.tree.BBTreeNode;
+import com.bb.diff.form.tree.TreeNodeIcon;
 import com.bb.diff.form.tree.TreeUtil;
 
 public class DiffForm {
@@ -65,21 +70,27 @@ public class DiffForm {
 		CommonConst.leftFilePathText = CommonConst.bForm.addTextInput(0, 0, 0, 0);
 		CommonConst.rightFilePathText = CommonConst.bForm.addTextInput(0, 0, 0, 0);
 		
-		CommonConst.winmergeButton = CommonConst.bForm.addButton(0, 0, 85, 24, "Compare");
+		CommonConst.winmergeButton = CommonConst.bForm.addButton(4, 3, 85, 24, "Compare");
 		CommonConst.winmergeButton.addMouseListener(new BBWinmergeButtonMouseListener());
 		
-		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(95, 0, 80, 24, "Diff Point : ");
+		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(95, 2, 80, 24, "Diff Point : ");
 		
 		
 		/**
 		 * 기존 트리 추가하는 코드 (상속버전)
 		 */
+		// 트리노드 여닫는 아이콘 플러스/마이너스(+/-) 기호로 변경
+		UIManager.put("Tree.collapsedIcon", new IconUIResource(new TreeNodeIcon('+')));
+		UIManager.put("Tree.expandedIcon",  new IconUIResource(new TreeNodeIcon('-')));
+		
 		BBTreeNode rootNode = new BBTreeNode("Root");
 		rootNode.setDir(true);
 		
 		BBTree bbTree = new BBTree(rootNode);
 		CommonConst.treeModel = bbTree;
-		bbTree.setCellRenderer(new BBTreeCellRenderer());
+		
+		BBTreeCellRenderer treeCellRenderer = new BBTreeCellRenderer();
+		bbTree.setCellRenderer(treeCellRenderer);
 		
 		CommonConst.fileTree = CommonConst.bForm.addTree(0, 0, 0, 0, bbTree);
 		CommonConst.leftFileContent = CommonConst.bForm.addTextArea(0, 0, 0, 0);
@@ -109,21 +120,21 @@ public class DiffForm {
 		// 좌측 하단 프로그레스 레이블 추가
 		CommonConst.progressLabel = CommonConst.bForm.addLabel(0, 0, 0, 0, "");
 		
-		CommonConst.leftUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, "▲");
-		CommonConst.leftDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, "▼");
-		CommonConst.leftTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, "B");
-		CommonConst.leftBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, "E");
+		CommonConst.leftUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
+		CommonConst.leftDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
+		CommonConst.leftTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
+		CommonConst.leftBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
 		
-		CommonConst.bothDiffButton = CommonConst.bForm.addButton(0, 0, 0, 0, "D");
-		CommonConst.bothUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, "▲");
-		CommonConst.bothDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, "▼");
-		CommonConst.bothTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, "B");
-		CommonConst.bothBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, "E");
+		CommonConst.bothDiffButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
+		CommonConst.bothUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
+		CommonConst.bothDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
+		CommonConst.bothTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
+		CommonConst.bothBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
 		
-		CommonConst.rightUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, "▲");
-		CommonConst.rightDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, "▼");
-		CommonConst.rightTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, "B");
-		CommonConst.rightBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, "E");
+		CommonConst.rightUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
+		CommonConst.rightDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
+		CommonConst.rightTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
+		CommonConst.rightBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
 		
 		DiffFormListener formListener = new DiffFormListener();
 		CommonConst.bForm.addComponentListener(formListener);
@@ -139,7 +150,11 @@ public class DiffForm {
 	}
 	
 	private void addMenuBar(BBForm form) {
+		UIManager.put("PopupMenu.border", new LineBorder(CommonConst.menuBorderColor));
 		JMenuBar menuBar = new JMenuBar();
+		
+		menuBar.setBackground(CommonConst.formBackgroundColor);
+		menuBar.setBorderPainted(false);
 		
 		/*
 		JMenu screenMenu = new JMenu("Menu1");
@@ -158,6 +173,7 @@ public class DiffForm {
 		
 		
 		JMenu treeMenu = new JMenu("Tree");
+		treeMenu.setMnemonic(KeyEvent.VK_T); // alt + T
 		
 		{
 			final JMenuItem subMenu1 = new JMenuItem("전체 확장 (Expand All)");
@@ -186,7 +202,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JMenuItem subMenu3 = new JMenuItem("트리의 모든 파일 추출(Extract all files in tree)");
+			final JMenuItem subMenu3 = new JMenuItem("트리의 모든 파일 추출 (Extract all files in tree)");
 			treeMenu.add(subMenu3);
 			
 			subMenu3.addActionListener(new ActionListener() {
@@ -230,7 +246,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JMenuItem subMenu4 = new JMenuItem("클래스로 자바 파일 추출(Extract java files from classes in tree)");
+			final JMenuItem subMenu4 = new JMenuItem("트리의 모든 클래스 파일로부터 자바 파일 추출 (Extract java files from classes in tree)");
 			treeMenu.add(subMenu4);
 			
 			subMenu4.addActionListener(new ActionListener() {
@@ -298,9 +314,10 @@ public class DiffForm {
 		}
 		
 		JMenu findMenu = new JMenu("Find");
+		findMenu.setMnemonic(KeyEvent.VK_F); // alt + F
 		
 		{
-			final JMenuItem subMenu1 = new JMenuItem("빠른 찾기(Quick Find)");
+			final JMenuItem subMenu1 = new JMenuItem("빠른 찾기 (Quick Find)");
 			findMenu.add(subMenu1);
 			
 			subMenu1.addActionListener(new ActionListener() {
@@ -317,6 +334,7 @@ public class DiffForm {
 		}
 		
 		JMenu optionMenu = new JMenu("Option");
+		optionMenu.setMnemonic(KeyEvent.VK_O); // alt + O
 		
 		{
 			final JCheckBoxMenuItem subMenu1 = new JCheckBoxMenuItem("용량 차이가 0인 파일 숨기기 (Hide files that capacity difference is 0)");

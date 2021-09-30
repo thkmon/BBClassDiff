@@ -3,11 +3,11 @@ package com.bb.diff.common;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.bb.classmerge.util.DateUtil;
-import com.bb.diff.form.button.BBButton;
 import com.bb.diff.form.form.BBForm;
 import com.bb.diff.form.form.DiffForm;
 import com.bb.diff.form.form.QuickFinderForm;
@@ -45,12 +45,30 @@ public class CommonConst {
 	public static int errLogHeight = 520;
 	
 	// gray color
-	public static Color buttonColor = new Color(230, 230, 230);
+	public static Color buttonBackgroundColor = new Color(230, 230, 230);
 	
-	public static Color formBackgroundColor = new Color(238, 238, 238);
+	public static Color formBackgroundColor = new Color(245, 246, 247); // #F5F6F7
 	public static Color buttonTextColor = new Color(0, 0, 0);
 	
-	public static BBButton winmergeButton = null;
+	
+
+	
+	// 공통 색상
+	public static Color color5 = new Color(85, 85, 85); // #555555
+	public static Color color7 = new Color(119, 119, 119); // #777777
+	public static Color color9 = new Color(153, 153, 153); // #999999
+	public static Color colorA = new Color(170, 170, 170); // #AAAAAA
+	public static Color colorB = new Color(187, 187, 187); // #BBBBBB
+	public static Color colorC = new Color(204, 204, 204); // #CCCCCC
+	
+	public static Color menuBorderColor = colorA;
+	public static Color buttonBorderColor = colorA;
+	// public static Color buttonBorderColorWhenHover = color7;
+	public static Color buttonBackgroundColorWhenHover = new Color(232, 239, 247); // #E8EFF7
+	public static Color buttonBorderColorWhenHover = new Color(164, 206, 249); // #A4CEF9
+	
+	
+	public static JButton winmergeButton = null;
 	
 	public static JLabel diffPointLabel = null;
 	
@@ -59,24 +77,24 @@ public class CommonConst {
 	public static int progressLabelWidth = 200;
 	public static int progressLabelHeight = 24;
 	
-	public static BBButton leftUpButton = null;
-	public static BBButton leftDownButton = null;
-	public static BBButton rightUpButton = null;
-	public static BBButton rightDownButton = null;
+	public static JButton leftUpButton = null;
+	public static JButton leftDownButton = null;
+	public static JButton rightUpButton = null;
+	public static JButton rightDownButton = null;
 	
-	public static BBButton bothDiffButton = null;
-	public static BBButton bothUpButton = null;
-	public static BBButton bothDownButton = null;
+	public static JButton bothDiffButton = null;
+	public static JButton bothUpButton = null;
+	public static JButton bothDownButton = null;
 	
-	public static BBButton leftTopButton = null;
-	public static BBButton leftBottomButton = null;
-	public static BBButton rightTopButton = null;
-	public static BBButton rightBottomButton = null;
-	public static BBButton bothTopButton = null;
-	public static BBButton bothBottomButton = null;
+	public static JButton leftTopButton = null;
+	public static JButton leftBottomButton = null;
+	public static JButton rightTopButton = null;
+	public static JButton rightBottomButton = null;
+	public static JButton bothTopButton = null;
+	public static JButton bothBottomButton = null;
 	
-	public static int arrowButtonWidth = 44;
-	public static int arrowButtonHeight = 24;
+	public static int arrowButtonWidth = 26;
+	public static int arrowButtonHeight = 22;
 	
 	public static final String FEMPTY = "{empty}";
 	

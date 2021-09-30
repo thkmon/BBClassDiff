@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 
 import com.bb.classmerge.form.JFrameDesignUtil;
 import com.bb.diff.common.CommonConst;
+import com.bb.diff.form.button.JButtonUtil;
+import com.bb.diff.form.text.JTextFieldUtil;
 
 public class BasicForm extends JFrame {
 	
@@ -99,8 +101,7 @@ public class BasicForm extends JFrame {
 	
 	
 	public JTextField addTextInput(int left, int top, int width, int height) {
-		JTextField obj = new JTextField();
-		obj.setBackground(Color.white);
+		JTextField obj = JTextFieldUtil.createNewJTextField();
 		obj.setBounds(left, top, width, height);
 		obj.setFont(font);
 		
@@ -133,10 +134,9 @@ public class BasicForm extends JFrame {
 	
 	
 	public JButton addButton(int left, int top, int width, int height, String value) {
-		JButton obj = new JButton();
-		obj.setBackground(CommonConst.buttonColor);
+		JButton obj = JButtonUtil.createNewJButton(value);
+		obj.setBackground(CommonConst.buttonBackgroundColor);
 		obj.setBounds(left, top, width, height);
-		obj.setText(value);
 		obj.setFont(font);
 		obj.setForeground(CommonConst.buttonTextColor);
 		

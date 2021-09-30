@@ -16,6 +16,8 @@ public class JFrameDesignUtil {
 	private static Color grayColor = new Color(205, 205, 205);
 	private static Color lightGrayColor = new Color(241, 241, 241);
 	
+	private static Color color80 = new Color(80, 80, 80);
+	
 	/**
 	 * JScrollPane 객체의 색상을 세팅한다.
 	 * 
@@ -50,7 +52,7 @@ public class JFrameDesignUtil {
 			protected JButton createDecreaseButton(int orientation) {
 				Color thumbColor = lightGrayColor;
 				Color thumbShadowColor = lightGrayColor;
-				Color thumbthumbDarkShadowColor = Color.BLACK;
+				Color thumbthumbDarkShadowColor = color80;
 				Color thumbHighlightColor = lightGrayColor;
 				
 				return new BasicArrowButton(orientation, 
@@ -64,7 +66,7 @@ public class JFrameDesignUtil {
 			protected JButton createIncreaseButton(int orientation) {
 				Color thumbColor = lightGrayColor;
 				Color thumbShadowColor = lightGrayColor;
-				Color thumbthumbDarkShadowColor = Color.BLACK;
+				Color thumbthumbDarkShadowColor = color80;
 				Color thumbHighlightColor = lightGrayColor;
 				
 				return new BasicArrowButton(orientation,

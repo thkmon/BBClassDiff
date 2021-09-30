@@ -6,6 +6,7 @@ import java.awt.event.ComponentListener;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.BBArrowButtonMouseListener;
 import com.bb.diff.form.button.BBDiffButtonMouseListener;
+import com.bb.diff.image.ImageIconUtil;
 
 public class DiffFormListener implements ComponentListener {
 
@@ -68,15 +69,19 @@ public class DiffFormListener implements ComponentListener {
 		// 좌측 버튼
 		int leftButtonLeft = box1Left;
 		CommonConst.leftUpButton.setBounds(leftButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.leftUpButton.setIcon(ImageIconUtil.getIconFromName("button", "up"));
 		
 		leftButtonLeft = leftButtonLeft + CommonConst.arrowButtonWidth;
 		CommonConst.leftDownButton.setBounds(leftButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.leftDownButton.setIcon(ImageIconUtil.getIconFromName("button", "down"));
 		
 		leftButtonLeft = leftButtonLeft + CommonConst.arrowButtonWidth;
 		CommonConst.leftTopButton.setBounds(leftButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.leftTopButton.setIcon(ImageIconUtil.getIconFromName("button", "top"));
 		
 		leftButtonLeft = leftButtonLeft + CommonConst.arrowButtonWidth;
 		CommonConst.leftBottomButton.setBounds(leftButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.leftBottomButton.setIcon(ImageIconUtil.getIconFromName("button", "bottom"));
 		
 		// 버튼 액션
 		CommonConst.leftTopButton.addMouseListener(new BBArrowButtonMouseListener   (true, false, true, true));
@@ -97,15 +102,19 @@ public class DiffFormListener implements ComponentListener {
 		// 우측 버튼
 		int rightButtonLeft = box2Left;
 		CommonConst.rightUpButton.setBounds(rightButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.rightUpButton.setIcon(ImageIconUtil.getIconFromName("button", "up"));
 		
 		rightButtonLeft = rightButtonLeft + CommonConst.arrowButtonWidth;
 		CommonConst.rightDownButton.setBounds(rightButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.rightDownButton.setIcon(ImageIconUtil.getIconFromName("button", "down"));
 		
 		rightButtonLeft = rightButtonLeft + CommonConst.arrowButtonWidth;
 		CommonConst.rightTopButton.setBounds(rightButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.rightTopButton.setIcon(ImageIconUtil.getIconFromName("button", "top"));
 		
 		rightButtonLeft = rightButtonLeft + CommonConst.arrowButtonWidth;
 		CommonConst.rightBottomButton.setBounds(rightButtonLeft, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.rightBottomButton.setIcon(ImageIconUtil.getIconFromName("button", "bottom"));
 		
 		
 		// 버튼 액션
@@ -116,20 +125,25 @@ public class DiffFormListener implements ComponentListener {
 		
 		
 		// 공통 버튼
-		int bothArrowButton1Left = box2Left + boxWidth - ((CommonConst.arrowButtonWidth - 4) * 4) - 46;
+		int bothArrowButton1Left = box2Left + boxWidth - ((CommonConst.arrowButtonWidth) * 4) - CommonConst.arrowButtonWidth;
 		CommonConst.bothDiffButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.bothDiffButton.setIcon(ImageIconUtil.getIconFromName("button", "next_diff"));
 		
-		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth - 4;
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth;
 		CommonConst.bothUpButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.bothUpButton.setIcon(ImageIconUtil.getIconFromName("button", "up2"));
 		
-		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth - 4;
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth;
 		CommonConst.bothDownButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.bothDownButton.setIcon(ImageIconUtil.getIconFromName("button", "down2"));
 		
-		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth - 4;
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth;
 		CommonConst.bothTopButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.bothTopButton.setIcon(ImageIconUtil.getIconFromName("button", "top2"));
 		
-		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth - 4;		
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth;		
 		CommonConst.bothBottomButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.bothBottomButton.setIcon(ImageIconUtil.getIconFromName("button", "bottom2"));
 		
 		
 		// 버튼 액션

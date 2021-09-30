@@ -7,6 +7,8 @@ import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -14,7 +16,8 @@ import javax.swing.JTextField;
 
 import com.bb.classmerge.form.JFrameDesignUtil;
 import com.bb.diff.common.CommonConst;
-import com.bb.diff.form.button.BBButton;
+import com.bb.diff.form.button.JButtonUtil;
+import com.bb.diff.form.text.JTextFieldUtil;
 import com.bb.diff.form.textarea.BBEditor;
 import com.bb.diff.form.tree.BBTree;
 
@@ -27,11 +30,16 @@ public class BBForm extends JFrame {
 	public BBForm(int width, int height, String title) {
 		container = getContentPane();
 		container.setLayout(null);
-		setSize(width, height);
-		setBounds(200, 200, width, height);
-		setTitle(title);		
+		
+		this.setSize(width, height);
+		this.setBounds(200, 200, width, height);
+		this.setTitle(title);
+		
 		font = new Font("돋움", 13, 13);
 		smallFont = new Font("돋움", 9, 9);
+		
+		container.setBackground(CommonConst.formBackgroundColor);
+		this.setBackground(CommonConst.formBackgroundColor);
 		
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -83,6 +91,8 @@ public class BBForm extends JFrame {
 		scrollPane.setBounds(left, top, width, height);
 		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
 		
+		scrollPane.setBorder(BorderFactory.createLineBorder(CommonConst.buttonBorderColor));
+		
 		//화면에는 스크롤판 추가
 		container.add(scrollPane);
 	
@@ -96,8 +106,7 @@ public class BBForm extends JFrame {
 	}
 	
 	public JTextField addTextInput(int left, int top, int width, int height) {
-		JTextField obj = new JTextField();
-		obj.setBackground(Color.white);
+		JTextField obj = JTextFieldUtil.createNewJTextField();
 		obj.setBounds(left, top, width, height);
 		obj.setFont(font);
 		
@@ -126,6 +135,8 @@ public class BBForm extends JFrame {
 		scrollPane.setBounds(left, top, width, height);
 		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
 		
+		scrollPane.setBorder(BorderFactory.createLineBorder(CommonConst.buttonBorderColor));
+		
 		// 화면에는 스크롤판 추가
 		container.add(scrollPane);
 		
@@ -133,11 +144,9 @@ public class BBForm extends JFrame {
 		return obj;
 	}
 	
-	public BBButton addButton(int left, int top, int width, int height, String value) {
-		BBButton obj = new BBButton();
-		obj.setBackground(CommonConst.buttonColor);
+	public JButton addButton(int left, int top, int width, int height, String value) {
+		JButton obj = JButtonUtil.createNewJButton(value);
 		obj.setBounds(left, top, width, height);
-		obj.setText(value);
 		obj.setFont(font);
 		
 		container.add(obj);

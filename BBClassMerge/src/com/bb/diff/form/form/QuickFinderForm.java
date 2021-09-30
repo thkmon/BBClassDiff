@@ -17,6 +17,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 import com.bb.diff.common.CommonConst;
+import com.bb.diff.form.button.JButtonUtil;
+import com.bb.diff.form.text.JTextFieldUtil;
 import com.bb.diff.form.tree.TreeUtil;
 
 /**
@@ -121,8 +123,7 @@ public class QuickFinderForm extends JFrame {
 	 * 버튼 추가
 	 */
 	private void addButton() {
-		findButton = new JButton("Find");
-		findButton.setBackground(CommonConst.buttonColor);
+		findButton = JButtonUtil.createNewJButton("Find");
 		findButton.setFont(this.basicFont);
 		findButton.setBounds(645, 10, 120, this.buttonHeight);
 		getContentPane().add(findButton);
@@ -153,7 +154,7 @@ public class QuickFinderForm extends JFrame {
 	 * 텍스트박스 추가
 	 */
 	private void addTextField() {
-		textField1 = new JTextField();
+		textField1 = JTextFieldUtil.createNewJTextField();
 		textField1.setFont(this.smallFont);
 		getContentPane().add(textField1);
 		textField1.setText("");

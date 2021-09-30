@@ -1,7 +1,6 @@
 package com.bb.classmerge.form;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -21,7 +20,8 @@ import javax.swing.ScrollPaneConstants;
 
 import com.bb.classmerge.main.BBClassDiff;
 import com.bb.classmerge.util.ConsoleUtil;
-import com.bb.diff.common.CommonConst;
+import com.bb.diff.form.button.JButtonUtil;
+import com.bb.diff.form.text.JTextFieldUtil;
 
 public class MainForm extends JFrame {
 
@@ -192,14 +192,12 @@ public class MainForm extends JFrame {
 	
 	private void addButton() {
 		
-		pathButton1 = new JButton("...");
-		pathButton1.setBackground(CommonConst.buttonColor);
+		pathButton1 = JButtonUtil.createNewJButton("...");
 		pathButton1.setFont(basicFont);
 		pathButton1.setBounds(600, 10, 35, textFieldHeight);
 		this.getContentPane().add(pathButton1);
 		
-		pathButton2 = new JButton("...");
-		pathButton2.setBackground(CommonConst.buttonColor);
+		pathButton2 = JButtonUtil.createNewJButton("...");
 		pathButton2.setFont(basicFont);
 		pathButton2.setBounds(600, 50, 35, textFieldHeight);
 		this.getContentPane().add(pathButton2);
@@ -228,21 +226,18 @@ public class MainForm extends JFrame {
 		
 		
 		// 우측상단 버튼 추가
-		decompileButton = new JButton("Decompile");
-		decompileButton.setBackground(CommonConst.buttonColor);
+		decompileButton = JButtonUtil.createNewJButton("Decompile");
 		decompileButton.setFont(basicFont);
 		decompileButton.setBounds(645, 10, 120, buttonHeight);
 		this.getContentPane().add(decompileButton);
 		
 		// 191128. 머지 버튼은 꼭 필요한지 애매하므로 숨긴다.
-		mergeButton = new JButton("Merge");
-		mergeButton.setBackground(CommonConst.buttonColor);
+		mergeButton = JButtonUtil.createNewJButton("Merge");
 		mergeButton.setFont(basicFont);
 //		mergeButton.setBounds(645, 45, 120, buttonHeight);
 //		this.getContentPane().add(mergeButton);
 		
-		diffButton = new JButton("Diff");
-		diffButton.setBackground(CommonConst.buttonColor);
+		diffButton = JButtonUtil.createNewJButton("Diff");
 		diffButton.setFont(basicFont);
 		diffButton.setBounds(645, 50, 120, buttonHeight);
 		this.getContentPane().add(diffButton);
@@ -313,20 +308,18 @@ public class MainForm extends JFrame {
 	
 	private void addTextField() {
 		// 상단 클래스 폴더경로 추가
-		textField1 = new JTextField();
+		textField1 = JTextFieldUtil.createNewJTextField();
 		textField1.setFont(smallFont);
 		this.getContentPane().add(textField1);
 		textField1.setText(BBClassDiff.defaultDirPath1);
 		textField1.setBounds(130, 10, 465, 35);
-		textField1.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		
 		// 상단 클래스 폴더경로 추가
-		textField2 = new JTextField();
+		textField2 = JTextFieldUtil.createNewJTextField();
 		textField2.setFont(smallFont);
 		this.getContentPane().add(textField2);
 		textField2.setText(BBClassDiff.defaultDirPath2);
 		textField2.setBounds(130, 50, 465, 35);
-		textField2.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		
 		// 포커싱
 		textField1.requestFocus();

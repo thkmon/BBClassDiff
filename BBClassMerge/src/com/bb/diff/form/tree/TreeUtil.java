@@ -2,6 +2,8 @@ package com.bb.diff.form.tree;
 
 import java.io.File;
 
+import javax.swing.tree.TreePath;
+
 import com.bb.classmerge.util.FileNameUtil;
 import com.bb.classmerge.util.StringUtil;
 import com.bb.diff.common.CommonConst;
@@ -327,7 +329,7 @@ public class TreeUtil {
 	
 	
 	/**
-	 * 트리 펼치기 (트리 확장)
+	 * 전체 트리 펼치기 (트리 확장)
 	 */
 	public static void expandTree() {
 		BBTree tree = CommonConst.fileTree;
@@ -342,7 +344,7 @@ public class TreeUtil {
 	
 	
 	/**
-	 * 트리 감추기 (트리 축소)
+	 * 전체 트리 감추기 (트리 축소)
 	 */
 	public static void collapseTree() {
 		BBTree tree = CommonConst.fileTree;
@@ -351,6 +353,62 @@ public class TreeUtil {
 	    for (int i=lastIndex; i>=0; i--) {
 	    	tree.collapseRow(i);
 	    }
+	}
+	
+	
+	/**
+	 * 하위폴더 트리 펼치기 (트리 확장)
+	 */
+	public static void expandTreePath(TreePath path) {
+		if (path == null) {
+			return;
+		}
+		
+		BBTree tree = CommonConst.fileTree;
+		tree.expandPath(path);
+		
+	    int j = tree.getRowCount();
+	    int i = 0;
+	    while (i < j) {
+	    	TreePath path1 = tree.getPathForRow(i);
+	    	if (path1 == null) {
+	    		continue;
+	    	}
+	    	
+	    	if (path.isDescendant(path1)) { 
+	    		tree.expandRow(i);
+	    	}
+	    	
+	        i += 1;
+	        j = tree.getRowCount();
+	    }
+	}
+	
+	
+	/**
+	 * 하위폴더 트리 감추기 (트리 축소)
+	 */
+	public static void collapseTreePath(TreePath path) {
+		if (path == null) {
+			return;
+		}
+		
+		BBTree tree = CommonConst.fileTree;
+		
+		int count = tree.getRowCount();
+		int lastIndex = count - 1;
+	    for (int i=lastIndex; i>=0; i--) {
+	    	TreePath path1 = tree.getPathForRow(i);
+	    	if (path1 == null) {
+	    		continue;
+	    	}
+	    	
+	    	if (path.isDescendant(path1)) {
+	    		tree.collapseRow(i);
+	    	}
+	    }
+	    
+	    tree.collapsePath(path);
 	}
 	
 	

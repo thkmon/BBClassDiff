@@ -51,8 +51,8 @@ public class MainForm extends JFrame {
 	
 	
 	// 폰트 설정
-	private Font basicFont = new Font("돋움", 0, 14);
-	private Font smallFont = new Font("돋움", 0, 12);
+	private Font basicFont = new Font("맑은 고딕", 0, 14);
+	private Font smallFont = new Font("맑은 고딕", 0, 12);
 	
 	// 연한회색 색상 설정
 	private Color lightGrayColor = new Color(240, 240, 240);

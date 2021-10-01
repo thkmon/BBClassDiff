@@ -121,9 +121,6 @@ public class DiffForm {
 			}
 		});
 		
-		// 좌측 하단 프로그레스 레이블 추가
-		CommonConst.progressLabel = CommonConst.bForm.addLabel(0, 0, 0, 0, "");
-		
 		CommonConst.leftUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
 		CommonConst.leftDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
 		CommonConst.leftTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
@@ -170,7 +167,7 @@ public class DiffForm {
 		treeMenu.setMnemonic(KeyEvent.VK_T); // 단축키 ALT + T
 		
 		{
-			final JMenuItem subMenu1 = new JMenuItem("전체 확장 (Expand All)");
+			final JMenuItem subMenu1 = new JMenuItem("전체 확장 (Expand all)");
 			treeMenu.add(subMenu1);
 			
 			subMenu1.addActionListener(new ActionListener() {
@@ -183,7 +180,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JMenuItem subMenu2 = new JMenuItem("전체 축소 (Collapse All)");
+			final JMenuItem subMenu2 = new JMenuItem("전체 축소 (Collapse all)");
 			treeMenu.add(subMenu2);
 			
 			subMenu2.addActionListener(new ActionListener() {
@@ -495,7 +492,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JCheckBoxMenuItem subMenu7 = new JCheckBoxMenuItem("CVS/SVN 리비전 문자열 제외하고 비교하기 (Diff Excepting CVS/SVN revision string)");
+			final JCheckBoxMenuItem subMenu7 = new JCheckBoxMenuItem("CVS/SVN 리비전 문자열 제외하고 비교하기 (Diff excepting CVS/SVN revision string)");
 			
 			// 초기값 세팅. true일 경우 check 처리
 			// CVS/SVN 리비전 문자열 제외하고 비교하기 여부

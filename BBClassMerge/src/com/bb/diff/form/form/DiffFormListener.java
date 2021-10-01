@@ -1,12 +1,24 @@
 package com.bb.diff.form.form;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JTextField;
+
+import com.bb.classmerge.util.ClipboardUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.BBArrowButtonMouseListener;
 import com.bb.diff.form.button.BBDiffButtonMouseListener;
+import com.bb.diff.form.textarea.BBEditor;
 import com.bb.diff.image.ImageIconUtil;
+import com.bb.diff.path.PathUtil;
 
 public class DiffFormListener implements ComponentListener {
 
@@ -59,12 +71,63 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.leftFilePathText.setBounds(box1Left, CommonConst.textAreaTopMargin, boxWidth, CommonConst.textAreaHeight);
 		CommonConst.leftFilePathText.setEditable(false);
 		
+		CommonConst.leftFilePathText.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 마우스 우클릭
+				if (e.getButton() == 3) {
+					JPopupMenu popup = getTextFieldPopupMenu(CommonConst.leftFilePathText);
+					popup.show(CommonConst.leftFilePathText, e.getX() + 10, e.getY());
+				}
+			}
+		});
+		
 		// 좌측 파일내용
 		CommonConst.leftFileContent.setBounds(0, 0, boxWidth, boxHeight);
 		CommonConst.leftFileContent.getScrollPane().setBounds(box1Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
 		
-		// 좌측 하단 프로그레스 레이블 추가
-		CommonConst.progressLabel.setBounds(10, arrowButtonTop, CommonConst.progressLabelWidth, CommonConst.progressLabelHeight);
+		CommonConst.leftFileContent.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 마우스 우클릭
+				if (e.getButton() == 3) {
+					JPopupMenu popup = getEditorPopupMenu(CommonConst.leftFileContent);
+					popup.show(CommonConst.leftFileContent, e.getX() + 10, e.getY());
+				}
+			}
+		});
 		
 		// 좌측 버튼
 		int leftButtonLeft = box1Left;
@@ -94,10 +157,63 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.rightFilePathText.setBounds(box2Left, CommonConst.textAreaTopMargin, boxWidth, CommonConst.textAreaHeight);
 		CommonConst.rightFilePathText.setEditable(false);
 		
+		CommonConst.rightFilePathText.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 마우스 우클릭
+				if (e.getButton() == 3) {
+					JPopupMenu popup = getTextFieldPopupMenu(CommonConst.rightFilePathText);
+					popup.show(CommonConst.rightFilePathText, e.getX() + 10, e.getY());	
+				}
+			}
+		});
+		
 		// 우측 파일내용
 		CommonConst.rightFileContent.setBounds(0, 0, boxWidth, boxHeight);
 		CommonConst.rightFileContent.getScrollPane().setBounds(box2Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
 		
+		CommonConst.rightFileContent.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// 마우스 우클릭
+				if (e.getButton() == 3) {
+					JPopupMenu popup = getEditorPopupMenu(CommonConst.rightFileContent);
+					popup.show(CommonConst.rightFileContent, e.getX() + 10, e.getY());
+				}
+			}
+		});
 		
 		// 우측 버튼
 		int rightButtonLeft = box2Left;
@@ -152,5 +268,105 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.bothBottomButton.addMouseListener(new BBArrowButtonMouseListener   (true, true, false, true));
 		CommonConst.bothUpButton.addMouseListener(new BBArrowButtonMouseListener       (true, true, true, false));
 		CommonConst.bothDownButton.addMouseListener(new BBArrowButtonMouseListener     (true, true, false, false));
+	}
+	
+	/**
+	 * 상단 파일명 텍스트박스 마우스 우클릭 시 팝업메뉴
+	 * 
+	 * @param textField
+	 * @return
+	 */
+	private JPopupMenu getTextFieldPopupMenu(final JTextField textField) {
+		JPopupMenu popupMenu = new JPopupMenu();
+		
+		final JMenuItem subMenu1 = new JMenuItem("파일경로 복사 (Copy file path)");
+		subMenu1.setMnemonic(KeyEvent.VK_C); // 단축키 ALT + C
+		popupMenu.add(subMenu1);
+		
+		subMenu1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String filePath = textField.getText();
+				if (filePath == null) {
+					filePath = "";
+				}
+				
+				ClipboardUtil.copyToClipboard(filePath);
+			}
+		});
+		
+		final JMenuItem subMenu2 = new JMenuItem("파일명 복사 (Copy file name)");
+		subMenu2.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N
+		popupMenu.add(subMenu2);
+		
+		subMenu2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String filePath = textField.getText();
+				if (filePath == null) {
+					filePath = "";
+				}
+				
+				String fileName = PathUtil.getFileNameWithExt(filePath);
+				if (fileName == null) {
+					fileName = "";
+				}
+				
+				ClipboardUtil.copyToClipboard(fileName);
+			}
+		});
+		
+		return popupMenu;
+	}
+	
+	
+	/**
+	 * 좌우 파일내용 박스 마우스 우클릭 시 팝업메뉴
+	 * 
+	 * @param textField
+	 * @return
+	 */
+	private JPopupMenu getEditorPopupMenu(final BBEditor editor) {
+		JPopupMenu popupMenu = new JPopupMenu();
+		
+		final JMenuItem subMenu1 = new JMenuItem("복사 (Copy)");
+		subMenu1.setMnemonic(KeyEvent.VK_C); // 단축키 ALT + C
+		popupMenu.add(subMenu1);
+		
+		subMenu1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String copyString = "";
+				
+				if (editor != null) {
+					copyString = editor.getSelectedText();
+				}
+				
+				if (copyString == null) {
+					copyString = "";
+				}
+				
+				ClipboardUtil.copyToClipboard(copyString);
+			}
+		});
+		
+		final JMenuItem subMenu2 = new JMenuItem("모두 선택 (Select All)");
+		subMenu2.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N
+		popupMenu.add(subMenu2);
+		
+		subMenu2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (editor != null) {
+					editor.selectAll();
+				}
+			}
+		});
+		
+		return popupMenu;
 	}
 }

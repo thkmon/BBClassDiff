@@ -184,10 +184,10 @@ public class EditorUtil {
 						// 좌측 하단 프로그레스 레이블에 개수 표시
 						int index = i + 1;
 						// System.out.println(index + "/" + treeNodeCount);
-						CommonConst.progressLabel.setText(index + "/" + treeNodeCount);
+						CommonConst.diffPointLabel.setText(index + "/" + treeNodeCount);
 					}
 				} finally {
-					CommonConst.progressLabel.setText("");
+					CommonConst.diffPointLabel.setText("");
 				}
 			}
 		};

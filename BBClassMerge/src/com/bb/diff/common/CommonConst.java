@@ -72,11 +72,6 @@ public class CommonConst {
 	
 	public static JLabel diffPointLabel = null;
 	
-	// 좌측 하단 프로그레스 레이블 추가
-	public static JLabel progressLabel = null;
-	public static int progressLabelWidth = 200;
-	public static int progressLabelHeight = 24;
-	
 	public static JButton leftUpButton = null;
 	public static JButton leftDownButton = null;
 	public static JButton rightUpButton = null;

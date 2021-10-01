@@ -35,8 +35,8 @@ public class BBForm extends JFrame {
 		this.setBounds(200, 200, width, height);
 		this.setTitle(title);
 		
-		font = new Font("돋움", 13, 13);
-		smallFont = new Font("돋움", 9, 9);
+		font = new Font("맑은 고딕", 13, 13);
+		smallFont = new Font("맑은 고딕", 9, 9);
 		
 		container.setBackground(CommonConst.formBackgroundColor);
 		this.setBackground(CommonConst.formBackgroundColor);

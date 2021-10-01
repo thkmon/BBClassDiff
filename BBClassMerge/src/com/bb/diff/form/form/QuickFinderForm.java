@@ -39,8 +39,7 @@ public class QuickFinderForm extends JFrame {
 
 	private int buttonHeight = 24;
 
-	// private Font basicFont = new Font("돋움", 0, 14);
-	private Font smallFont = new Font("돋움", 0, 12);
+	private Font smallFont = new Font("맑은 고딕", 0, 12);
 	
 	/**
 	 * 빠른 찾기 윈도우 초기화

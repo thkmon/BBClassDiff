@@ -27,15 +27,19 @@ import com.bb.diff.form.tree.TreeUtil;
  */
 public class QuickFinderForm extends JFrame {
 	private final String DEFAULT_TITLE = "Quick Finder";
-	private final int DEFAULT_HEIGHT = 110;
+	
+	private final int DEFAULT_WIDTH = 428;
+	private final int DEFAULT_HEIGHT = 90;
+	
+	private int topMargin = 10;
 	
 	private JTextField textField1 = null;
 
 	private JButton findButton = null;
 
-	private int buttonHeight = 35;
+	private int buttonHeight = 24;
 
-	private Font basicFont = new Font("돋움", 0, 14);
+	// private Font basicFont = new Font("돋움", 0, 14);
 	private Font smallFont = new Font("돋움", 0, 12);
 	
 	/**
@@ -43,18 +47,13 @@ public class QuickFinderForm extends JFrame {
 	 */
 	public QuickFinderForm() {
 		setLayout(null);
-		setTitle(DEFAULT_TITLE);
-
+		
 		addBasicWindowListener();
-
+		
 		addButton();
 		addTextField();
-
-		setBounds(0, 0, 800, this.DEFAULT_HEIGHT);
-		setVisible(true);
 		
-		// 텍스트 박스 포커싱
-		textField1.requestFocus();
+		open();
 	}
 	
 	/**
@@ -62,6 +61,12 @@ public class QuickFinderForm extends JFrame {
 	 */
 	public void open() {
 		setTitle(DEFAULT_TITLE);
+		
+		if (CommonConst.bForm != null && CommonConst.bForm.getBounds() != null) {
+			setBounds(CommonConst.bForm.getBounds().x + 100, CommonConst.bForm.getBounds().y + 100, DEFAULT_WIDTH, this.DEFAULT_HEIGHT);
+		} else {
+			setBounds(0, 0, DEFAULT_WIDTH, this.DEFAULT_HEIGHT);
+		}
 		
 		// 최소화되어 있을 경우 윈도우 복원
 		if (this.getState() == Frame.ICONIFIED) {
@@ -124,8 +129,8 @@ public class QuickFinderForm extends JFrame {
 	 */
 	private void addButton() {
 		findButton = JButtonUtil.createNewJButton("Find");
-		findButton.setFont(this.basicFont);
-		findButton.setBounds(645, 10, 120, this.buttonHeight);
+		findButton.setFont(this.smallFont);
+		findButton.setBounds(320, topMargin, 80, this.buttonHeight);
 		getContentPane().add(findButton);
 
 		findButton.addActionListener(new ActionListener() {
@@ -158,7 +163,7 @@ public class QuickFinderForm extends JFrame {
 		textField1.setFont(this.smallFont);
 		getContentPane().add(textField1);
 		textField1.setText("");
-		textField1.setBounds(20, 10, 610, 35);
+		textField1.setBounds(10, topMargin, 300, 24);
 		textField1.setCursor(new Cursor(2));
 
 		textField1.requestFocus();

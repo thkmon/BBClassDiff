@@ -1,6 +1,7 @@
 package com.bb.diff.form.form;
 
 import java.awt.Desktop;
+import java.awt.Event;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -8,10 +9,13 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.io.File;
 
+import javax.swing.BorderFactory;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.IconUIResource;
@@ -70,10 +74,10 @@ public class DiffForm {
 		CommonConst.leftFilePathText = CommonConst.bForm.addTextInput(0, 0, 0, 0);
 		CommonConst.rightFilePathText = CommonConst.bForm.addTextInput(0, 0, 0, 0);
 		
-		CommonConst.winmergeButton = CommonConst.bForm.addButton(4, 3, 85, 24, "Compare");
+		CommonConst.winmergeButton = CommonConst.bForm.addButton(4, CommonConst.textAreaTopMargin - 1 , 85, 24, "Compare");
 		CommonConst.winmergeButton.addMouseListener(new BBWinmergeButtonMouseListener());
 		
-		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(95, 2, 80, 24, "Diff Point : ");
+		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(95, CommonConst.textAreaTopMargin - 2, 80, 24, "Diff Point : ");
 		
 		
 		/**
@@ -153,27 +157,17 @@ public class DiffForm {
 		UIManager.put("PopupMenu.border", new LineBorder(CommonConst.menuBorderColor));
 		JMenuBar menuBar = new JMenuBar();
 		
+		
+		int menubarWidth = 200;
+		int menubarHeight = 22;
+		
 		menuBar.setBackground(CommonConst.formBackgroundColor);
 		menuBar.setBorderPainted(false);
-		
-		/*
-		JMenu screenMenu = new JMenu("Menu1");
-		screenMenu.add(new JMenuItem("SubMenu1"));
-		screenMenu.add(new JMenuItem("SubMenu2"));
-		screenMenu.add(new JMenuItem("SubMenu3"));
-		screenMenu.addSeparator();
-		screenMenu.add(new JMenuItem("SubMenu4"));
-
-		mb.add(screenMenu);
-		mb.add(new JMenu("Menu2"));
-		mb.add(new JMenu("Menu3"));
-		mb.add(new JMenu("Menu4"));
-		mb.add(new JMenu("Menu5"));
-		*/
+		menuBar.setBounds(0, 0, menubarWidth, menubarHeight);
 		
 		
 		JMenu treeMenu = new JMenu("Tree");
-		treeMenu.setMnemonic(KeyEvent.VK_T); // alt + T
+		treeMenu.setMnemonic(KeyEvent.VK_T); // 단축키 ALT + T
 		
 		{
 			final JMenuItem subMenu1 = new JMenuItem("전체 확장 (Expand All)");
@@ -314,10 +308,11 @@ public class DiffForm {
 		}
 		
 		JMenu findMenu = new JMenu("Find");
-		findMenu.setMnemonic(KeyEvent.VK_F); // alt + F
+		findMenu.setMnemonic(KeyEvent.VK_F); // 단축키 ALT + F
 		
 		{
 			final JMenuItem subMenu1 = new JMenuItem("빠른 찾기 (Quick Find)");
+			subMenu1.setAccelerator(KeyStroke.getKeyStroke('F', Event.CTRL_MASK)); // 단축키 CTRL + F
 			findMenu.add(subMenu1);
 			
 			subMenu1.addActionListener(new ActionListener() {
@@ -334,7 +329,7 @@ public class DiffForm {
 		}
 		
 		JMenu optionMenu = new JMenu("Option");
-		optionMenu.setMnemonic(KeyEvent.VK_O); // alt + O
+		optionMenu.setMnemonic(KeyEvent.VK_O); // 단축키 ALT + O
 		
 		{
 			final JCheckBoxMenuItem subMenu1 = new JCheckBoxMenuItem("용량 차이가 0인 파일 숨기기 (Hide files that capacity difference is 0)");
@@ -560,7 +555,16 @@ public class DiffForm {
 		menuBar.add(optionMenu);
 		
 		
-		form.setJMenuBar(menuBar);
+		// 우측 상단에 여백을 확보하기 위해 form에 JMenuBar를 바로 추가하지 않고,
+		// 좌측 상단에 JPanel을 만들고 JPanel에 JMenuBar를 추가한다.
+		// form.setJMenuBar(menuBar);
+		JPanel jpanel = new JPanel();
+		jpanel.add(menuBar);
+		jpanel.setBorder(BorderFactory.createEmptyBorder());
+		jpanel.setLayout(null);
+		jpanel.setBounds(0, 0, menubarWidth, menubarHeight);
+		
+		form.add(jpanel);
 	}
 }
 

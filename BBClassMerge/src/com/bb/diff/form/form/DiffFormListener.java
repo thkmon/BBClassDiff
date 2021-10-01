@@ -42,7 +42,7 @@ public class DiffFormListener implements ComponentListener {
 		int box1Left = 4 + CommonConst.treeWidth + 4;
 		int box2Left = box1Left + boxWidth + 4;
 		
-		int arrowButtonTop = CommonConst.fullHeight - CommonConst.bottomMargin + 4;
+		int arrowButtonTop = 0;
 		
 		
 		

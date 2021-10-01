@@ -28,15 +28,15 @@ public class CommonConst {
 	// 좌측 트리
 	public static BBTree fileTree = null;
 	
-	public static int textAreaTopMargin = 4;
+	public static int textAreaTopMargin = 24;
 	public static int textAreaHeight = 24;
 	public static BBEditor leftFileContent = null;
 	public static BBEditor rightFileContent = null;
 	
 	public static int fullWidth = 1024;
 	public static int fullHeight = 768;
-	public static int treeTopMargin = 30;
-	public static int bottomMargin = 110;
+	public static int treeTopMargin = textAreaTopMargin + 26;
+	public static int bottomMargin = 60;
 	public static float treeWidthRatio = 0.18f;
 	public static int treeWidth = (int) (fullWidth * treeWidthRatio);
 	public static int treeLeftMargin = 4;

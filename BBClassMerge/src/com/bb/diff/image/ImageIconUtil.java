@@ -40,39 +40,63 @@ public class ImageIconUtil {
 				if (fileExtension != null && fileExtension.length() > 0) {
 					imageIconKey = fileExtension;
 					
-					// 추가필요 : sql
-					// 추가필요 : xls, xlsx, ppt, pptx, doc, docx, csv
-					// 추가필요 : hwp
-					// 추가필요 : pdf
-					// 추가필요 : json, properties
-					
 					if (checkExtensionIsEqual(fileExtension, "java")) {
 						imageIconKey = "java";
 					
 					} else if (checkExtensionIsEqual(fileExtension, "class")) {
 						imageIconKey = "class";
 					
-					} else if (checkExtensionIsEqual(fileExtension, "jsp", "htm", "html", "php", "py")) {
+					} else if (checkExtensionIsEqual(fileExtension, "jsp", "htm", "html", "php", "asp", "py")) {
 						imageIconKey = "jsp";
 					
-					} else if (checkExtensionIsEqual(fileExtension, "xml", "config", "conf")) {
-						imageIconKey = "xml";
-						
 					} else if (checkExtensionIsEqual(fileExtension, "js")) {
 						imageIconKey = "js";
 					
 					} else if (checkExtensionIsEqual(fileExtension, "jpg", "jpeg", "png", "gif", "bmp", "tif", "tiff", "psd", "ai")) {
 						imageIconKey = "jpg";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "xml", "config", "conf")) {
+						imageIconKey = "xml";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "json")) {
+						imageIconKey = "json";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "ini", "properties")) {
+						imageIconKey = "ini";
 						
-					} else if (checkExtensionIsEqual(fileExtension, "txt", "ini")) {
+					} else if (checkExtensionIsEqual(fileExtension, "sql")) {
+						imageIconKey = "sql";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "txt")) {
 						imageIconKey = "txt";
 					
 					} else if (checkExtensionIsEqual(fileExtension, "jar", "tar", "zip")) {
 						imageIconKey = "jar";
 					
-					} else if (checkExtensionIsEqual(fileExtension, "bat", "exe", "sh")) {
+					} else if (checkExtensionIsEqual(fileExtension, "exe")) {
+						imageIconKey = "exe";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "bat", "sh")) {
 						imageIconKey = "bat";
-						
+					
+					} else if (checkExtensionIsEqual(fileExtension, "xls", "xlsx")) {
+						imageIconKey = "xls";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "doc", "docx")) {
+						imageIconKey = "doc";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "ppt", "pptx")) {
+						imageIconKey = "ppt";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "csv")) {
+						imageIconKey = "csv";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "hwp")) {
+						imageIconKey = "hwp";
+					
+					} else if (checkExtensionIsEqual(fileExtension, "pdf")) {
+						imageIconKey = "pdf";
+					
 					} else {
 						imageIconKey = "unknown";
 					}

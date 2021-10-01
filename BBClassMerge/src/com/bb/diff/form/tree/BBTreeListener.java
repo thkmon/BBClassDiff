@@ -150,7 +150,7 @@ public class BBTreeListener implements MouseListener {
 			}
 		});
 		
-		final JMenuItem subMenu5 = new JMenuItem("하위폴더에서 동일한 파일 제거 (Remove same files from subfolders)");
+		final JMenuItem subMenu5 = new JMenuItem("하위폴더에서 동일한 파일 숨기기 (Hide same files from subfolders)");
 		popupMenu.add(subMenu5);
 		
 		subMenu5.addActionListener(new ActionListener() {

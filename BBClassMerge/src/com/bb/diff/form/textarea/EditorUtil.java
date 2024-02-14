@@ -67,7 +67,7 @@ public class EditorUtil {
 		rightDoc.setCharacterAttributes(oneCol.getBeginCol(), oneCol.getGapCol(), normalStyle2, true);
 	}
 	
-	private static boolean checkLeftFileExists(BBTreeNode node) {
+	public static boolean checkLeftFileExists(BBTreeNode node) {
 		String leftPath = node.getLeftAbsoulutePath();
 		if (leftPath == null || leftPath.length() == 0) {
 			return false;
@@ -81,7 +81,7 @@ public class EditorUtil {
 		return true;
 	}
 	
-	private static boolean checkRightFileExists(BBTreeNode node) {
+	public static boolean checkRightFileExists(BBTreeNode node) {
 		String rightPath = node.getRightAbsoulutePath();
 		if (rightPath == null || rightPath.length() == 0) {
 			return false;

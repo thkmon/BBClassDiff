@@ -108,26 +108,46 @@ public class BBTreeListener implements MouseListener {
 			}
 		});
 		
-		final JMenuItem subMenu3 = new JMenuItem("폴더경로 복사 (Copy folder path)");
-		subMenu3.setMnemonic(KeyEvent.VK_C); // 단축키 ALT + C
-		popupMenu.add(subMenu3);
+		boolean leftFileExists = EditorUtil.checkLeftFileExists(node);
+		boolean rightFileExists = EditorUtil.checkRightFileExists(node);
 		
-		subMenu3.addActionListener(new ActionListener() {
+		if (leftFileExists) {
+			final JMenuItem subMenu3 = new JMenuItem("좌측 폴더경로 복사 (Copy left folder path)");
+			subMenu3.setMnemonic(KeyEvent.VK_L); // 단축키 ALT + L
+			popupMenu.add(subMenu3);
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String folderPath = node.getLeftAbsoulutePath();
-				if (folderPath == null || folderPath.length() == 0) {
-					folderPath = node.getRightAbsoulutePath();
-				}
+			subMenu3.addActionListener(new ActionListener() {
 				
-				if (folderPath == null) {
-					folderPath = "";
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String folderPath = node.getLeftAbsoulutePath();
+					if (folderPath == null) {
+						folderPath = "";
+					}
+					
+					ClipboardUtil.copyToClipboard(folderPath);
 				}
+			});
+		}
+		
+		if (rightFileExists) {
+			final JMenuItem subMenu3 = new JMenuItem("우측 폴더경로 복사 (Copy right folder path)");
+			subMenu3.setMnemonic(KeyEvent.VK_R); // 단축키 ALT + R
+			popupMenu.add(subMenu3);
+			
+			subMenu3.addActionListener(new ActionListener() {
 				
-				ClipboardUtil.copyToClipboard(folderPath);
-			}
-		});
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String folderPath = node.getRightAbsoulutePath();
+					if (folderPath == null) {
+						folderPath = "";
+					}
+					
+					ClipboardUtil.copyToClipboard(folderPath);
+				}
+			});
+		}
 		
 		final JMenuItem subMenu4 = new JMenuItem("폴더명 복사 (Copy folder name)");
 		subMenu4.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N
@@ -202,24 +222,42 @@ public class BBTreeListener implements MouseListener {
 			});
 		}
 		
-		final JMenuItem subMenu2 = new JMenuItem("파일경로 복사 (Copy file path)");
-		subMenu2.setMnemonic(KeyEvent.VK_C); // 단축키 ALT + C
-		popupMenu.add(subMenu2);
+		boolean leftFileExists = EditorUtil.checkLeftFileExists(node);
+		boolean rightFileExists = EditorUtil.checkRightFileExists(node);
 		
-		subMenu2.addActionListener(new ActionListener() {
+		if (leftFileExists) {
+			final JMenuItem subMenu2 = new JMenuItem("좌측 파일경로 복사 (Copy left file path)");
+			subMenu2.setMnemonic(KeyEvent.VK_L); // 단축키 ALT + L
+			popupMenu.add(subMenu2);
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String filePath = node.getLeftAbsoulutePath();
-				if (filePath == null || filePath.length() == 0) {
-					filePath = node.getRightAbsoulutePath();
-				}
+			subMenu2.addActionListener(new ActionListener() {
 				
-				if (filePath != null && filePath.length() > 0) {
-					ClipboardUtil.copyToClipboard(filePath);
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String filePath = node.getLeftAbsoulutePath();
+					if (filePath != null && filePath.length() > 0) {
+						ClipboardUtil.copyToClipboard(filePath);
+					}
 				}
-			}
-		});
+			});
+		}
+		
+		if (rightFileExists) {
+			final JMenuItem subMenu2 = new JMenuItem("우측 파일경로 복사 (Copy right file path)");
+			subMenu2.setMnemonic(KeyEvent.VK_R); // 단축키 ALT + R
+			popupMenu.add(subMenu2);
+			
+			subMenu2.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String filePath = node.getRightAbsoulutePath();
+					if (filePath != null && filePath.length() > 0) {
+						ClipboardUtil.copyToClipboard(filePath);
+					}
+				}
+			});
+		}
 		
 		final JMenuItem subMenu3 = new JMenuItem("파일명 복사 (Copy file name)");
 		subMenu3.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N

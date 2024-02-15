@@ -1,11 +1,8 @@
 package com.bb.diff.form.textarea;
 
-import java.io.StringReader;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.text.Document;
-import javax.swing.text.EditorKit;
 
 public class BBEditor extends JTextPane {
 	private JScrollPane scrollPane = null;
@@ -16,8 +13,6 @@ public class BBEditor extends JTextPane {
 
 	public void setScrollPane(JScrollPane scrollPane) {
 		this.scrollPane = scrollPane;
-//		요지는 textPane 을 scrollPane 에 넣으면 자동으로 line wrapping 되니까
-//		textPane 을 JPanel 로 한번 감싼 다음에 scrollPane 에 JPanel 을 넣는 것.
 	}
 	
 	public int getScrollY() {
@@ -48,23 +43,6 @@ public class BBEditor extends JTextPane {
 			Document arg1 = this.getDocument();
 	        arg1.remove(0, arg1.getLength());
 	        
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void addContent(String arg0) {
-		
-		try {
-			Document arg1 = this.getDocument();
-			StringReader arg2 = new StringReader(arg0);
-			EditorKit arg3 = this.getEditorKit();
-			
-			// 아래에 쓴다.
-			arg3.read(arg2, arg1, arg1.getLength());
-			
-			// 위에 쓴다.
-			arg3.read(arg2, arg1, 0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -21,6 +21,7 @@ import javax.swing.text.Element;
 
 import com.bb.classmerge.form.JFrameDesignUtil;
 import com.bb.classmerge.form.MainForm;
+import com.bb.classmerge.swing.WrapEditorKit;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.JButtonUtil;
 import com.bb.diff.form.text.JTextFieldUtil;
@@ -81,40 +82,37 @@ public class BBForm extends JFrame {
 	}
 	
 	public BBEditor addTextArea(int left, int top, int width, int height) {
-
-//		요지는 textPane 을 scrollPane 에 넣으면 자동으로 line wrapping 되니까
-//		textPane 을 JPanel 로 한번 감싼 다음에 scrollPane 에 JPanel 을 넣는 것.
 		
-//		JPanel jp = new JPanel();
-		
-		final BBEditor obj = new BBEditor();
-		obj.setBackground(Color.white);
-		obj.setBounds(left, top, width, height);
-		obj.setFont(font);
+		BBEditor bbEditor = new BBEditor();
+		bbEditor.setBackground(Color.white);
+		bbEditor.setBounds(left, top, width, height);
+		bbEditor.setFont(font);
+		bbEditor.setEditorKit(new WrapEditorKit());
 		
 		// 스크롤판 추가
-		JScrollPane scrollPane = new JScrollPane(obj);
+		JScrollPane scrollPane = new JScrollPane(bbEditor);
 		scrollPane.setBounds(left, top, width, height);
 		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
 		
 		scrollPane.setBorder(BorderFactory.createLineBorder(CommonConst.buttonBorderColor));
 		
-		// scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		// scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
 		
 		//////////////////////////////////////////////////
 		// 에디터 좌측에 라인번호 추가 시작
 		//////////////////////////////////////////////////
-		final JTextPane lineNumbers = new JTextPane();
+		JTextPane lineNumbers = new JTextPane();
         lineNumbers.setEditable(false);
         lineNumbers.setBackground(new Color(243, 243, 243));
         
         scrollPane.setRowHeaderView(lineNumbers);
         
-        obj.getDocument().addDocumentListener(new DocumentListener() {
+        bbEditor.getDocument().addDocumentListener(new DocumentListener() {
             public String getText() {
-                int caretPosition = obj.getDocument().getLength();
-                Element root = obj.getDocument().getDefaultRootElement();
+                int caretPosition = bbEditor.getDocument().getLength();
+                Element root = bbEditor.getDocument().getDefaultRootElement();
                 String text = "1\n";
                 for(int i = 2; i < root.getElementIndex(caretPosition) + 2; i++) {
                     text += i + "\n";
@@ -144,14 +142,9 @@ public class BBForm extends JFrame {
         
 		//화면에는 스크롤판 추가
 		container.add(scrollPane);
-	
-		// textPane 을 JPanel 로 한번 감싼 다음에
-//		jp.add(obj);
-//		// scrollPane 에 JPanel 을 넣는 것.
-//		scrollPane.add(jp);
 		
-		obj.setScrollPane(scrollPane);
-		return obj;
+		bbEditor.setScrollPane(scrollPane);
+		return bbEditor;
 	}
 	
 	public JTextField addTextInput(int left, int top, int width, int height) {

@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Element;
@@ -98,6 +99,8 @@ public class BBForm extends JFrame {
 		
 		scrollPane.setBorder(BorderFactory.createLineBorder(CommonConst.buttonBorderColor));
 		
+		// scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		// scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		//////////////////////////////////////////////////
 		// 에디터 좌측에 라인번호 추가 시작

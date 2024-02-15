@@ -10,6 +10,7 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 
 import com.bb.classmerge.form.BBMenuItem;
 import com.bb.classmerge.util.ClipboardUtil;
@@ -101,6 +102,8 @@ public class DiffFormListener implements ComponentListener {
 		// 좌측 파일내용
 		CommonConst.leftFileContent.setBounds(0, 0, boxWidth, boxHeight);
 		CommonConst.leftFileContent.getScrollPane().setBounds(box1Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
+		CommonConst.leftFileContent.getScrollPane().setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		CommonConst.leftFileContent.getScrollPane().setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		CommonConst.leftFileContent.addMouseListener(new MouseListener() {
 			@Override
@@ -187,6 +190,8 @@ public class DiffFormListener implements ComponentListener {
 		// 우측 파일내용
 		CommonConst.rightFileContent.setBounds(0, 0, boxWidth, boxHeight);
 		CommonConst.rightFileContent.getScrollPane().setBounds(box2Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
+		// CommonConst.rightFileContent.getScrollPane().setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		// CommonConst.rightFileContent.getScrollPane().setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
 		CommonConst.rightFileContent.addMouseListener(new MouseListener() {
 			@Override

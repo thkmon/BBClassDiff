@@ -3,8 +3,9 @@ package com.bb.diff.form.textarea;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
@@ -19,6 +20,9 @@ import com.bb.diff.map.FileContentUtil;
 import com.bb.diff.path.PathUtil;
 import com.bb.diff.prototype.Col;
 import com.bb.diff.prototype.ColList;
+import com.github.difflib.DiffUtils;
+import com.github.difflib.patch.AbstractDelta;
+import com.github.difflib.patch.Patch;
 import com.thkmon.bbj3.io.file.prototype.FileContent;
 import com.thkmon.bbj3.io.file.util.FileReadUtil;
 import com.thkmon.bbj3.parser.buff.prototype.ParsedContent;
@@ -34,8 +38,6 @@ public class EditorUtil {
 	private static Style whiteStyle = null;
 	private static Style strongStyle1 = null;
 	private static Style strongStyle2 = null;
-	private static Style normalStyle1 = null;
-	private static Style normalStyle2 = null;
 	
 	public static void paintLeftDocWhite(int lineNum) {
 		Col oneCol = colList1.get(lineNum);
@@ -55,16 +57,6 @@ public class EditorUtil {
 	public static void paintRightDocStrong(int lineNum) {
 		Col oneCol = colList2.get(lineNum);
 		rightDoc.setCharacterAttributes(oneCol.getBeginCol(), oneCol.getGapCol(), strongStyle2, true);
-	}
-	
-	public static void paintLeftDocNormal(int lineNum) {
-		Col oneCol = colList1.get(lineNum);
-		leftDoc.setCharacterAttributes(oneCol.getBeginCol(), oneCol.getGapCol(), normalStyle1, true);
-	}
-	
-	public static void paintRightDocNormal(int lineNum) {
-		Col oneCol = colList2.get(lineNum);
-		rightDoc.setCharacterAttributes(oneCol.getBeginCol(), oneCol.getGapCol(), normalStyle2, true);
 	}
 	
 	public static boolean checkLeftFileExists(BBTreeNode node) {
@@ -231,6 +223,10 @@ public class EditorUtil {
 		
 		if (leftFileExists) {
 			content1 = node.getFileContentString(true, null);
+			// 내용만 비교하기 위해 캐리지리턴 무시
+			if (content1 != null) {
+				content1 = new StringBuffer().append(content1.toString().replace("\r", ""));
+			}
 			if (showOnEditor) {
 				setLeftFileContentText(content1.toString(), true);
 			}
@@ -244,6 +240,10 @@ public class EditorUtil {
 		
 		if (rightFileExists) {
 			content2 = node.getFileContentString(false, null);
+			// 내용만 비교하기 위해 캐리지리턴 무시
+			if (content2 != null) {
+				content2 = new StringBuffer().append(content2.toString().replace("\r", ""));
+			}
 			if (showOnEditor) {
 				setRightFileContentText(content2.toString(), true);
 			}
@@ -290,17 +290,12 @@ public class EditorUtil {
 			strongStyle1 = CommonConst.leftFileContent.addStyle("1", null);
 			strongStyle2 = CommonConst.rightFileContent.addStyle("2", null);
 			
-			normalStyle1 = CommonConst.leftFileContent.addStyle("3", null);
-			normalStyle2 = CommonConst.rightFileContent.addStyle("4", null);
-			
 			whiteStyle = CommonConst.leftFileContent.addStyle("5", null);
 			whiteStyle = CommonConst.rightFileContent.addStyle("6", null);
 			
 			StyleConstants.setBackground(whiteStyle, new Color(255, 255, 255));
-			StyleConstants.setBackground(strongStyle1, new Color(200, 200, 255));
-			StyleConstants.setBackground(strongStyle2, new Color(200, 200, 255));
-			StyleConstants.setBackground(normalStyle1, new Color(200, 200, 200));
-			StyleConstants.setBackground(normalStyle2, new Color(200, 200, 200));
+			StyleConstants.setBackground(strongStyle1, new Color(248, 216, 136));
+			StyleConstants.setBackground(strongStyle2, new Color(248, 216, 136));
 		}
 		
 		/**
@@ -488,7 +483,7 @@ public class EditorUtil {
 		
 		// bCheckDiff == true일 때만 비교하자. 내용이 완전히 같을 경우 비교할 필요 없다.
 		if (bCheckDiff) {
-			/**
+	        /**
 			 * col 위치 계산해서 저장해둔다.
 			 */
 			colList1 = FileContentUtil.createColList(content1);
@@ -501,195 +496,50 @@ public class EditorUtil {
 				colList2 = new ColList();
 			}
 			
-			
-			CommonConst.diffPointList = new ArrayList<Integer>();
+			CommonConst.diffPointList1 = new ArrayList<Integer>();
+			CommonConst.diffPointList2 = new ArrayList<Integer>();
 			CommonConst.currentDiffPointIndex = -1;
 			
-			int rowCount1 = colList1.size();
-			int rowCount2 = colList2.size();
-			
-			int lastRowNum1 = rowCount1 - 1;
-			int lastRowNum2 = rowCount2 - 1;
-			
-			int bigRowCount = rowCount1;
-			if (rowCount2 > bigRowCount) {
-				rowCount2 = bigRowCount;
-			}
-			
-			int rowNum1 = 0;
-			int rowNum2 = 0;
-			String lineText1 = null;
-			String lineText2 = null;
-			boolean bEmptyLine1 = false;
-			boolean bEmptyLine2 = false;
-			
-			for (int i=0; i<bigRowCount; i++) {
-				
-				if ((rowNum1 > lastRowNum1) && (rowNum2 > lastRowNum2)) {
-					break;
-				}
-				
-				lineText1 = (rowNum1 > lastRowNum1) ? "" : colList1.get(rowNum1).getText();
-				lineText2 = (rowNum2 > lastRowNum2) ? "" : colList2.get(rowNum2).getText();
-				
-				bEmptyLine1 = (lineText1 == null || lineText1.length() == 0);
-				bEmptyLine2 = (lineText2 == null || lineText2.length() == 0);
-				
-				if (bEmptyLine1 && bEmptyLine2) {
-					if (rowNum1 < rowCount1) {
-						if (showOnEditor) {
-							paintLeftDocWhite(rowNum1);
-						}
-					}
-					if (rowNum2 < rowCount2) {
-						if (showOnEditor) {
-							paintRightDocWhite(rowNum2);
-						}
-					}
-					rowNum1++;
-					rowNum2++;
-					continue;
-					
-				} else if (bEmptyLine1 || bEmptyLine2 || !(equalsForClass(lineText1, lineText2, bClassFile))) {
-					diffPoint++;
-					CommonConst.diffPointList.add(rowNum1);
-					
-					// 다른거 나오면 일단 칠한다.
-					if (rowNum1 < rowCount1) {
-						if (showOnEditor) {
-							paintLeftDocStrong(rowNum1);
-						}
-					}
-					if (rowNum2 < rowCount2) {
-						if (showOnEditor) {
-							paintRightDocStrong(rowNum2);
-						}
-					}
-	
-					//{{{{{
-					//{{{{{
-					//{{{{{
-					//{{{{{
-					//{{{{{
-					
-					int tempNum1 = rowNum1;
-					int tempNum2 = rowNum2;
-					HashMap<String, Integer> leftMap = new HashMap<String, Integer>();
-					HashMap<String, Integer> rightMap = new HashMap<String, Integer>();
-					
-					int newNum1 = 0;
-					int newNum2 = 0;
-					boolean bFound = false;
-					
-					while (true) {
-						if ((tempNum1 > lastRowNum1) && (tempNum2 > lastRowNum2)) {
-							break;
-						}
-						
-						lineText1 = (tempNum1 > lastRowNum1) ? "" : colList1.get(tempNum1).getText();
-						lineText2 = (tempNum2 > lastRowNum2) ? "" : colList2.get(tempNum2).getText();
-						
-						if (lineText1 != null && lineText1.length() > 0) {
-							if (rightMap.get(lineText1) != null) {
-								newNum1 = tempNum1;
-								newNum2 = rightMap.get(lineText1);
-								
-								if (showOnEditor) {
-									paintLeftDocWhite(newNum1);
-									paintRightDocWhite(newNum2);
-								}
-								
-								bFound = true;
-								break;
-								
-							} else {
-								leftMap.put(lineText1, tempNum1);
-							}
-						}
-						
-						if (lineText2 != null && lineText2.length() > 0) {
-							if (leftMap.get(lineText2) != null) {
-								newNum1 = leftMap.get(lineText2);
-								newNum2 = tempNum2;
-								
-								if (showOnEditor) {
-									paintLeftDocWhite(newNum1);
-									paintRightDocWhite(newNum2);
-								}
-								
-								bFound = true;
-								break;
-								
-							} else {
-								rightMap.put(lineText2, tempNum2);
-							}
-						}
-						
-						tempNum1++;
-						tempNum2++;
-					}
-					
-					if (bFound) {
-						// 찾았다면 탐색을 계속한다.
-						
-						// 1. 찾았다면 그 직전 라인까지 색칠해준다.
-						for (int rr=rowNum1+1; rr<newNum1; rr++) {
-							if (showOnEditor) {
-								paintLeftDocNormal(rr);
-							}
-						}
-						
-						for (int rr=rowNum2+1; rr<newNum2; rr++) {
-							if (showOnEditor) {
-								paintRightDocNormal(rr);
-							}
-						}
-						
-						// 2. 탐색을 계속한다.
-						rowNum1 = newNum1;
-						rowNum2 = newNum2;
-						continue;
-						
-					} else {
-						// 찾지 못했다면 탐색을 그만둔다.
-						
-						// 1. 전체색칠
-						for (int rr=rowNum1+1; rr<=lastRowNum1; rr++) {
-							if (showOnEditor) {
-								paintLeftDocNormal(rr);
-							}
-						}
-						
-						for (int rr=rowNum2+1; rr<=lastRowNum2; rr++) {
-							if (showOnEditor) {
-								paintRightDocNormal(rr);
-							}
-						}
-						break;
-					}
-					
-					//}}}}}
-					//}}}}}
-					//}}}}}
-					//}}}}}
-					//}}}}}				
-					
-				} else if (equalsForClass(lineText1, lineText2, bClassFile)) {
-					if (rowNum1 < rowCount1) {
-						if (showOnEditor) {
-							paintLeftDocWhite(rowNum1);
-						}
-					}
-					if (rowNum2 < rowCount2) {
-						if (showOnEditor) {
-							paintRightDocWhite(rowNum2);
-						}
-					}
-					rowNum1++;
-					rowNum2++;
-					continue;
-				}
-			}
+			String text1 = content1.toString();
+	        String text2 = content2.toString();
+
+	        // Perform diff
+	        Patch<String> patch = DiffUtils.diff(Arrays.asList(text1.split("\n")), Arrays.asList(text2.split("\n")));
+
+	        // Display diff result
+	        StringBuilder diffOutput = new StringBuilder();
+	        for (AbstractDelta<String> delta : patch.getDeltas()) {
+	            diffOutput.append(delta).append("\n");
+	            
+            	// 변경이 발생한 원본 위치
+            	int beginRow1 = delta.getSource().getPosition();
+            	int endRow1 = beginRow1;
+	            List<String> lineList1 = delta.getSource().getLines();
+	            if (lineList1 != null && lineList1.size() > 0) {
+	            	endRow1 = beginRow1 + lineList1.size() - 1;
+	            }
+	            
+	            for (int k=beginRow1; k<=endRow1; k++) {
+	            	paintLeftDocStrong(k);
+	            }
+	            
+            	// 변경이 발생한 수정된 위치
+            	int beginRow2 = delta.getTarget().getPosition();
+            	int endRow2 = beginRow2;
+	            List<String> lineList2 = delta.getTarget().getLines();
+	            if (lineList2 != null && lineList2.size() > 0) {
+	            	endRow2 = beginRow2 + lineList2.size() - 1;
+	            }
+	            
+	            for (int k=beginRow2; k<=endRow2; k++) {
+	            	paintRightDocStrong(k);
+	            }
+	            
+	            diffPoint++;
+	            
+	            CommonConst.diffPointList1.add(beginRow1);
+	            CommonConst.diffPointList2.add(beginRow2);
+	        }
 		}
 		
 		if (showOnEditor) {

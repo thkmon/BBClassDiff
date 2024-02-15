@@ -102,7 +102,7 @@ public class FileContentUtil {
 		Col oneCol = null;
 		for (int i=0; i<lineSize1; i++) {
 			endCol = beginCol + conLineArr1[i].length();
-			oneCol = new Col(beginCol, endCol);
+			oneCol = new Col(beginCol + i, endCol + i);
 			
 			oneContent = contentBuffer.substring(beginCol+i, endCol+i);
 			

@@ -122,7 +122,8 @@ public class CommonConst {
 	public static DiffForm diffForm = null;
 	
 	
-	public static ArrayList<Integer> diffPointList = new ArrayList<Integer>();
+	public static ArrayList<Integer> diffPointList1 = new ArrayList<Integer>();
+	public static ArrayList<Integer> diffPointList2 = new ArrayList<Integer>();
 	public static int currentDiffPointIndex = -1;
 	
 	public static BBTree treeModel = null;

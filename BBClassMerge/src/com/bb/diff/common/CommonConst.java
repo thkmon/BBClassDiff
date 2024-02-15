@@ -151,7 +151,7 @@ public class CommonConst {
 	// 클래스 핵심 라인만 비교하기 여부
 	public static boolean bDiffCoreContents = false;
 	
-	// 빠른 찾기 창
+	// 파일명으로 찾기 창
 	public static QuickFinderForm quickFinderForm = null;
 	
 	// 파일 열기 시 항상 최신 파일을 가져오도록 처리

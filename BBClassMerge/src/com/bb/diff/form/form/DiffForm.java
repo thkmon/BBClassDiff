@@ -308,7 +308,7 @@ public class DiffForm {
 		findMenu.setMnemonic(KeyEvent.VK_F); // 단축키 ALT + F
 		
 		{
-			final BBMenuItem subMenu1 = new BBMenuItem("빠른 찾기 (Quick Find)");
+			final BBMenuItem subMenu1 = new BBMenuItem("파일명으로 찾기 (Find by filename)");
 			subMenu1.setAccelerator(KeyStroke.getKeyStroke('F', Event.CTRL_MASK)); // 단축키 CTRL + F
 			findMenu.add(subMenu1);
 			

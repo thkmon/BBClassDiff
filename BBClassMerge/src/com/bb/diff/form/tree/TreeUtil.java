@@ -603,7 +603,7 @@ public class TreeUtil {
 	}
 	
 	/**
-	 * 빠른 찾기 기능
+	 * 파일명으로 찾기 기능
 	 * 
 	 * @param fileTree
 	 * @param inputText

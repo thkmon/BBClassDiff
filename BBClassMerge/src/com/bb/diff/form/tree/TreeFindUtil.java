@@ -23,7 +23,7 @@ public class TreeFindUtil {
 	private static int foundNodeValue = 99999;
 
 	/**
-	 * 빠른 찾기
+	 * 파일명으로 찾기
 	 * 
 	 * @param fileTree
 	 * @param inputText
@@ -65,7 +65,7 @@ public class TreeFindUtil {
 	}
 
 	/**
-	 * 빠른 찾기
+	 * 파일명으로 찾기
 	 * 
 	 * @param node
 	 * @param inputText

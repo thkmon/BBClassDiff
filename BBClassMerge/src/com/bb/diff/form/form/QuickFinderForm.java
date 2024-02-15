@@ -1,7 +1,6 @@
 package com.bb.diff.form.form;
 
 import java.awt.Cursor;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,11 +22,11 @@ import com.bb.diff.form.text.JTextFieldUtil;
 import com.bb.diff.form.tree.TreeUtil;
 
 /**
- * 빠른 찾기 윈도우
+ * 파일명으로 찾기 윈도우
  *
  */
 public class QuickFinderForm extends JFrame {
-	private final String DEFAULT_TITLE = "Quick Finder";
+	private final String DEFAULT_TITLE = "파일명으로 찾기 (Find by filename)";
 	
 	private final int DEFAULT_WIDTH = 428;
 	private final int DEFAULT_HEIGHT = 90;
@@ -41,7 +40,7 @@ public class QuickFinderForm extends JFrame {
 	private int buttonHeight = 24;
 
 	/**
-	 * 빠른 찾기 윈도우 초기화
+	 * 파일명으로 찾기 윈도우 초기화
 	 */
 	public QuickFinderForm() {
 		setLayout(null);
@@ -55,7 +54,7 @@ public class QuickFinderForm extends JFrame {
 	}
 	
 	/**
-	 * 빠른 찾기 윈도우 열기
+	 * 파일명으로 찾기 윈도우 열기
 	 */
 	public void open() {
 		setTitle(DEFAULT_TITLE);
@@ -84,7 +83,7 @@ public class QuickFinderForm extends JFrame {
 	}
 	
 	/**
-	 * 빠른 찾기 윈도우 닫기
+	 * 파일명으로 찾기 윈도우 닫기
 	 */
 	public void close() {
 		setVisible(false);
@@ -183,7 +182,7 @@ public class QuickFinderForm extends JFrame {
 	}
 	
 	/**
-	 * 빠른 찾기
+	 * 파일명으로 찾기
 	 */
 	private void doQuickFind() {
 		TreeUtil.quickFind(CommonConst.fileTree, textField1.getText());

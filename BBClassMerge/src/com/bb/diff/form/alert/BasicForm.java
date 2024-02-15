@@ -15,6 +15,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.bb.classmerge.form.JFrameDesignUtil;
+import com.bb.classmerge.form.MainForm;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.JButtonUtil;
 import com.bb.diff.form.text.JTextFieldUtil;
@@ -35,7 +36,7 @@ public class BasicForm extends JFrame {
 		container.setBackground(CommonConst.formBackgroundColor);
 		
 		setTitle(title);		
-		font = new Font("굴림", 13, 13);
+		font = MainForm.basicFont13;
 		
 //		this.addWindowListener(new WindowAdapter() {
 //			public void windowClosing(WindowEvent e) {

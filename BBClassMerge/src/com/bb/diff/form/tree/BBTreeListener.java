@@ -6,10 +6,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
 
+import com.bb.classmerge.form.BBMenuItem;
 import com.bb.classmerge.util.ClipboardUtil;
 import com.bb.diff.form.textarea.EditorUtil;
 
@@ -86,7 +86,7 @@ public class BBTreeListener implements MouseListener {
 	private JPopupMenu getFolderPopupMenu(final BBTreeNode node, final TreePath path) {
 		JPopupMenu popupMenu = new JPopupMenu();
 		
-		final JMenuItem subMenu1 = new JMenuItem("하위폴더 확장 (Expand all subfolders)");
+		final BBMenuItem subMenu1 = new BBMenuItem("하위폴더 확장 (Expand all subfolders)");
 		popupMenu.add(subMenu1);
 		
 		subMenu1.addActionListener(new ActionListener() {
@@ -97,7 +97,7 @@ public class BBTreeListener implements MouseListener {
 			}
 		});
 	
-		final JMenuItem subMenu2 = new JMenuItem("하위폴더 축소 (Collapse all subfolders)");
+		final BBMenuItem subMenu2 = new BBMenuItem("하위폴더 축소 (Collapse all subfolders)");
 		popupMenu.add(subMenu2);
 		
 		subMenu2.addActionListener(new ActionListener() {
@@ -112,7 +112,7 @@ public class BBTreeListener implements MouseListener {
 		boolean rightFileExists = EditorUtil.checkRightFileExists(node);
 		
 		if (leftFileExists) {
-			final JMenuItem subMenu3 = new JMenuItem("좌측 폴더경로 복사 (Copy left folder path)");
+			final BBMenuItem subMenu3 = new BBMenuItem("좌측 폴더경로 복사 (Copy left folder path)");
 			subMenu3.setMnemonic(KeyEvent.VK_L); // 단축키 ALT + L
 			popupMenu.add(subMenu3);
 			
@@ -131,7 +131,7 @@ public class BBTreeListener implements MouseListener {
 		}
 		
 		if (rightFileExists) {
-			final JMenuItem subMenu3 = new JMenuItem("우측 폴더경로 복사 (Copy right folder path)");
+			final BBMenuItem subMenu3 = new BBMenuItem("우측 폴더경로 복사 (Copy right folder path)");
 			subMenu3.setMnemonic(KeyEvent.VK_R); // 단축키 ALT + R
 			popupMenu.add(subMenu3);
 			
@@ -149,7 +149,7 @@ public class BBTreeListener implements MouseListener {
 			});
 		}
 		
-		final JMenuItem subMenu4 = new JMenuItem("폴더명 복사 (Copy folder name)");
+		final BBMenuItem subMenu4 = new BBMenuItem("폴더명 복사 (Copy folder name)");
 		subMenu4.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N
 		popupMenu.add(subMenu4);
 		
@@ -170,7 +170,7 @@ public class BBTreeListener implements MouseListener {
 			}
 		});
 		
-		final JMenuItem subMenu5 = new JMenuItem("하위폴더에서 동일한 파일 숨기기 (Hide same files from subfolders)");
+		final BBMenuItem subMenu5 = new BBMenuItem("하위폴더에서 동일한 파일 숨기기 (Hide same files from subfolders)");
 		popupMenu.add(subMenu5);
 		
 		subMenu5.addActionListener(new ActionListener() {
@@ -203,7 +203,7 @@ public class BBTreeListener implements MouseListener {
 				subMenuTitle1 = "마킹 (Mark to file name)";
 			}
 			
-			final JMenuItem subMenu1 = new JMenuItem(subMenuTitle1);
+			final BBMenuItem subMenu1 = new BBMenuItem(subMenuTitle1);
 			subMenu1.setMnemonic(KeyEvent.VK_M); // 단축키 ALT + M
 			popupMenu.add(subMenu1);
 			
@@ -226,7 +226,7 @@ public class BBTreeListener implements MouseListener {
 		boolean rightFileExists = EditorUtil.checkRightFileExists(node);
 		
 		if (leftFileExists) {
-			final JMenuItem subMenu2 = new JMenuItem("좌측 파일경로 복사 (Copy left file path)");
+			final BBMenuItem subMenu2 = new BBMenuItem("좌측 파일경로 복사 (Copy left file path)");
 			subMenu2.setMnemonic(KeyEvent.VK_L); // 단축키 ALT + L
 			popupMenu.add(subMenu2);
 			
@@ -243,7 +243,7 @@ public class BBTreeListener implements MouseListener {
 		}
 		
 		if (rightFileExists) {
-			final JMenuItem subMenu2 = new JMenuItem("우측 파일경로 복사 (Copy right file path)");
+			final BBMenuItem subMenu2 = new BBMenuItem("우측 파일경로 복사 (Copy right file path)");
 			subMenu2.setMnemonic(KeyEvent.VK_R); // 단축키 ALT + R
 			popupMenu.add(subMenu2);
 			
@@ -259,7 +259,7 @@ public class BBTreeListener implements MouseListener {
 			});
 		}
 		
-		final JMenuItem subMenu3 = new JMenuItem("파일명 복사 (Copy file name)");
+		final BBMenuItem subMenu3 = new BBMenuItem("파일명 복사 (Copy file name)");
 		subMenu3.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N
 		popupMenu.add(subMenu3);
 		

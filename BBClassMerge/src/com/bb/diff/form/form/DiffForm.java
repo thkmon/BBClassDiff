@@ -10,16 +10,16 @@ import java.awt.event.MouseWheelListener;
 import java.io.File;
 
 import javax.swing.BorderFactory;
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.IconUIResource;
 
+import com.bb.classmerge.form.BBCheckBoxMenuItem;
+import com.bb.classmerge.form.BBMenu;
+import com.bb.classmerge.form.BBMenuBar;
+import com.bb.classmerge.form.BBMenuItem;
 import com.bb.classmerge.main.BBClassDiff;
 import com.bb.classmerge.util.DateUtil;
 import com.bb.classmerge.util.FileNameUtil;
@@ -77,7 +77,7 @@ public class DiffForm {
 		CommonConst.winmergeButton = CommonConst.bForm.addButton(4, CommonConst.textAreaTopMargin - 1 , 85, 24, "Compare");
 		CommonConst.winmergeButton.addMouseListener(new BBWinmergeButtonMouseListener());
 		
-		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(95, CommonConst.textAreaTopMargin - 2, 80, 24, "Diff Point : ");
+		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(95, CommonConst.textAreaTopMargin - 2, 255, 24, "Diff Point : ");
 		
 		
 		/**
@@ -152,7 +152,7 @@ public class DiffForm {
 	
 	private void addMenuBar(BBForm form) {
 		UIManager.put("PopupMenu.border", new LineBorder(CommonConst.menuBorderColor));
-		JMenuBar menuBar = new JMenuBar();
+		BBMenuBar menuBar = new BBMenuBar();
 		
 		
 		int menubarWidth = 200;
@@ -163,11 +163,11 @@ public class DiffForm {
 		menuBar.setBounds(0, 0, menubarWidth, menubarHeight);
 		
 		
-		JMenu treeMenu = new JMenu("Tree");
+		BBMenu treeMenu = new BBMenu("Tree");
 		treeMenu.setMnemonic(KeyEvent.VK_T); // 단축키 ALT + T
 		
 		{
-			final JMenuItem subMenu1 = new JMenuItem("전체 확장 (Expand all)");
+			final BBMenuItem subMenu1 = new BBMenuItem("전체 확장 (Expand all)");
 			treeMenu.add(subMenu1);
 			
 			subMenu1.addActionListener(new ActionListener() {
@@ -180,7 +180,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JMenuItem subMenu2 = new JMenuItem("전체 축소 (Collapse all)");
+			final BBMenuItem subMenu2 = new BBMenuItem("전체 축소 (Collapse all)");
 			treeMenu.add(subMenu2);
 			
 			subMenu2.addActionListener(new ActionListener() {
@@ -193,7 +193,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JMenuItem subMenu3 = new JMenuItem("트리의 모든 파일 추출 (Extract all files in tree)");
+			final BBMenuItem subMenu3 = new BBMenuItem("트리의 모든 파일 추출 (Extract all files in tree)");
 			treeMenu.add(subMenu3);
 			
 			subMenu3.addActionListener(new ActionListener() {
@@ -237,7 +237,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JMenuItem subMenu4 = new JMenuItem("트리의 모든 클래스 파일로부터 자바 파일 추출 (Extract java files from classes in tree)");
+			final BBMenuItem subMenu4 = new BBMenuItem("트리의 모든 클래스 파일로부터 자바 파일 추출 (Extract java files from classes in tree)");
 			treeMenu.add(subMenu4);
 			
 			subMenu4.addActionListener(new ActionListener() {
@@ -292,7 +292,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JMenuItem subMenuLast = new JMenuItem("새로고침 (Refresh)");
+			final BBMenuItem subMenuLast = new BBMenuItem("새로고침 (Refresh)");
 			treeMenu.add(subMenuLast);
 			
 			subMenuLast.addActionListener(new ActionListener() {
@@ -304,11 +304,11 @@ public class DiffForm {
 			});
 		}
 		
-		JMenu findMenu = new JMenu("Find");
+		BBMenu findMenu = new BBMenu("Find");
 		findMenu.setMnemonic(KeyEvent.VK_F); // 단축키 ALT + F
 		
 		{
-			final JMenuItem subMenu1 = new JMenuItem("빠른 찾기 (Quick Find)");
+			final BBMenuItem subMenu1 = new BBMenuItem("빠른 찾기 (Quick Find)");
 			subMenu1.setAccelerator(KeyStroke.getKeyStroke('F', Event.CTRL_MASK)); // 단축키 CTRL + F
 			findMenu.add(subMenu1);
 			
@@ -325,11 +325,11 @@ public class DiffForm {
 			});
 		}
 		
-		JMenu optionMenu = new JMenu("Option");
+		BBMenu optionMenu = new BBMenu("Option");
 		optionMenu.setMnemonic(KeyEvent.VK_O); // 단축키 ALT + O
 		
 		{
-			final JCheckBoxMenuItem subMenu1 = new JCheckBoxMenuItem("용량 차이가 0인 파일 숨기기 (Hide files that capacity difference is 0)");
+			final BBCheckBoxMenuItem subMenu1 = new BBCheckBoxMenuItem("용량 차이가 0인 파일 숨기기 (Hide files that capacity difference is 0)");
 			
 			// 초기값 세팅. true일 경우 check 처리
 			if (CommonConst.bHideCapacityGapIsZero) {
@@ -356,7 +356,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JCheckBoxMenuItem subMenu2 = new JCheckBoxMenuItem("좌측에만 존재하는 파일/폴더 숨기기 (Hide files/dirs that exist only in left)");
+			final BBCheckBoxMenuItem subMenu2 = new BBCheckBoxMenuItem("좌측에만 존재하는 파일/폴더 숨기기 (Hide files/dirs that exist only in left)");
 			
 			// 초기값 세팅. true일 경우 check 처리
 			if (CommonConst.bHideLeftOnlyFileDir) {
@@ -383,7 +383,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JCheckBoxMenuItem subMenu3 = new JCheckBoxMenuItem("우측에만 존재하는 파일/폴더 숨기기 (Hide files/dirs that exist only in right)");
+			final BBCheckBoxMenuItem subMenu3 = new BBCheckBoxMenuItem("우측에만 존재하는 파일/폴더 숨기기 (Hide files/dirs that exist only in right)");
 			
 			// 초기값 세팅. true일 경우 check 처리
 			if (CommonConst.bHideRightOnlyFileDir) {
@@ -410,7 +410,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JCheckBoxMenuItem subMenu4 = new JCheckBoxMenuItem("좌측과 우측 모두에 존재하는 파일/폴더 숨기기 (Hide files/dirs that exist in both)");
+			final BBCheckBoxMenuItem subMenu4 = new BBCheckBoxMenuItem("좌측과 우측 모두에 존재하는 파일/폴더 숨기기 (Hide files/dirs that exist in both)");
 			
 			// 초기값 세팅. true일 경우 check 처리
 			if (CommonConst.bHideBothFileDir) {
@@ -437,7 +437,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JCheckBoxMenuItem subMenu5 = new JCheckBoxMenuItem("diff 정보가 없는 빈 폴더 숨기기 (Hide empty directory with no differences)");
+			final BBCheckBoxMenuItem subMenu5 = new BBCheckBoxMenuItem("diff 정보가 없는 빈 폴더 숨기기 (Hide empty directory with no differences)");
 			
 			// 초기값 세팅. true일 경우 check 처리
 			if (CommonConst.bHideEmptyDirWithNoDiff) {
@@ -464,7 +464,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JCheckBoxMenuItem subMenu6 = new JCheckBoxMenuItem("디컴파일시 손상을 고려한 비교하기 (Diff considering breakage of decompile)");
+			final BBCheckBoxMenuItem subMenu6 = new BBCheckBoxMenuItem("디컴파일시 손상을 고려한 비교하기 (Diff considering breakage of decompile)");
 			
 			// 초기값 세팅. true일 경우 check 처리
 			// 디컴파일시 손상을 고려한 비교하기 사용 여부
@@ -492,7 +492,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JCheckBoxMenuItem subMenu7 = new JCheckBoxMenuItem("CVS/SVN 리비전 문자열 제외하고 비교하기 (Diff excepting CVS/SVN revision string)");
+			final BBCheckBoxMenuItem subMenu7 = new BBCheckBoxMenuItem("CVS/SVN 리비전 문자열 제외하고 비교하기 (Diff excepting CVS/SVN revision string)");
 			
 			// 초기값 세팅. true일 경우 check 처리
 			// CVS/SVN 리비전 문자열 제외하고 비교하기 여부
@@ -520,7 +520,7 @@ public class DiffForm {
 		}
 		
 		{
-			final JCheckBoxMenuItem subMenu8 = new JCheckBoxMenuItem("클래스 핵심 라인만 비교하기 (Diff core lines of classes only)");
+			final BBCheckBoxMenuItem subMenu8 = new BBCheckBoxMenuItem("클래스 핵심 라인만 비교하기 (Diff core lines of classes only)");
 			
 			// 초기값 세팅. true일 경우 check 처리
 			// 클래스 핵심 라인만 비교하기 여부
@@ -552,9 +552,9 @@ public class DiffForm {
 		menuBar.add(optionMenu);
 		
 		
-		// 우측 상단에 여백을 확보하기 위해 form에 JMenuBar를 바로 추가하지 않고,
-		// 좌측 상단에 JPanel을 만들고 JPanel에 JMenuBar를 추가한다.
-		// form.setJMenuBar(menuBar);
+		// 우측 상단에 여백을 확보하기 위해 form에 BBMenuBar를 바로 추가하지 않고,
+		// 좌측 상단에 JPanel을 만들고 JPanel에 BBMenuBar를 추가한다.
+		// form.setJmenuBar(menuBar);
 		JPanel jpanel = new JPanel();
 		jpanel.add(menuBar);
 		jpanel.setBorder(BorderFactory.createEmptyBorder());

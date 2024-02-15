@@ -15,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import com.bb.classmerge.form.JFrameDesignUtil;
+import com.bb.classmerge.form.MainForm;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.JButtonUtil;
 import com.bb.diff.form.text.JTextFieldUtil;
@@ -35,8 +36,8 @@ public class BBForm extends JFrame {
 		this.setBounds(200, 200, width, height);
 		this.setTitle(title);
 		
-		font = new Font("맑은 고딕", 13, 13);
-		smallFont = new Font("맑은 고딕", 9, 9);
+		font = MainForm.basicFont13;
+		smallFont = MainForm.basicFont9;
 		
 		container.setBackground(CommonConst.formBackgroundColor);
 		this.setBackground(CommonConst.formBackgroundColor);

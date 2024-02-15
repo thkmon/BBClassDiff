@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
+import com.bb.classmerge.form.MainForm;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.JButtonUtil;
 import com.bb.diff.form.text.JTextFieldUtil;
@@ -39,8 +40,6 @@ public class QuickFinderForm extends JFrame {
 
 	private int buttonHeight = 24;
 
-	private Font smallFont = new Font("맑은 고딕", 0, 12);
-	
 	/**
 	 * 빠른 찾기 윈도우 초기화
 	 */
@@ -128,7 +127,7 @@ public class QuickFinderForm extends JFrame {
 	 */
 	private void addButton() {
 		findButton = JButtonUtil.createNewJButton("Find");
-		findButton.setFont(this.smallFont);
+		findButton.setFont(MainForm.basicFont12);
 		findButton.setBounds(320, topMargin, 80, this.buttonHeight);
 		getContentPane().add(findButton);
 
@@ -159,7 +158,7 @@ public class QuickFinderForm extends JFrame {
 	 */
 	private void addTextField() {
 		textField1 = JTextFieldUtil.createNewJTextField();
-		textField1.setFont(this.smallFont);
+		textField1.setFont(MainForm.basicFont12);
 		getContentPane().add(textField1);
 		textField1.setText("");
 		textField1.setBounds(10, topMargin, 300, 24);

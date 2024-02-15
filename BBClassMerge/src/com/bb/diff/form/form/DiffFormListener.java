@@ -8,10 +8,10 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
 
+import com.bb.classmerge.form.BBMenuItem;
 import com.bb.classmerge.util.ClipboardUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.BBArrowButtonMouseListener;
@@ -279,7 +279,7 @@ public class DiffFormListener implements ComponentListener {
 	private JPopupMenu getTextFieldPopupMenu(final JTextField textField) {
 		JPopupMenu popupMenu = new JPopupMenu();
 		
-		final JMenuItem subMenu1 = new JMenuItem("파일경로 복사 (Copy file path)");
+		final BBMenuItem subMenu1 = new BBMenuItem("파일경로 복사 (Copy file path)");
 		subMenu1.setMnemonic(KeyEvent.VK_C); // 단축키 ALT + C
 		popupMenu.add(subMenu1);
 		
@@ -296,7 +296,7 @@ public class DiffFormListener implements ComponentListener {
 			}
 		});
 		
-		final JMenuItem subMenu2 = new JMenuItem("파일명 복사 (Copy file name)");
+		final BBMenuItem subMenu2 = new BBMenuItem("파일명 복사 (Copy file name)");
 		subMenu2.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N
 		popupMenu.add(subMenu2);
 		
@@ -331,7 +331,7 @@ public class DiffFormListener implements ComponentListener {
 	private JPopupMenu getEditorPopupMenu(final BBEditor editor) {
 		JPopupMenu popupMenu = new JPopupMenu();
 		
-		final JMenuItem subMenu1 = new JMenuItem("복사 (Copy)");
+		final BBMenuItem subMenu1 = new BBMenuItem("복사 (Copy)");
 		subMenu1.setMnemonic(KeyEvent.VK_C); // 단축키 ALT + C
 		popupMenu.add(subMenu1);
 		
@@ -353,7 +353,7 @@ public class DiffFormListener implements ComponentListener {
 			}
 		});
 		
-		final JMenuItem subMenu2 = new JMenuItem("모두 선택 (Select All)");
+		final BBMenuItem subMenu2 = new BBMenuItem("모두 선택 (Select All)");
 		subMenu2.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N
 		popupMenu.add(subMenu2);
 		

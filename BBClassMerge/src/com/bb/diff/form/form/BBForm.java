@@ -13,6 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.Element;
 
 import com.bb.classmerge.form.JFrameDesignUtil;
 import com.bb.classmerge.form.MainForm;
@@ -82,7 +86,7 @@ public class BBForm extends JFrame {
 		
 //		JPanel jp = new JPanel();
 		
-		BBEditor obj = new BBEditor();
+		final BBEditor obj = new BBEditor();
 		obj.setBackground(Color.white);
 		obj.setBounds(left, top, width, height);
 		obj.setFont(font);
@@ -94,6 +98,47 @@ public class BBForm extends JFrame {
 		
 		scrollPane.setBorder(BorderFactory.createLineBorder(CommonConst.buttonBorderColor));
 		
+		
+		//////////////////////////////////////////////////
+		// 에디터 좌측에 라인번호 추가 시작
+		//////////////////////////////////////////////////
+		final JTextPane lineNumbers = new JTextPane();
+        lineNumbers.setEditable(false);
+        lineNumbers.setBackground(new Color(243, 243, 243));
+        
+        scrollPane.setRowHeaderView(lineNumbers);
+        
+        obj.getDocument().addDocumentListener(new DocumentListener() {
+            public String getText() {
+                int caretPosition = obj.getDocument().getLength();
+                Element root = obj.getDocument().getDefaultRootElement();
+                String text = "1\n";
+                for(int i = 2; i < root.getElementIndex(caretPosition) + 2; i++) {
+                    text += i + "\n";
+                }
+                return text;
+            }
+            
+            @Override
+            public void changedUpdate(DocumentEvent de) {
+                lineNumbers.setText(getText());
+            }
+            
+            @Override
+            public void insertUpdate(DocumentEvent de) {
+                lineNumbers.setText(getText());
+            }
+            
+            @Override
+            public void removeUpdate(DocumentEvent de) {
+                lineNumbers.setText(getText());
+            }
+        });
+		//////////////////////////////////////////////////
+		// 에디터 좌측에 라인번호 추가 끝
+		//////////////////////////////////////////////////
+        
+        
 		//화면에는 스크롤판 추가
 		container.add(scrollPane);
 	

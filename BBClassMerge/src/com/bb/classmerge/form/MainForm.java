@@ -209,7 +209,7 @@ public class MainForm extends JFrame {
 		label1.setBounds(10, 10, 150, textFieldHeight);
 		this.getContentPane().add(label1);
 		
-		JLabel label2 = new JLabel("(Operation Dir)");
+		JLabel label2 = new JLabel("(Production Dir)");
 		label2.setFont(basicFont12);
 		label2.setBounds(10, 25, 150, textFieldHeight);
 		this.getContentPane().add(label2);
@@ -346,14 +346,14 @@ public class MainForm extends JFrame {
 	private void addTextField() {
 		// 상단 클래스 폴더경로 추가
 		textField1 = JTextFieldUtil.createNewJTextField();
-		textField1.setFont(basicFont12);
+		textField1.setFont(basicFont13);
 		this.getContentPane().add(textField1);
 		textField1.setText(BBClassDiff.defaultDirPath1);
 		textField1.setBounds(140, 10, 455, 35);
 		
 		// 상단 클래스 폴더경로 추가
 		textField2 = JTextFieldUtil.createNewJTextField();
-		textField2.setFont(basicFont12);
+		textField2.setFont(basicFont13);
 		this.getContentPane().add(textField2);
 		textField2.setText(BBClassDiff.defaultDirPath2);
 		textField2.setBounds(140, 50, 455, 35);

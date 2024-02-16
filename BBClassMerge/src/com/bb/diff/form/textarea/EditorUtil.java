@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -307,8 +309,39 @@ public class EditorUtil {
 			/**
 			 * 디폴트로 최상단 보여주기
 			 */
-			CommonConst.leftFileContent.setScrollTop();
-			CommonConst.rightFileContent.setScrollTop();
+			// JTextPane onload (JTextPane resume)
+			CommonConst.leftFileContent.getDocument().addDocumentListener(new DocumentListener() {
+				
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+				}
+				
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+				}
+				
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					CommonConst.leftFileContent.setScrollTop();
+				}
+			});
+			
+			// JTextPane onload (JTextPane resume)
+			CommonConst.rightFileContent.getDocument().addDocumentListener(new DocumentListener() {
+				
+				@Override
+				public void removeUpdate(DocumentEvent e) {
+				}
+				
+				@Override
+				public void insertUpdate(DocumentEvent e) {
+				}
+				
+				@Override
+				public void changedUpdate(DocumentEvent e) {
+					CommonConst.rightFileContent.setScrollTop();
+				}
+			});
 		}
 		
 		return true;

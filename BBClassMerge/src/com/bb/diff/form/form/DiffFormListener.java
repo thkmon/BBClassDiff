@@ -10,13 +10,13 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
 
 import com.bb.classmerge.form.BBMenuItem;
 import com.bb.classmerge.util.ClipboardUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.BBArrowButtonMouseListener;
-import com.bb.diff.form.button.BBDiffButtonMouseListener;
+import com.bb.diff.form.button.BBDiffNextButtonMouseListener;
+import com.bb.diff.form.button.BBDiffPrevButtonMouseListener;
 import com.bb.diff.form.textarea.BBEditor;
 import com.bb.diff.image.ImageIconUtil;
 import com.bb.diff.path.PathUtil;
@@ -242,9 +242,13 @@ public class DiffFormListener implements ComponentListener {
 		
 		
 		// 공통 버튼
-		int bothArrowButton1Left = box2Left + boxWidth - ((CommonConst.arrowButtonWidth) * 4) - CommonConst.arrowButtonWidth;
-		CommonConst.bothDiffButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
-		CommonConst.bothDiffButton.setIcon(ImageIconUtil.getIconFromName("button", "next_diff"));
+		int bothArrowButton1Left = box2Left + boxWidth - ((CommonConst.arrowButtonWidth) * 5) - CommonConst.arrowButtonWidth;
+		CommonConst.bothDiffNextButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.bothDiffNextButton.setIcon(ImageIconUtil.getIconFromName("button", "diff_next"));
+		
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth;
+		CommonConst.bothDiffPrevButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.bothDiffPrevButton.setIcon(ImageIconUtil.getIconFromName("button", "diff_prev"));
 		
 		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth;
 		CommonConst.bothUpButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
@@ -264,7 +268,8 @@ public class DiffFormListener implements ComponentListener {
 		
 		
 		// 버튼 액션
-		CommonConst.bothDiffButton.addMouseListener(new BBDiffButtonMouseListener());
+		CommonConst.bothDiffNextButton.addMouseListener(new BBDiffNextButtonMouseListener());
+		CommonConst.bothDiffPrevButton.addMouseListener(new BBDiffPrevButtonMouseListener());
 		CommonConst.bothTopButton.addMouseListener(new BBArrowButtonMouseListener      (true, true, true, true));
 		CommonConst.bothBottomButton.addMouseListener(new BBArrowButtonMouseListener   (true, true, false, true));
 		CommonConst.bothUpButton.addMouseListener(new BBArrowButtonMouseListener       (true, true, true, false));

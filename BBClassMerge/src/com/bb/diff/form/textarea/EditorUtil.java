@@ -529,6 +529,16 @@ public class EditorUtil {
 				colList2 = new ColList();
 			}
 			
+			int rowCount1 = colList1.size();
+			for (int k=0; k<rowCount1; k++) {
+				paintLeftDocWhite(k);
+            }
+			
+			int rowCount2 = colList2.size();
+			for (int k=0; k<rowCount2; k++) {
+				paintRightDocWhite(k);
+            }
+			
 			CommonConst.diffPointList1 = new ArrayList<Integer>();
 			CommonConst.diffPointList2 = new ArrayList<Integer>();
 			CommonConst.currentDiffPointIndex = -1;

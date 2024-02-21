@@ -509,80 +509,110 @@ public class EditorUtil {
 	
 	private static void diffForHighlight(boolean bCheckDiff, StringBuffer content1, StringBuffer content2, BBTreeNode node, String fileName, boolean bRemoveIfSame, boolean showOnEditor) {
 		
-		String fileExt = FileNameUtil.getExtensionFromPath(fileName);
-		boolean bClassFile = fileExt.equalsIgnoreCase("class");
+		// String fileExt = FileNameUtil.getExtensionFromPath(fileName);
+		// boolean bClassFile = fileExt.equalsIgnoreCase("class");
 		
+		boolean isSimpleDiff = false;
 		int diffPoint = 0;
 		
 		// bCheckDiff == true일 때만 비교하자. 내용이 완전히 같을 경우 비교할 필요 없다.
 		if (bCheckDiff) {
-	        /**
-			 * col 위치 계산해서 저장해둔다.
-			 */
-			colList1 = FileContentUtil.createColList(content1);
-			if (colList1 == null) {
-				colList1 = new ColList();
-			}
 			
-			colList2 = FileContentUtil.createColList(content2);
-			if (colList2 == null) {
-				colList2 = new ColList();
-			}
-			
-			leftDoc.setCharacterAttributes(0, leftDoc.getLength(), whiteStyle, true);
-			rightDoc.setCharacterAttributes(0, rightDoc.getLength(), whiteStyle, true);
-			
-			CommonConst.diffPointList1 = new ArrayList<Integer>();
-			CommonConst.diffPointList2 = new ArrayList<Integer>();
-			CommonConst.currentDiffPointIndex = -1;
-			
-			String text1 = content1.toString();
-	        String text2 = content2.toString();
+			if (!showOnEditor) {
+				isSimpleDiff = true;
+				
+			} else {
+				// 에디터에 표시해야 하는 경우에만 diff 진행하기
+				/**
+				 * col 위치 계산해서 저장해둔다.
+				 */
+				colList1 = FileContentUtil.createColList(content1);
+				if (colList1 == null) {
+					colList1 = new ColList();
+				}
+				
+				colList2 = FileContentUtil.createColList(content2);
+				if (colList2 == null) {
+					colList2 = new ColList();
+				}
+				
+				leftDoc.setCharacterAttributes(0, leftDoc.getLength(), whiteStyle, true);
+				rightDoc.setCharacterAttributes(0, rightDoc.getLength(), whiteStyle, true);
+				
+				CommonConst.diffPointList1 = new ArrayList<Integer>();
+				CommonConst.diffPointList2 = new ArrayList<Integer>();
+				CommonConst.currentDiffPointIndex = -1;
+				
+				String text1 = content1.toString();
+		        String text2 = content2.toString();
 
-	        // Perform diff
-	        Patch<String> patch = DiffUtils.diff(Arrays.asList(text1.split("\n")), Arrays.asList(text2.split("\n")));
+		        // Perform diff
+		        Patch<String> patch = DiffUtils.diff(Arrays.asList(text1.split("\n")), Arrays.asList(text2.split("\n")));
 
-	        // Display diff result
-	        StringBuilder diffOutput = new StringBuilder();
-	        for (AbstractDelta<String> delta : patch.getDeltas()) {
-	            diffOutput.append(delta).append("\n");
-	            
-            	// 변경이 발생한 원본 위치
-            	int beginRow1 = delta.getSource().getPosition();
-            	int endRow1 = beginRow1;
-	            List<String> lineList1 = delta.getSource().getLines();
-	            if (lineList1 != null && lineList1.size() > 0) {
-	            	endRow1 = beginRow1 + lineList1.size() - 1;
-	            }
-	            
-	            for (int k=beginRow1; k<=endRow1; k++) {
-	            	paintLeftDocStrong(k);
-	            }
-	            
-            	// 변경이 발생한 수정된 위치
-            	int beginRow2 = delta.getTarget().getPosition();
-            	int endRow2 = beginRow2;
-	            List<String> lineList2 = delta.getTarget().getLines();
-	            if (lineList2 != null && lineList2.size() > 0) {
-	            	endRow2 = beginRow2 + lineList2.size() - 1;
-	            }
-	            
-	            for (int k=beginRow2; k<=endRow2; k++) {
-	            	paintRightDocStrong(k);
-	            }
-	            
-	            diffPoint++;
-	            
-	            CommonConst.diffPointList1.add(beginRow1);
-	            CommonConst.diffPointList2.add(beginRow2);
-	        }
+		        // Display diff result
+		        StringBuilder diffOutput = new StringBuilder();
+		        for (AbstractDelta<String> delta : patch.getDeltas()) {
+		            diffOutput.append(delta).append("\n");
+		            
+	            	// 변경이 발생한 원본 위치
+	            	int beginRow1 = delta.getSource().getPosition();
+	            	int endRow1 = beginRow1;
+		            List<String> lineList1 = delta.getSource().getLines();
+		            if (lineList1 != null && lineList1.size() > 0) {
+		            	endRow1 = beginRow1 + lineList1.size() - 1;
+		            }
+		            
+		            for (int k=beginRow1; k<=endRow1; k++) {
+		            	paintLeftDocStrong(k);
+		            }
+		            
+	            	// 변경이 발생한 수정된 위치
+	            	int beginRow2 = delta.getTarget().getPosition();
+	            	int endRow2 = beginRow2;
+		            List<String> lineList2 = delta.getTarget().getLines();
+		            if (lineList2 != null && lineList2.size() > 0) {
+		            	endRow2 = beginRow2 + lineList2.size() - 1;
+		            }
+		            
+		            for (int k=beginRow2; k<=endRow2; k++) {
+		            	paintRightDocStrong(k);
+		            }
+		            
+		            diffPoint++;
+		            
+		            CommonConst.diffPointList1.add(beginRow1);
+		            CommonConst.diffPointList2.add(beginRow2);
+		        }
+			}
 		}
 		
 		if (showOnEditor) {
 			CommonConst.diffPointLabel.setText("Diff Point : " + diffPoint);
 		}
 		
-		if (diffPoint == 0) {
+		if (isSimpleDiff || diffPoint > 0) {
+			String mark = "";
+			if (isSimpleDiff) {
+				mark = "";
+			} else {
+				mark = "{" + diffPoint + "}";
+			}
+			
+			// 차이점이 존재할 경우 {숫자(디프개수)} 마크를 앞에 붙여준다.
+			int middleBracketIndex = node.getTitle().lastIndexOf("}");
+			if (middleBracketIndex > -1) {
+				String newTitle = mark + node.getTitle().substring(middleBracketIndex + 1);
+				// 사용자가 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여주는 기능이 있으므로, 이 점을 고려하여 처리한다.
+				if (node.getTitle().startsWith("{◎}")) {
+					newTitle = "{◎}" + newTitle;
+				}
+				node.setTitle(newTitle);
+			} else {
+				String newTitle = mark + node.getTitle();
+				node.setTitle(newTitle);
+			}
+			
+		} else {
 			if (fileName != null && fileName.length() > 0) {
 				if (showOnEditor) {
 					CommonConst.leftFileContent.setText("내용 동일함 : " + fileName);
@@ -616,21 +646,6 @@ public class EditorUtil {
 						node.setTitle(newTitle);
 					}
 				}
-			}
-			
-		} else if (diffPoint > 0) {
-			// 차이점이 존재할 경우 {숫자(디프개수)} 마크를 앞에 붙여준다.
-			int middleBracketIndex = node.getTitle().lastIndexOf("}");
-			if (middleBracketIndex > -1) {
-				String newTitle = "{" + diffPoint + "}" + node.getTitle().substring(middleBracketIndex + 1);
-				// 사용자가 마우스 우클릭했을 경우 {◎} 마크를 앞에 붙여주는 기능이 있으므로, 이 점을 고려하여 처리한다.
-				if (node.getTitle().startsWith("{◎}")) {
-					newTitle = "{◎}" + newTitle;
-				}
-				node.setTitle(newTitle);
-			} else {
-				String newTitle = "{" + diffPoint + "}" + node.getTitle();
-				node.setTitle(newTitle);
 			}
 		}
 	}

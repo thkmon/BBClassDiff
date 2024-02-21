@@ -130,7 +130,7 @@ public class CommonConst {
 	public static BBTree treeModel = null;
 	
 	// 용량 차이가 0인 파일 숨기기 여부
-	public static boolean bHideCapacityGapIsZero = true;
+	public static boolean bHideCapacityGapIsZero = false;
 	
 	// 좌측에만 있는 파일/폴더 숨기기 여부
 	public static boolean bHideLeftOnlyFileDir = false;

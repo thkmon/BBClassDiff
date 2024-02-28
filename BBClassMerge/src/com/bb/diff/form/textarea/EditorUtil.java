@@ -13,7 +13,6 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import com.bb.classmerge.util.FileNameUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.tree.BBTreeNode;
 import com.bb.diff.form.tree.BBTreeNodeList;

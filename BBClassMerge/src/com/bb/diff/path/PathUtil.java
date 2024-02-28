@@ -81,4 +81,24 @@ public class PathUtil {
 		
 		return path.substring(lastIndexDot + 1);
 	}
+	
+	/**
+	 * 파일위치 가져오기 (파일이 속한 폴더경로 가져오기)
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static String getFileFolderPath(String path) {
+		if (path == null || path.length() == 0) {
+			return "";
+		}
+		
+		path = reviseStandardPath(path);
+		
+		if (path.lastIndexOf("\\") > -1) {
+			return path.substring(0, path.lastIndexOf("\\"));
+		}
+		
+		return path;
+	}
 }

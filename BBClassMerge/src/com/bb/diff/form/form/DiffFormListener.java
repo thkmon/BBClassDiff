@@ -1,5 +1,6 @@
 package com.bb.diff.form.form;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
@@ -7,6 +8,8 @@ import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
@@ -321,6 +324,75 @@ public class DiffFormListener implements ComponentListener {
 				}
 				
 				ClipboardUtil.copyToClipboard(fileName);
+			}
+		});
+		
+		final BBMenuItem subMenu3 = new BBMenuItem("상위폴더 열기 (Open parent folder)");
+		subMenu3.setMnemonic(KeyEvent.VK_F); // 단축키 ALT + F
+		popupMenu.add(subMenu3);
+		
+		subMenu3.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String filePath = textField.getText();
+				if (filePath == null) {
+					filePath = "";
+				}
+				
+				String folderPath = PathUtil.getFileFolderPath(filePath);
+				if (folderPath == null || folderPath.length() == 0) {
+					System.err.println("폴더경로가 존재하지 않습니다.");
+					return;
+				}
+				
+		        try {
+	        		// Desktop 인스턴스 가져오기
+			        Desktop desktop = Desktop.getDesktop();
+
+			        // 폴더가 존재하고, 지원되는 플랫폼일 경우에만 폴더 열기 시도
+			        File folder = new File(folderPath);
+		            if (folder.exists() && Desktop.isDesktopSupported()) {
+		                desktop.open(folder);
+		            } else {
+		                System.err.println("폴더가 존재하지 않거나, 지원되지 않는 플랫폼입니다.");
+		            }
+		            
+		        } catch (IOException e2) {
+		            e2.printStackTrace();
+		        }
+			}
+		});
+		
+		final BBMenuItem subMenu4 = new BBMenuItem("파일 열기 (Open file)");
+		subMenu4.setMnemonic(KeyEvent.VK_O); // 단축키 ALT + O
+		popupMenu.add(subMenu4);
+		
+		subMenu4.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String filePath = textField.getText();
+				if (filePath == null || filePath.length() == 0) {
+					System.err.println("파일경로가 존재하지 않습니다.");
+					return;
+				}
+				
+		        try {
+	        		// Desktop 인스턴스 가져오기
+			        Desktop desktop = Desktop.getDesktop();
+
+			        // 파일이 존재하고, 지원되는 플랫폼일 경우에만 폴더 열기 시도
+			        File file = new File(filePath);
+		            if (file.exists() && Desktop.isDesktopSupported()) {
+		                desktop.open(file);
+		            } else {
+		                System.err.println("파일이 존재하지 않거나, 지원되지 않는 플랫폼입니다.");
+		            }
+		            
+		        } catch (IOException e2) {
+		            e2.printStackTrace();
+		        }
 			}
 		});
 		

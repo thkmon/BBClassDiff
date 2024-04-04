@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import com.bb.classmerge.form.BBMenuItem;
 import com.bb.classmerge.util.ClipboardUtil;
+import com.bb.classmerge.util.FilePathUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.form.button.BBArrowButtonMouseListener;
 import com.bb.diff.form.button.BBDiffNextButtonMouseListener;
@@ -288,113 +289,106 @@ public class DiffFormListener implements ComponentListener {
 	private JPopupMenu getTextFieldPopupMenu(final JTextField textField) {
 		JPopupMenu popupMenu = new JPopupMenu();
 		
-		final BBMenuItem subMenu1 = new BBMenuItem("파일경로 복사 (Copy file path)");
-		subMenu1.setMnemonic(KeyEvent.VK_C); // 단축키 ALT + C
-		popupMenu.add(subMenu1);
-		
-		subMenu1.addActionListener(new ActionListener() {
+		{
+			final BBMenuItem subMenu = new BBMenuItem("파일경로 복사 (Copy file path)");
+			subMenu.setMnemonic(KeyEvent.VK_C); // 단축키 ALT + C
+			popupMenu.add(subMenu);
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String filePath = textField.getText();
-				if (filePath == null) {
-					filePath = "";
-				}
+			subMenu.addActionListener(new ActionListener() {
 				
-				ClipboardUtil.copyToClipboard(filePath);
-			}
-		});
-		
-		final BBMenuItem subMenu2 = new BBMenuItem("파일명 복사 (Copy file name)");
-		subMenu2.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N
-		popupMenu.add(subMenu2);
-		
-		subMenu2.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String filePath = textField.getText();
+					if (filePath == null) {
+						filePath = "";
+					}
+					
+					ClipboardUtil.copyToClipboard(filePath);
+				}
+			});
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String filePath = textField.getText();
-				if (filePath == null) {
-					filePath = "";
-				}
-				
-				String fileName = PathUtil.getFileNameWithExt(filePath);
-				if (fileName == null) {
-					fileName = "";
-				}
-				
-				ClipboardUtil.copyToClipboard(fileName);
+			String text = textField.getText();
+			if (text != null && text.equals("{empty}")) {
+				subMenu.setEnabled(false);
+			} else {
+				subMenu.setEnabled(true);
 			}
-		});
+		}
 		
-		final BBMenuItem subMenu3 = new BBMenuItem("상위폴더 열기 (Open parent folder)");
-		subMenu3.setMnemonic(KeyEvent.VK_F); // 단축키 ALT + F
-		popupMenu.add(subMenu3);
-		
-		subMenu3.addActionListener(new ActionListener() {
+		{
+			final BBMenuItem subMenu = new BBMenuItem("파일명 복사 (Copy file name)");
+			subMenu.setMnemonic(KeyEvent.VK_N); // 단축키 ALT + N
+			popupMenu.add(subMenu);
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String filePath = textField.getText();
-				if (filePath == null) {
-					filePath = "";
-				}
+			subMenu.addActionListener(new ActionListener() {
 				
-				String folderPath = PathUtil.getFileFolderPath(filePath);
-				if (folderPath == null || folderPath.length() == 0) {
-					System.err.println("폴더경로가 존재하지 않습니다.");
-					return;
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String filePath = textField.getText();
+					if (filePath == null) {
+						filePath = "";
+					}
+					
+					String fileName = PathUtil.getFileNameWithExt(filePath);
+					if (fileName == null) {
+						fileName = "";
+					}
+					
+					ClipboardUtil.copyToClipboard(fileName);
 				}
-				
-		        try {
-	        		// Desktop 인스턴스 가져오기
-			        Desktop desktop = Desktop.getDesktop();
-
-			        // 폴더가 존재하고, 지원되는 플랫폼일 경우에만 폴더 열기 시도
-			        File folder = new File(folderPath);
-		            if (folder.exists() && Desktop.isDesktopSupported()) {
-		                desktop.open(folder);
-		            } else {
-		                System.err.println("폴더가 존재하지 않거나, 지원되지 않는 플랫폼입니다.");
-		            }
-		            
-		        } catch (IOException e2) {
-		            e2.printStackTrace();
-		        }
-			}
-		});
-		
-		final BBMenuItem subMenu4 = new BBMenuItem("파일 열기 (Open file)");
-		subMenu4.setMnemonic(KeyEvent.VK_O); // 단축키 ALT + O
-		popupMenu.add(subMenu4);
-		
-		subMenu4.addActionListener(new ActionListener() {
+			});
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String filePath = textField.getText();
-				if (filePath == null || filePath.length() == 0) {
-					System.err.println("파일경로가 존재하지 않습니다.");
-					return;
-				}
-				
-		        try {
-	        		// Desktop 인스턴스 가져오기
-			        Desktop desktop = Desktop.getDesktop();
-
-			        // 파일이 존재하고, 지원되는 플랫폼일 경우에만 폴더 열기 시도
-			        File file = new File(filePath);
-		            if (file.exists() && Desktop.isDesktopSupported()) {
-		                desktop.open(file);
-		            } else {
-		                System.err.println("파일이 존재하지 않거나, 지원되지 않는 플랫폼입니다.");
-		            }
-		            
-		        } catch (IOException e2) {
-		            e2.printStackTrace();
-		        }
+			String text = textField.getText();
+			if (text != null && text.equals("{empty}")) {
+				subMenu.setEnabled(false);
+			} else {
+				subMenu.setEnabled(true);
 			}
-		});
+		}
+		
+		{
+			final BBMenuItem subMenu = new BBMenuItem("상위폴더 열기 (Open parent folder)");
+			subMenu.setMnemonic(KeyEvent.VK_F); // 단축키 ALT + F
+			popupMenu.add(subMenu);
+			
+			subMenu.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String filePath = textField.getText();
+					FilePathUtil.openParentFolder(filePath);
+				}
+			});
+			
+			String text = textField.getText();
+			if (text != null && text.equals("{empty}")) {
+				subMenu.setEnabled(false);
+			} else {
+				subMenu.setEnabled(true);
+			}
+		}
+		
+		{
+			final BBMenuItem subMenu = new BBMenuItem("파일 열기 (Open file)");
+			subMenu.setMnemonic(KeyEvent.VK_O); // 단축키 ALT + O
+			popupMenu.add(subMenu);
+			
+			subMenu.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String filePath = textField.getText();
+					FilePathUtil.openFile(filePath);
+				}
+			});
+			
+			String text = textField.getText();
+			if (text != null && text.equals("{empty}")) {
+				subMenu.setEnabled(false);
+			} else {
+				subMenu.setEnabled(true);
+			}
+		}
 		
 		return popupMenu;
 	}

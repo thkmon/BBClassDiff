@@ -140,13 +140,13 @@ public class TreeUtil {
 				}
 				
 			} else if (inLeftList) {
-				// 좌측에만 있는 파일/폴더는  띄우지 않는다.
+				// 좌측에만 있는 파일/폴더는 띄우지 않는다.
 				if (CommonConst.bHideLeftOnlyFileDir) {
 					return;
 				}
 				
 			} else if (intRightList) {
-				// 우측에만 있는 파일/폴더는  띄우지 않는다.
+				// 우측에만 있는 파일/폴더는 띄우지 않는다.
 				if (CommonConst.bHideRightOnlyFileDir) {
 					return;
 				}

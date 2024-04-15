@@ -14,6 +14,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import com.bb.diff.common.CommonConst;
+import com.bb.diff.file.FileUtil;
 import com.bb.diff.form.tree.BBTreeNode;
 import com.bb.diff.form.tree.BBTreeNodeList;
 import com.bb.diff.form.tree.TreeUtil;
@@ -157,6 +158,7 @@ public class EditorUtil {
 			return;
 		}
 		
+		// 뒤집어서 밑에서부터 제거해야 문제가 없다.
 		Collections.reverse(treeNodeList);
 		
 		Thread thread = new Thread() {
@@ -171,8 +173,28 @@ public class EditorUtil {
 				CommonConst.rightFileContent.setText("");
 				
 				try {
+					BBTreeNode oneNode = null;
 					for (int i=0; i<treeNodeCount; i++) {
-						loadFileByNode(treeNodeList.get(i), bRemoveIfSame, false);
+						oneNode = treeNodeList.get(i);
+						if (oneNode == null) {
+							continue;
+						}
+						
+						String leftPath = oneNode.getLeftAbsoulutePath();
+						String rightPath = oneNode.getRightAbsoulutePath();
+						
+						File leftFile = new File(leftPath);
+						File rightFile = new File(rightPath);
+						
+						if (leftFile.exists() && rightFile.exists()) {
+							boolean isSameFile = FileUtil.checkIsSameFile(leftFile, rightFile);
+							if (isSameFile) {
+								oneNode.removeMe(true);
+							}
+						}
+						
+						// 기존방식은 너무 느려서 주석처리
+						// loadFileByNode(treeNodeList.get(i), bRemoveIfSame, false);
 						
 						// 좌측 하단 프로그레스 레이블에 개수 표시
 						int index = i + 1;
@@ -214,7 +236,7 @@ public class EditorUtil {
 	 */
 	public static boolean loadFileByNode(BBTreeNode node, boolean bRemoveIfSame, boolean showOnEditor) {
 		
-		refreshNodeInfo(node, bRemoveIfSame, showOnEditor);
+		refreshNodeInfo(node, showOnEditor);
 		
 		/**
 		 * 좌측 파일 출력
@@ -350,7 +372,7 @@ public class EditorUtil {
 	 * 노드 속의 정보를 활용해서 파일 열기
 	 * @param node
 	 */
-	public static void refreshNodeInfo(BBTreeNode node, boolean bRemoveIfSame, boolean showOnEditor) {
+	public static void refreshNodeInfo(BBTreeNode node, boolean showOnEditor) {
 		
 		/**
 		 * 좌측 파일 출력

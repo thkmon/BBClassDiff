@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.channels.FileChannel;
 
+import com.bb.classmerge.util.FileNameUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.decompile.DecompileUtil;
 import com.bb.diff.log.LogUtil;
@@ -347,14 +348,14 @@ public class FileUtil {
 		}
 		
 		// DIFF시 클래스의 경우 디컴파일하여 검사할지 여부
-		if (!CommonConst.doDecompileWhenClassDiff) {
-			return false;
+		if (CommonConst.doDecompileWhenClassDiff) {
+			// 클래스라면 한 번 더 검증한다.
+			// 디컴파일을 했을 떄는 동일할 수 있기 때문이다.
+			boolean bClassFilesAreSame = checkIsSameClassFile(fileObj1, fileObj2);
+			return bClassFilesAreSame;
 		}
 		
-		// 클래스라면 한 번 더 검증한다.
-		// 디컴파일을 했을 떄는 동일할 수 있기 때문이다.
-		boolean bClassFilesAreSame = checkIsSameClassFile(fileObj1, fileObj2);
-		return bClassFilesAreSame;
+		return false;
 	}
 	
 	
@@ -396,35 +397,64 @@ public class FileUtil {
 				return -2;
 			}
 			
-			StringBuffer fileContent1 = readFile(fileObj1);
-			StringBuffer fileContent2 = readFile(fileObj2);
-			
-			long tmpFileLen1 = fileContent1.length();
-			long tmpFileLen2 = fileContent2.length();
-			
-			// 내용 저장
-//			fileObj1.setFileContent(fileContent1);
-//			fileObj2.setFileContent(fileContent2);
-			
-			/**
-			 * 문자열 길이 검사
-			 */
-			if (tmpFileLen1 != tmpFileLen2) {
-				return -3;
+			String fileExt1 = FileNameUtil.getExtensionFromPath(fileObj1.getAbsolutePath());
+			if (fileExt1 != null) {
+				fileExt1 = fileExt1.toLowerCase();
+			} else {
+				fileExt1 = "";
 			}
-
-			/**
-			 * 내용 검사
-			 */
-			// contentDiffBuffer == null 이면 동일한 파일임
-			// boolean isContentDiff = checkIsSameFileContent(fileContent1, fileContent2, fileObj1, fileObj2);
-			boolean isContentDiff = checkIsSameFileContent(fileContent1, fileContent2);
 			
-			if (!isContentDiff) {
-				// 파일 내용 다른 경우
-				return -4; 
-			}
+			// 텍스트류 확장자(ex : txt, jsp, java 등)는 실제 파일내용을 비교한다.
+			if (fileExt1.equals("txt") ||
+				fileExt1.equals("jsp") ||
+				fileExt1.equals("java") ||
+				fileExt1.equals("class") ||
+				fileExt1.equals("html") ||
+				fileExt1.equals("htm") ||
+				fileExt1.equals("js") ||
+				fileExt1.equals("css") ||
+				fileExt1.equals("xml") ||
+				fileExt1.equals("json") ||
+				fileExt1.equals("properties") ||
+				fileExt1.equals("conf") ||
+				fileExt1.equals("config")) {
+				
+				StringBuffer fileContent1 = readFile(fileObj1);
+				StringBuffer fileContent2 = readFile(fileObj2);
+				
+				long tmpFileLen1 = fileContent1.length();
+				long tmpFileLen2 = fileContent2.length();
+				
+				/**
+				 * 문자열 길이 검사
+				 */
+				if (tmpFileLen1 != tmpFileLen2) {
+					return -3;
+				}
 
+				/**
+				 * 내용 검사
+				 */
+				// contentDiffBuffer == null 이면 동일한 파일임
+				// boolean isContentDiff = checkIsSameFileContent(fileContent1, fileContent2, fileObj1, fileObj2);
+				boolean isContentDiff = checkIsSameFileContent(fileContent1, fileContent2);
+				
+				if (!isContentDiff) {
+					// 파일 내용 다른 경우
+					return -4; 
+				}
+				
+			} else {
+				// 텍스트류가 아닌 기타 확장자(ex : jar, mp4)는 파일해시값을 비교한다.
+				String fileHash1 = FileHashUtil.getFileHash(fileObj1.getAbsolutePath());
+				String fileHash2 = FileHashUtil.getFileHash(fileObj2.getAbsolutePath());
+				if (fileHash1 != null && fileHash1.equals(fileHash2)) {
+					return 1;
+				} else {
+					return -4;
+				}
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

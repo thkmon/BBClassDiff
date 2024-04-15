@@ -191,8 +191,7 @@ public class EditorUtil {
 							fileExt1 = "";
 						}
 						
-						// 파일비교 시 텍스트류(ex : txt, jsp 등)만 트리에서 비교
-						// 본질적으로 내용 동일하지만 용량 다른 경우를 트리에서 제거하지 못해서 이렇게 구현
+						// 텍스트류
 						if (fileExt1.equals("txt") ||
 							fileExt1.equals("jsp") ||
 							fileExt1.equals("java") ||
@@ -206,7 +205,6 @@ public class EditorUtil {
 							fileExt1.equals("properties") ||
 							fileExt1.equals("conf") ||
 							fileExt1.equals("config")) {
-							// 텍스트류(ex : txt, jsp 등)
 							// 기존방식 (느리지만 서로 용량 달라도 파일내용 동일한 경우를 트리에서 확실히 제거해줌)
 							loadFileByNode(treeNodeList.get(i), bRemoveIfSame, false);
 							

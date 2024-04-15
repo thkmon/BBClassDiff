@@ -13,6 +13,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.bb.classmerge.util.FileNameUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.form.tree.BBTreeNode;
@@ -182,19 +183,45 @@ public class EditorUtil {
 						
 						String leftPath = oneNode.getLeftAbsoulutePath();
 						String rightPath = oneNode.getRightAbsoulutePath();
-						
-						File leftFile = new File(leftPath);
-						File rightFile = new File(rightPath);
-						
-						if (leftFile.exists() && rightFile.exists()) {
-							boolean isSameFile = FileUtil.checkIsSameFile(leftFile, rightFile);
-							if (isSameFile) {
-								oneNode.removeMe(true);
-							}
+
+						String fileExt1 = FileNameUtil.getExtensionFromPath(leftPath);
+						if (fileExt1 != null) {
+							fileExt1 = fileExt1.toLowerCase();
+						} else {
+							fileExt1 = "";
 						}
 						
-						// 기존방식은 너무 느려서 주석처리
-						// loadFileByNode(treeNodeList.get(i), bRemoveIfSame, false);
+						// 파일비교 시 텍스트류(ex : txt, jsp 등)만 트리에서 비교
+						// 본질적으로 내용 동일하지만 용량 다른 경우를 트리에서 제거하지 못해서 이렇게 구현
+						if (fileExt1.equals("txt") ||
+							fileExt1.equals("jsp") ||
+							fileExt1.equals("java") ||
+							fileExt1.equals("class") ||
+							fileExt1.equals("html") ||
+							fileExt1.equals("htm") ||
+							fileExt1.equals("js") ||
+							fileExt1.equals("css") ||
+							fileExt1.equals("xml") ||
+							fileExt1.equals("json") ||
+							fileExt1.equals("properties") ||
+							fileExt1.equals("conf") ||
+							fileExt1.equals("config")) {
+							// 텍스트류(ex : txt, jsp 등)
+							// 기존방식 (느리지만 서로 용량 달라도 파일내용 동일한 경우를 트리에서 확실히 제거해줌)
+							loadFileByNode(treeNodeList.get(i), bRemoveIfSame, false);
+							
+						} else {
+							// 기타 파일확장자 (ex : jar, mp4 등)
+							File leftFile = new File(leftPath);
+							File rightFile = new File(rightPath);
+							
+							if (leftFile.exists() && rightFile.exists()) {
+								boolean isSameFile = FileUtil.checkIsSameFile(leftFile, rightFile);
+								if (isSameFile) {
+									oneNode.removeMe(true);
+								}
+							}
+						}
 						
 						// 좌측 하단 프로그레스 레이블에 개수 표시
 						int index = i + 1;

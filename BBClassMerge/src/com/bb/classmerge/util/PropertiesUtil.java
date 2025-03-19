@@ -93,6 +93,12 @@ public class PropertiesUtil {
 					continue;
 				}
 				
+				if (resultMap.get(leftText) != null) {
+                	System.err.println("프로퍼티가 중복되어 발견되었습니다. 프로그램을 종료합니다. (Properties found duplicate. Exit the program.) : " + leftText);
+                	System.exit(1);
+                	break;
+                }
+				
 				resultMap.put(leftText, rightText);
 			}
 

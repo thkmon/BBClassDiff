@@ -406,6 +406,8 @@ public class FileUtil {
 			
 			// 텍스트류 확장자(ex : txt, jsp, java 등)는 실제 파일내용을 비교한다.
 			if (fileExt1.equals("txt") ||
+				fileExt1.equals("asp") ||
+				fileExt1.equals("php") ||
 				fileExt1.equals("jsp") ||
 				fileExt1.equals("java") ||
 				fileExt1.equals("class") ||

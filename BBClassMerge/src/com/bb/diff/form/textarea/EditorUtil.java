@@ -263,6 +263,8 @@ public class EditorUtil {
 		
 		refreshNodeInfo(node, showOnEditor);
 		
+		CommonConst.currentSelectedTreeNode = node;
+		
 		/**
 		 * 좌측 파일 출력
 		 */
@@ -661,14 +663,20 @@ public class EditorUtil {
 		} else {
 			if (fileName != null && fileName.length() > 0) {
 				if (showOnEditor) {
-					CommonConst.leftFileContent.setText("내용 동일함 : " + fileName);
-					CommonConst.rightFileContent.setText("내용 동일함 : " + fileName);
+					// 내용 동일해도 파일내용 보기 여부 true이면 내용올 본다. false이면 "내용 동일함" 텍스트를 보여준다.
+					if (!CommonConst.bViewContentEvenIfSame) {
+						CommonConst.leftFileContent.setText("내용 동일함 : " + fileName);
+						CommonConst.rightFileContent.setText("내용 동일함 : " + fileName);
+					}
 				}
 				
 			} else {
 				if (showOnEditor) {
-					CommonConst.leftFileContent.setText("내용 동일함");
-					CommonConst.rightFileContent.setText("내용 동일함");
+					// 내용 동일해도 파일내용 보기 여부 true이면 내용올 본다. false이면 "내용 동일함" 텍스트를 보여준다.
+					if (!CommonConst.bViewContentEvenIfSame) {
+						CommonConst.leftFileContent.setText("내용 동일함");
+						CommonConst.rightFileContent.setText("내용 동일함");
+					}
 				}
 			}
 			
@@ -697,40 +705,41 @@ public class EditorUtil {
 	}
 	
 	
-	public static boolean loadLeftFile(BBTreeNode node) {
-		/**
-		 * 좌측 파일 출력
-		 */
-		boolean leftFileExists = setLeftPathText(node);
-		
-		if (!leftFileExists) {
-			 setLeftFileContentText("좌측 파일이 존재하지 않습니다.", true);
-			return false;
-		}
-		
-		StringBuffer con = node.getFileContentString(true, null);
-		setLeftFileContentText(con.toString(), true);
-		return true;
-	}
+//	public static boolean loadLeftFile(BBTreeNode node) {
+//		/**
+//		 * 좌측 파일 출력
+//		 */
+//		boolean leftFileExists = setLeftPathText(node);
+//		
+//		if (!leftFileExists) {
+//			 setLeftFileContentText("좌측 파일이 존재하지 않습니다.", true);
+//			return false;
+//		}
+//		
+//		StringBuffer con = node.getFileContentString(true, null);
+//		setLeftFileContentText(con.toString(), true);
+//		return true;
+//	}
 	
 	
-	public static boolean loadRightFile(BBTreeNode node) {
-		/**
-		 * 우측 파일 출력
-		 */
-		boolean rightFileExists = setRightPathText(node);
-		
-		if (!rightFileExists) {
-			setRightFileContentText("우측 파일이 존재하지 않습니다.", true);
-			return false;
-		}
-		
-		StringBuffer con = node.getFileContentString(false, null);
-		setRightFileContentText(con.toString(), true);
-		return true;
-	}
+//	public static boolean loadRightFile(BBTreeNode node) {
+//		/**
+//		 * 우측 파일 출력
+//		 */
+//		boolean rightFileExists = setRightPathText(node);
+//		
+//		if (!rightFileExists) {
+//			setRightFileContentText("우측 파일이 존재하지 않습니다.", true);
+//			return false;
+//		}
+//		
+//		StringBuffer con = node.getFileContentString(false, null);
+//		setRightFileContentText(con.toString(), true);
+//		return true;
+//	}
 	
 	
+	/*
 	private static boolean equalsForClass(String str1, String str2, boolean bClassFile) {
 		if (str1 == null) {
 			str1 = "";
@@ -877,4 +886,5 @@ public class EditorUtil {
 		
 		return false;
 	}
+	*/
 }

@@ -31,6 +31,7 @@ import com.bb.diff.decompile.DecompileUtil;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.form.button.BBWinmergeButtonMouseListener;
 import com.bb.diff.form.textarea.EditorListener;
+import com.bb.diff.form.textarea.EditorUtil;
 import com.bb.diff.form.tree.BBTree;
 import com.bb.diff.form.tree.BBTreeCellRenderer;
 import com.bb.diff.form.tree.BBTreeNode;
@@ -547,6 +548,42 @@ public class DiffForm {
 				}
 			});
 		}
+			
+		{
+			final BBCheckBoxMenuItem subMenu9 = new BBCheckBoxMenuItem("내용 동일해도 파일내용 보기 (View file contents even if the files are the same)");
+			
+			// 초기값 세팅. true일 경우 check 처리
+			// 내용 동일해도 파일내용 보기 여부
+			if (CommonConst.bViewContentEvenIfSame) {
+				subMenu9.doClick();
+			}
+			
+			optionMenu.add(subMenu9);
+			
+			subMenu9.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					boolean bState = subMenu9.getState();
+					if (bState) {
+						CommonConst.bViewContentEvenIfSame = true;
+						
+						if (CommonConst.currentSelectedTreeNode != null) {
+							EditorUtil.loadFileByNode(CommonConst.currentSelectedTreeNode, false, true);
+						}
+						
+					} else {
+						CommonConst.bViewContentEvenIfSame = false;
+						
+						if (CommonConst.currentSelectedTreeNode != null) {
+							EditorUtil.loadFileByNode(CommonConst.currentSelectedTreeNode, false, true);
+						}
+					}
+				}
+			});
+		}
+		
+		
 		
 		menuBar.add(treeMenu);
 		menuBar.add(findMenu);

@@ -13,6 +13,7 @@ import com.bb.diff.form.form.DiffForm;
 import com.bb.diff.form.form.QuickFinderForm;
 import com.bb.diff.form.textarea.BBEditor;
 import com.bb.diff.form.tree.BBTree;
+import com.bb.diff.form.tree.BBTreeNode;
 import com.bb.diff.map.FileContentMap;
 
 public class CommonConst {
@@ -152,6 +153,10 @@ public class CommonConst {
 	
 	// 클래스 핵심 라인만 비교하기 여부
 	public static boolean bDiffCoreContents = false;
+	
+	// 내용 동일해도 파일내용 보기 여부
+	public static boolean bViewContentEvenIfSame = false;
+	public static BBTreeNode currentSelectedTreeNode = null;
 	
 	// 파일명으로 찾기 창
 	public static QuickFinderForm quickFinderForm = null;

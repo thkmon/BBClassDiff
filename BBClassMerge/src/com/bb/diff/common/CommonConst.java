@@ -18,6 +18,9 @@ import com.bb.diff.map.FileContentMap;
 
 public class CommonConst {
 	
+	// public static String javaCompiler = "jad";
+	public static String javaCompiler = "CFR";
+	
 	public static String seqNumStr = "0";
 	public static String todayDate = DateUtil.getTodayDate();
 	

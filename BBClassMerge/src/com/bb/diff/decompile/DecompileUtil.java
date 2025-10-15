@@ -1,7 +1,11 @@
 package com.bb.diff.decompile;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
+import com.bb.classmerge.util.ConsoleUtil;
 import com.bb.classmerge.util.StringUtil;
 import com.bb.diff.common.CommonConst;
 import com.bb.diff.file.FileUtil;
@@ -86,37 +90,53 @@ public class DecompileUtil {
 					return new StringBuffer("");
 				}
 				
-				Runtime rt = Runtime.getRuntime();
-				String exeFile = "jad158g/jad.exe -o -sjava " + copiedClsFile.getAbsolutePath();
-				
-				Process process = null;
-				
-				try {
-					process = rt.exec(exeFile);
-				    process.getErrorStream().close();
-				    process.getInputStream().close();
-				    process.getOutputStream().close();
-				    process.waitFor();
-				
-				} catch (Exception e) {
-					System.err.println("decompile fail! exeFile: " + exeFile);
-				    e.printStackTrace();
-				    return new StringBuffer("");
-				}
-
-				int cnt = 0;
-				
-				File javaFile = new File(fileNameOnly + ".java");
-				while (!javaFile.exists()) {
-					System.out.println("try decompile... : " + copiedClsFile.getAbsolutePath());
-					Thread.sleep(100);
-					cnt++;
-					if (cnt > 10) {
-						return new StringBuffer("fail to decompile!!");
+				File javaFile = null;
+				StringBuffer javaContent = null;
+				if ("jad".equals(CommonConst.javaCompiler)) {
+					Runtime rt = Runtime.getRuntime();
+					String exeFile = "jad158g/jad.exe -o -sjava " + copiedClsFile.getAbsolutePath();
+					
+					Process process = null;
+					
+					try {
+						process = rt.exec(exeFile);
+					    process.getErrorStream().close();
+					    process.getInputStream().close();
+					    process.getOutputStream().close();
+					    process.waitFor();
+					
+					} catch (Exception e) {
+						System.err.println("decompile fail! exeFile: " + exeFile);
+					    e.printStackTrace();
+					    return new StringBuffer("");
 					}
+		
+					int cnt = 0;
+					
+					javaFile = new File(fileNameOnly + ".java");
+					while (!javaFile.exists()) {
+						System.out.println("try decompile... : " + copiedClsFile.getAbsolutePath());
+						Thread.sleep(100);
+						cnt++;
+						if (cnt > 10) {
+							return new StringBuffer("fail to decompile!!");
+						}
+					}
+		
+					javaContent = FileUtil.readFile(javaFile);
+					
+				} else if ("CFR".equals(CommonConst.javaCompiler)) {
+					String decompileContent = DecompileUtil.readClassFileContentByCFR(copiedClsFile.getAbsolutePath());
+					if (decompileContent == null) {
+						return new StringBuffer("");
+					}
+					
+					javaContent = new StringBuffer();
+					javaContent.append(decompileContent);
+					
+				} else {
+					return new StringBuffer("");
 				}
-
-				StringBuffer javaContent = FileUtil.readFile(javaFile);
 				
 				// 클래스 핵심 라인만 비교하기 여부
 				if (CommonConst.bDiffCoreContents) {
@@ -127,7 +147,9 @@ public class DecompileUtil {
 				info.setFileContent(javaContent);
 				CommonConst.fileContentMap.put(clsFilePath, info);
 				
-				javaFile.delete();
+				if (javaFile != null) {
+					javaFile.delete();
+				}
 				copiedClsFile.delete();
 				
 				return javaContent;
@@ -250,5 +272,86 @@ public class DecompileUtil {
 		}
 		
 		return resultBuff;
+	}
+	
+	public static String readClassFileContentByCFR(String filePath) {
+		String decompileContent = "";
+		String exeFileParam = "java -jar CFR/cfr-0.152.jar " + filePath;
+		
+		Process process = null;
+		
+		try {
+			Runtime rt = Runtime.getRuntime();
+			process = rt.exec(exeFileParam);
+
+		    // 표준 출력 스트림 읽기 (CFR 디컴파일 결과)
+			BufferedReader stdReader = null;
+			InputStreamReader stdStream = null;
+		    try {
+		    	stdStream = new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8);
+		        stdReader = new BufferedReader(stdStream);
+		        
+		        StringBuilder output = new StringBuilder();
+		        String stdLine = null;
+		        while ((stdLine = stdReader.readLine()) != null) {
+		            output.append(stdLine).append(System.lineSeparator());
+		        }
+
+		        // 결과 콘솔 출력 (또는 파일 저장)
+		        decompileContent = output.toString();
+		        
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		    	
+		    } finally {
+		    	try {
+			    	if (stdStream != null) {
+			    		stdStream.close();
+			    	}
+		    	} catch (Exception e2) {}
+		    	
+		    	try {
+			    	if (stdReader != null) {
+			    		stdReader.close();
+			    	}
+		    	} catch (Exception e2) {}
+		    }
+
+		    // 표준 에러 스트림도 읽기 (CFR 로그용)
+		    BufferedReader errReader = null;
+			InputStreamReader errStream = null;
+		    try {
+		    	errStream = new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8);
+		    	errReader = new BufferedReader(errStream);
+		        String errLine = null;
+		        while ((errLine = errReader.readLine()) != null) {
+		        	System.err.println("DecompileUtil readClassFileContentByCFR ERROR : " + errLine);
+		        }
+		    } catch (Exception e) {
+		    	e.printStackTrace();
+		    	
+		    } finally {
+		    	try {
+			    	if (errStream != null) {
+			    		errStream.close();
+			    	}
+		    	} catch (Exception e2) {}
+		    	
+		    	try {
+			    	if (errReader != null) {
+			    		errReader.close();
+			    	}
+		    	} catch (Exception e2) {}
+		    }
+
+		    process.waitFor();
+		
+		} catch (Exception e) {
+			ConsoleUtil.print("decompile fail! exeFileParam == [" + exeFileParam + "]");
+		    e.printStackTrace();
+		    return null;
+		}
+		
+		return decompileContent;
 	}
 }

@@ -465,33 +465,33 @@ public class DiffForm {
 			});
 		}
 		
-		{
-			final BBCheckBoxMenuItem subMenu6 = new BBCheckBoxMenuItem("디컴파일시 손상을 고려한 비교하기 (Diff considering breakage of decompile)");
-			
-			// 초기값 세팅. true일 경우 check 처리
-			// 디컴파일시 손상을 고려한 비교하기 사용 여부
-			if (CommonConst.bDiffConsideringBreakage) {
-				subMenu6.doClick();
-			}
-			
-			optionMenu.add(subMenu6);
-			
-			subMenu6.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					boolean bState = subMenu6.getState();
-					if (bState) {
-						CommonConst.bDiffConsideringBreakage = true;
-						TreeUtil.redrawTree(true);
-						
-					} else {
-						CommonConst.bDiffConsideringBreakage = false;
-						TreeUtil.redrawTree(true);
-					}
-				}
-			});
-		}
+//		{
+//			final BBCheckBoxMenuItem subMenu6 = new BBCheckBoxMenuItem("디컴파일시 손상을 고려한 비교하기 (Diff considering breakage of decompile)");
+//			
+//			// 초기값 세팅. true일 경우 check 처리
+//			// 디컴파일시 손상을 고려한 비교하기 사용 여부
+//			if (CommonConst.bDiffConsideringBreakage) {
+//				subMenu6.doClick();
+//			}
+//			
+//			optionMenu.add(subMenu6);
+//			
+//			subMenu6.addActionListener(new ActionListener() {
+//				
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					boolean bState = subMenu6.getState();
+//					if (bState) {
+//						CommonConst.bDiffConsideringBreakage = true;
+//						TreeUtil.redrawTree(true);
+//						
+//					} else {
+//						CommonConst.bDiffConsideringBreakage = false;
+//						TreeUtil.redrawTree(true);
+//					}
+//				}
+//			});
+//		}
 		
 		{
 			final BBCheckBoxMenuItem subMenu7 = new BBCheckBoxMenuItem("CVS/SVN 리비전 문자열 제외하고 비교하기 (Diff excepting CVS/SVN revision string)");

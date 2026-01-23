@@ -72,21 +72,13 @@ public class DiffFormListener implements ComponentListener {
 		// 디바이더 너비를 고려한 콘텐츠 영역 계산
 		int availableWidth = CommonConst.fullWidth - CommonConst.treeLeftMargin - DIVIDER_WIDTH * 2 - 20; // 20px 우측 여백
 		
-		if (leftDividerX < 0) {
-			// 최초 초기화: 설정된 비율에 따라 디바이더 배치
+		if (leftDividerX < 0 || (prevFullWidth > 0 && prevFullWidth != CommonConst.fullWidth)) {
+			// 최초 초기화 또는 창 크기 변경 시: 16%-42%-42%로 리셋
 			CommonConst.treeWidth = (int) (availableWidth * TREE_PANEL_RATIO / 100.0);
 			leftDividerX = CommonConst.treeLeftMargin + CommonConst.treeWidth;
 			// 중앙 디바이더: 트리 + 좌측 패널 비율만큼 이동
 			int leftPanelWidth = (int) (availableWidth * LEFT_PANEL_RATIO / 100.0);
 			centerDividerX = leftDividerX + DIVIDER_WIDTH + leftPanelWidth;
-		} else if (prevFullWidth > 0 && prevFullWidth != CommonConst.fullWidth) {
-			// 창 크기 변경 시: 비율 유지하며 재계산
-			float leftRatio = (float)(leftDividerX - CommonConst.treeLeftMargin) / prevFullWidth;
-			float centerRatio = (float)centerDividerX / prevFullWidth;
-			
-			CommonConst.treeWidth = (int) (CommonConst.fullWidth * leftRatio);
-			leftDividerX = CommonConst.treeLeftMargin + CommonConst.treeWidth;
-			centerDividerX = (int) (CommonConst.fullWidth * centerRatio);
 		} else {
 			// 수동 조정 후: 크기 유지
 			CommonConst.treeWidth = leftDividerX - CommonConst.treeLeftMargin;

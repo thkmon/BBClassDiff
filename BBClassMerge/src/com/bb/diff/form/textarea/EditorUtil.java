@@ -638,7 +638,14 @@ public class EditorUtil {
 		}
 		
 		if (showOnEditor) {
-			CommonConst.diffPointLabel.setText("Diff Point : " + diffPoint);
+			// 최초 로딩 시 diff 카운터 표시
+			if (diffPoint > 0) {
+				CommonConst.diffPointLabel.setText("Diff: 1/" + diffPoint);
+				CommonConst.currentDiffPointIndex = 0;
+			} else {
+				CommonConst.diffPointLabel.setText("Diff: 0");
+				CommonConst.currentDiffPointIndex = -1;
+			}
 		}
 		
 		if (isSimpleDiff || diffPoint > 0) {

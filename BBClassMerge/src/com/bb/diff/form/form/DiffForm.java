@@ -29,6 +29,7 @@ import com.bb.diff.copy.CopyPathList;
 import com.bb.diff.copy.CopyUtil;
 import com.bb.diff.decompile.DecompileUtil;
 import com.bb.diff.file.FileUtil;
+import com.bb.diff.form.button.BBDiffNextButtonMouseListener;
 import com.bb.diff.form.button.BBWinmergeButtonMouseListener;
 import com.bb.diff.form.textarea.EditorListener;
 import com.bb.diff.form.textarea.EditorUtil;
@@ -135,7 +136,11 @@ public class DiffForm {
 		CommonConst.leftBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
 		
 		CommonConst.bothDiffNextButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
+		CommonConst.bothDiffNextButton.setToolTipText("다음 Diff로 이동 (F8)");
+		
 		CommonConst.bothDiffPrevButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
+		CommonConst.bothDiffPrevButton.setToolTipText("이전 Diff로 이동 (F7)");
+		
 		CommonConst.bothUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
 		CommonConst.bothDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
 		CommonConst.bothTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
@@ -149,6 +154,9 @@ public class DiffForm {
 		DiffFormListener formListener = new DiffFormListener();
 		CommonConst.bForm.addComponentListener(formListener);
 		
+		// 키보드 단축키 등록 (F7: 이전 diff, F8: 다음 diff)
+		registerKeyboardShortcuts();
+		
 		TreeUtil.drawTree(leftClassesDir, rightClassesDir);
 		
 		CommonConst.bForm.open();
@@ -157,6 +165,25 @@ public class DiffForm {
 		 * 크기 재설정
 		 */
 		formListener.doResizeForm();
+	}
+	
+	/**
+	 * 키보드 단축키 등록
+	 */
+	private void registerKeyboardShortcuts() {
+		// F7: 이전 diff
+		CommonConst.bForm.getRootPane().registerKeyboardAction(
+			e -> BBDiffNextButtonMouseListener.showDiffPoint(false),
+			KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0),
+			javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
+		);
+		
+		// F8: 다음 diff
+		CommonConst.bForm.getRootPane().registerKeyboardAction(
+			e -> BBDiffNextButtonMouseListener.showDiffPoint(true),
+			KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0),
+			javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
+		);
 	}
 	
 	private void addMenuBar(BBForm form) {

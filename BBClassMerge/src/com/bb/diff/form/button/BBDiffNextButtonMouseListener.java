@@ -43,6 +43,7 @@ public class BBDiffNextButtonMouseListener implements MouseListener {
 		
 		
 		int lastIndex = CommonConst.diffPointList1.size() - 1;
+		int totalDiffs = CommonConst.diffPointList1.size();
 		
 		if (isDiffNext) {
 			CommonConst.currentDiffPointIndex++;
@@ -55,6 +56,9 @@ public class BBDiffNextButtonMouseListener implements MouseListener {
 				CommonConst.currentDiffPointIndex = lastIndex;
 			}
 		}
+		
+		// Diff 카운터 업데이트 (1-based index)
+		CommonConst.diffPointLabel.setText("Diff: " + (CommonConst.currentDiffPointIndex + 1) + "/" + totalDiffs);
 		
 		int targetRow1 = CommonConst.diffPointList1.get(CommonConst.currentDiffPointIndex) + 1;
 		int targetY1 = 0;

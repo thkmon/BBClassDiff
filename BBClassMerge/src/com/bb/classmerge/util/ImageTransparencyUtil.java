@@ -191,36 +191,36 @@ public class ImageTransparencyUtil {
 		}
 	}
 	
-	/**
-	 * 메인 메서드 - Eclipse에서 실행
-	 * Run As -> Java Application으로 실행하세요
-	 */
-	public static void main(String[] args) {
-		System.out.println("\n╔═══════════════════════════════════════════╗");
-		System.out.println("║  PNG 이미지 투명도 변환 도구            ║");
-		System.out.println("║  파란색(#0000FF) -> 투명 변환           ║");
-		System.out.println("╚═══════════════════════════════════════════╝");
-		
-		// 대상 색상 설정: 파란색 #0000FF (RGB: 0, 0, 255)
-		int targetRed = 0;
-		int targetGreen = 0;
-		int targetBlue = 255;
-		
-		// 허용 오차 설정 (0~50, 값이 클수록 비슷한 색도 투명 처리)
-		int tolerance = 5;
-		
-		// icon 폴더 처리
-		processDirectory("resources/icon", targetRed, targetGreen, targetBlue, tolerance);
-		
-		// button 폴더 처리
-		processDirectory("resources/button", targetRed, targetGreen, targetBlue, tolerance);
-		
-		System.out.println();
-		System.out.println("╔═══════════════════════════════════════════╗");
-		System.out.println("║  모든 작업이 완료되었습니다!            ║");
-		System.out.println("╚═══════════════════════════════════════════╝");
-		System.out.println();
-		System.out.println("※ 문제가 있으면 .backup 파일로 복원할 수 있습니다.");
-		System.out.println("※ 백업 파일 삭제: resources 폴더에서 *.backup 파일 삭제");
-	}
+//	/**
+//	 * 메인 메서드 - Eclipse에서 실행
+//	 * Run As -> Java Application으로 실행하세요
+//	 */
+//	public static void main(String[] args) {
+//		System.out.println("\n╔═══════════════════════════════════════════╗");
+//		System.out.println("║  PNG 이미지 투명도 변환 도구            ║");
+//		System.out.println("║  파란색(#0000FF) -> 투명 변환           ║");
+//		System.out.println("╚═══════════════════════════════════════════╝");
+//		
+//		// 대상 색상 설정: 파란색 #0000FF (RGB: 0, 0, 255)
+//		int targetRed = 0;
+//		int targetGreen = 0;
+//		int targetBlue = 255;
+//		
+//		// 허용 오차 설정 (0~50, 값이 클수록 비슷한 색도 투명 처리)
+//		int tolerance = 5;
+//		
+//		// icon 폴더 처리
+//		processDirectory("resources/icon", targetRed, targetGreen, targetBlue, tolerance);
+//		
+//		// button 폴더 처리
+//		processDirectory("resources/button", targetRed, targetGreen, targetBlue, tolerance);
+//		
+//		System.out.println();
+//		System.out.println("╔═══════════════════════════════════════════╗");
+//		System.out.println("║  모든 작업이 완료되었습니다!            ║");
+//		System.out.println("╚═══════════════════════════════════════════╝");
+//		System.out.println();
+//		System.out.println("※ 문제가 있으면 .backup 파일로 복원할 수 있습니다.");
+//		System.out.println("※ 백업 파일 삭제: resources 폴더에서 *.backup 파일 삭제");
+//	}
 }

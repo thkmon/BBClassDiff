@@ -6,6 +6,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.Frame;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
@@ -32,8 +33,10 @@ public class BasicForm extends JFrame {
 		setSize(width, height);
 		setBounds(200, 200, width, height);
 		
-		setBackground(CommonConst.formBackgroundColor);
-		container.setBackground(CommonConst.formBackgroundColor);
+		if (CommonConst.formBackgroundColor != null) {
+			setBackground(CommonConst.formBackgroundColor);
+			container.setBackground(CommonConst.formBackgroundColor);
+		}
 		
 		setTitle(title);		
 		font = MainForm.basicFont13;
@@ -82,9 +85,11 @@ public class BasicForm extends JFrame {
 	
 	public JScrollPane addScrollPane(JTextArea obj, int left, int top, int width, int height) {
 		JScrollPane scrollPane = new JScrollPane(obj);
-		scrollPane.setBackground(Color.white);
 		scrollPane.setBounds(left, top, width, height);
 		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
+		
+		// FlatLaf 스타일의 연한 회색 테두리 사용
+		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 		
 		addComponentObj(scrollPane);
 		return scrollPane;
@@ -136,10 +141,14 @@ public class BasicForm extends JFrame {
 	
 	public JButton addButton(int left, int top, int width, int height, String value) {
 		JButton obj = JButtonUtil.createNewJButton(value);
-		obj.setBackground(CommonConst.buttonBackgroundColor);
+		if (CommonConst.buttonBackgroundColor != null) {
+			obj.setBackground(CommonConst.buttonBackgroundColor);
+		}
 		obj.setBounds(left, top, width, height);
 		obj.setFont(font);
-		obj.setForeground(CommonConst.buttonTextColor);
+		if (CommonConst.buttonTextColor != null) {
+			obj.setForeground(CommonConst.buttonTextColor);
+		}
 		
 //		obj.addMouseMotionListener(new MouseMotionListener() {
 //			@Override
@@ -159,7 +168,9 @@ public class BasicForm extends JFrame {
 	
 	public JCheckBox addCheckBox(int left, int top, int width, int height, String value) {
 		JCheckBox checkBox = new JCheckBox();
-		checkBox.setBackground(CommonConst.formBackgroundColor);
+		if (CommonConst.formBackgroundColor != null) {
+			checkBox.setBackground(CommonConst.formBackgroundColor);
+		}
 		checkBox.setBounds(left, top, width, height);
 		checkBox.setText(value);
 		checkBox.setFont(font);

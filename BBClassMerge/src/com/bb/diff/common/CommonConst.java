@@ -48,11 +48,11 @@ public class CommonConst {
 	public static int errLogWidth = 600;
 	public static int errLogHeight = 520;
 	
-	// gray color
-	public static Color buttonBackgroundColor = new Color(230, 230, 230);
+	// FlatLaf를 사용하므로 기본 색상 사용 (null로 설정)
+	public static Color buttonBackgroundColor = null;
 	
-	public static Color formBackgroundColor = new Color(245, 246, 247); // #F5F6F7
-	public static Color buttonTextColor = new Color(0, 0, 0);
+	public static Color formBackgroundColor = null;
+	public static Color buttonTextColor = null;
 	
 	
 
@@ -66,10 +66,10 @@ public class CommonConst {
 	public static Color colorC = new Color(204, 204, 204); // #CCCCCC
 	
 	public static Color menuBorderColor = colorA;
-	public static Color buttonBorderColor = colorA;
+	public static Color buttonBorderColor = null;
 	// public static Color buttonBorderColorWhenHover = color7;
-	public static Color buttonBackgroundColorWhenHover = new Color(232, 239, 247); // #E8EFF7
-	public static Color buttonBorderColorWhenHover = new Color(164, 206, 249); // #A4CEF9
+	public static Color buttonBackgroundColorWhenHover = null;
+	public static Color buttonBorderColorWhenHover = null;
 	
 	
 	public static JButton winmergeButton = null;

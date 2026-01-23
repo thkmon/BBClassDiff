@@ -45,8 +45,10 @@ public class BBForm extends JFrame {
 		font = MainForm.basicFont13;
 		smallFont = MainForm.basicFont9;
 		
-		container.setBackground(CommonConst.formBackgroundColor);
-		this.setBackground(CommonConst.formBackgroundColor);
+		if (CommonConst.formBackgroundColor != null) {
+			container.setBackground(CommonConst.formBackgroundColor);
+			this.setBackground(CommonConst.formBackgroundColor);
+		}
 		
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -94,7 +96,8 @@ public class BBForm extends JFrame {
 		scrollPane.setBounds(left, top, width, height);
 		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
 		
-		scrollPane.setBorder(BorderFactory.createLineBorder(CommonConst.buttonBorderColor));
+		// FlatLaf 스타일의 연한 회색 테두리 사용
+		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 		
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -177,7 +180,8 @@ public class BBForm extends JFrame {
 		scrollPane.setBounds(left, top, width, height);
 		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
 		
-		scrollPane.setBorder(BorderFactory.createLineBorder(CommonConst.buttonBorderColor));
+		// FlatLaf 스타일의 연한 회색 테두리 사용
+		scrollPane.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
 		
 		// 화면에는 스크롤판 추가
 		container.add(scrollPane);

@@ -377,6 +377,10 @@ public class MainForm extends JFrame {
 		this.getContentPane().add(scrollPane);
 		scrollPane.setBounds(10, textAreaTop, 755, defaultHeight - textAreaHeightGap);
 		JFrameDesignUtil.setColorToJScrollPane(scrollPane);
+		
+		// FlatLaf 스타일의 연한 회색 테두리 사용
+		scrollPane.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(200, 200, 200)));
+		
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	}

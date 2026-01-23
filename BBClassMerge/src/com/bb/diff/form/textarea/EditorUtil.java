@@ -343,9 +343,13 @@ public class EditorUtil {
 			whiteStyle = CommonConst.leftFileContent.addStyle("5", null);
 			whiteStyle = CommonConst.rightFileContent.addStyle("6", null);
 			
+			// 깨끗한 배경
 			StyleConstants.setBackground(whiteStyle, new Color(255, 255, 255));
-			StyleConstants.setBackground(strongStyle1, new Color(248, 216, 136));
-			StyleConstants.setBackground(strongStyle2, new Color(248, 216, 136));
+			
+			// 모던 diff 색상 - 더 명확한 하이라이트
+			// 소프트 블루: RGB(204, 229, 255)
+			StyleConstants.setBackground(strongStyle1, new Color(204, 229, 255));
+			StyleConstants.setBackground(strongStyle2, new Color(204, 229, 255));
 		}
 		
 		/**

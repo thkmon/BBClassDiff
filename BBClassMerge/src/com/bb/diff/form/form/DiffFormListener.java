@@ -62,28 +62,27 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.fullHeight = CommonConst.bForm.getHeight();
 		
 		// 초기화: 디바이더 위치가 설정되지 않았으면 기본 비율 사용 (30%, 35%, 35%)
+		// 디바이더 너비를 고려한 콘텐츠 영역 계산
+		int availableWidth = CommonConst.fullWidth - CommonConst.treeLeftMargin - DIVIDER_WIDTH * 2 - 20; // 20px 우측 여백
+		
 		if (leftDividerX < 0) {
 			// 최초 초기화: 30% 지점에 좌측 디바이더 배치
-			CommonConst.treeWidth = (int) (CommonConst.fullWidth * 0.30);
+			CommonConst.treeWidth = (int) (availableWidth * 0.30);
 			leftDividerX = CommonConst.treeLeftMargin + CommonConst.treeWidth;
+			// 중앙 디바이더: 30% + 35% 지점에 배치
+			int leftPanelWidth = (int) (availableWidth * 0.35);
+			centerDividerX = leftDividerX + DIVIDER_WIDTH + leftPanelWidth;
 		} else if (prevFullWidth > 0 && prevFullWidth != CommonConst.fullWidth) {
 			// 창 크기 변경 시: 비율 유지하며 재계산
 			float leftRatio = (float)(leftDividerX - CommonConst.treeLeftMargin) / prevFullWidth;
+			float centerRatio = (float)centerDividerX / prevFullWidth;
+			
 			CommonConst.treeWidth = (int) (CommonConst.fullWidth * leftRatio);
 			leftDividerX = CommonConst.treeLeftMargin + CommonConst.treeWidth;
+			centerDividerX = (int) (CommonConst.fullWidth * centerRatio);
 		} else {
 			// 수동 조정 후: 크기 유지
 			CommonConst.treeWidth = leftDividerX - CommonConst.treeLeftMargin;
-		}
-		
-		// 중앙 디바이더 초기화 및 크기 변경 처리
-		if (centerDividerX < 0) {
-			// 최초 초기화: 65% 지점에 중앙 디바이더 배치 (30% + 35%)
-			centerDividerX = (int) (CommonConst.fullWidth * 0.65);
-		} else if (prevFullWidth > 0 && prevFullWidth != CommonConst.fullWidth) {
-			// 창 크기 변경 시: 비율 유지하며 재계산
-			float centerRatio = (float)centerDividerX / prevFullWidth;
-			centerDividerX = (int) (CommonConst.fullWidth * centerRatio);
 		}
 		
 		int boxHeight = CommonConst.fullHeight - CommonConst.treeTopMargin - CommonConst.bottomMargin;

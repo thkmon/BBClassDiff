@@ -28,7 +28,8 @@ import com.bb.diff.path.PathUtil;
 
 public class DiffFormListener implements ComponentListener {
 	
-	private static final int DIVIDER_WIDTH = 6;
+	private static final int DIVIDER_WIDTH = 1;
+	private static final int DIVIDER_HOVER_WIDTH = 5; // 호버/드래그 시 활성 영역
 	
 	// 패널 비율 설정 (트리, 좌측 패널, 우측 패널)
 	private static final int TREE_PANEL_RATIO = 16;
@@ -331,12 +332,12 @@ public class DiffFormListener implements ComponentListener {
 	private void setupDividers(int boxHeight) {
 		// 좌측 디바이더 (트리와 좌측 패널 사이)
 		CommonConst.leftDivider.setBounds(leftDividerX, CommonConst.treeTopMargin, DIVIDER_WIDTH, boxHeight);
-		CommonConst.leftDivider.setBackground(new Color(220, 220, 220));
+		CommonConst.leftDivider.setBackground(new Color(230, 230, 230));
 		CommonConst.leftDivider.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
 		
 		// 중앙 디바이더 (좌측과 우측 패널 사이)
 		CommonConst.centerDivider.setBounds(centerDividerX, CommonConst.treeTopMargin, DIVIDER_WIDTH, boxHeight);
-		CommonConst.centerDivider.setBackground(new Color(220, 220, 220));
+		CommonConst.centerDivider.setBackground(new Color(230, 230, 230));
 		CommonConst.centerDivider.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
 		
 		// 마우스 이벤트 설정 (한 번만 추가)
@@ -365,12 +366,26 @@ public class DiffFormListener implements ComponentListener {
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				// 호버 시 더 두껑게 표시
 				CommonConst.leftDivider.setBackground(new Color(180, 180, 180));
+				CommonConst.leftDivider.setBounds(
+					leftDividerX - (DIVIDER_HOVER_WIDTH - DIVIDER_WIDTH) / 2,
+					CommonConst.treeTopMargin,
+					DIVIDER_HOVER_WIDTH,
+					CommonConst.leftDivider.getHeight()
+				);
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				CommonConst.leftDivider.setBackground(new Color(220, 220, 220));
+				// 호버 종료 시 얼게
+				CommonConst.leftDivider.setBackground(new Color(230, 230, 230));
+				CommonConst.leftDivider.setBounds(
+					leftDividerX,
+					CommonConst.treeTopMargin,
+					DIVIDER_WIDTH,
+					CommonConst.leftDivider.getHeight()
+				);
 			}
 		});
 		
@@ -406,12 +421,26 @@ public class DiffFormListener implements ComponentListener {
 			
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				// 호버 시 더 두껑게 표시
 				CommonConst.centerDivider.setBackground(new Color(180, 180, 180));
+				CommonConst.centerDivider.setBounds(
+					centerDividerX - (DIVIDER_HOVER_WIDTH - DIVIDER_WIDTH) / 2,
+					CommonConst.treeTopMargin,
+					DIVIDER_HOVER_WIDTH,
+					CommonConst.centerDivider.getHeight()
+				);
 			}
 			
 			@Override
 			public void mouseExited(MouseEvent e) {
-				CommonConst.centerDivider.setBackground(new Color(220, 220, 220));
+				// 호버 종료 시 얼게
+				CommonConst.centerDivider.setBackground(new Color(230, 230, 230));
+				CommonConst.centerDivider.setBounds(
+					centerDividerX,
+					CommonConst.treeTopMargin,
+					DIVIDER_WIDTH,
+					CommonConst.centerDivider.getHeight()
+				);
 			}
 		});
 		

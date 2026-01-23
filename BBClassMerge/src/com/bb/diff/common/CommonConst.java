@@ -85,8 +85,8 @@ public class CommonConst {
 	public static JButton rightUpButton = null;
 	public static JButton rightDownButton = null;
 	
-	public static JButton bothDiffNextButton = null;
 	public static JButton bothDiffPrevButton = null;
+	public static JButton bothDiffNextButton = null;
 	public static JButton bothUpButton = null;
 	public static JButton bothDownButton = null;
 	

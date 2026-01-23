@@ -135,11 +135,11 @@ public class DiffForm {
 		CommonConst.leftTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
 		CommonConst.leftBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
 		
-		CommonConst.bothDiffNextButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
-		CommonConst.bothDiffNextButton.setToolTipText("다음 Diff로 이동 (F8)");
-		
 		CommonConst.bothDiffPrevButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
 		CommonConst.bothDiffPrevButton.setToolTipText("이전 Diff로 이동 (F7)");
+		
+		CommonConst.bothDiffNextButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
+		CommonConst.bothDiffNextButton.setToolTipText("다음 Diff로 이동 (F8)");
 		
 		CommonConst.bothUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
 		CommonConst.bothDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"

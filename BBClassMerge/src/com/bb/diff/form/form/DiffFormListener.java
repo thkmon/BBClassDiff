@@ -285,12 +285,12 @@ public class DiffFormListener implements ComponentListener {
 		
 		// 공통 버튼
 		int bothArrowButton1Left = box2Left + box2Width - ((CommonConst.arrowButtonWidth) * 5) - CommonConst.arrowButtonWidth;
-		CommonConst.bothDiffNextButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
-		CommonConst.bothDiffNextButton.setIcon(ImageIconUtil.getIconFromName("button", "diff_next"));
-		
-		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth;
 		CommonConst.bothDiffPrevButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		CommonConst.bothDiffPrevButton.setIcon(ImageIconUtil.getIconFromName("button", "diff_prev"));
+		
+		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth;
+		CommonConst.bothDiffNextButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
+		CommonConst.bothDiffNextButton.setIcon(ImageIconUtil.getIconFromName("button", "diff_next"));
 		
 		bothArrowButton1Left = bothArrowButton1Left + CommonConst.arrowButtonWidth;
 		CommonConst.bothUpButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);

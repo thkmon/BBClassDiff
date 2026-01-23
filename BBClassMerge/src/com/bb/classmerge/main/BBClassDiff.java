@@ -2,9 +2,12 @@ package com.bb.classmerge.main;
 
 import java.util.HashMap;
 
+import javax.swing.UIManager;
+
 import com.bb.classmerge.form.MainForm;
 import com.bb.classmerge.util.ConsoleUtil;
 import com.bb.classmerge.util.PropertiesUtil;
+import com.formdev.flatlaf.FlatLightLaf;
 
 public class BBClassDiff {
 
@@ -18,6 +21,12 @@ public class BBClassDiff {
 	public static void main(String[] args) {
 		
 		try {
+			// FlatLaf 테마 적용
+			try {
+				UIManager.setLookAndFeel(new FlatLightLaf());
+			} catch (Exception e) {
+				ConsoleUtil.print("FlatLaf 테마 적용 실패: " + e.getMessage());
+			}
 			HashMap<String, String> optionPropMap = null;
 			
 			try {

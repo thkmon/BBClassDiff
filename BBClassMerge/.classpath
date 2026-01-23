@@ -4,5 +4,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.swt.win32.win32.x86_64-4.3.jar"/>
 	<classpathentry kind="lib" path="lib/bbj3parser20210603.jar"/>
+	<classpathentry kind="lib" path="lib/flatlaf-3.5.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

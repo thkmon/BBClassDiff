@@ -37,6 +37,10 @@ public class CommonConst {
 	public static BBEditor leftFileContent = null;
 	public static BBEditor rightFileContent = null;
 	
+	// 크기 조절 가능한 디바이더
+	public static javax.swing.JPanel leftDivider = null;  // 트리와 좌측 패널 사이
+	public static javax.swing.JPanel centerDivider = null; // 좌측과 우측 패널 사이
+	
 	public static int fullWidth = 1024;
 	public static int fullHeight = 768;
 	public static int treeTopMargin = textAreaTopMargin + 26;

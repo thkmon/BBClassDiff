@@ -1,15 +1,16 @@
 package com.bb.diff.form.form;
 
-import java.awt.Desktop;
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.MouseMotionAdapter;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
@@ -26,6 +27,14 @@ import com.bb.diff.image.ImageIconUtil;
 import com.bb.diff.path.PathUtil;
 
 public class DiffFormListener implements ComponentListener {
+	
+	private static final int DIVIDER_WIDTH = 6;
+	private int leftDividerX = -1;
+	private int centerDividerX = -1;
+	
+	public DiffFormListener() {
+		// 생성자에서 초기화
+	}
 
 	public void componentHidden(ComponentEvent arg0) {
 		
@@ -48,16 +57,44 @@ public class DiffFormListener implements ComponentListener {
 		/**
 		 * 바운더리 계산
 		 */
+		int prevFullWidth = CommonConst.fullWidth;
 		CommonConst.fullWidth = CommonConst.bForm.getWidth();
 		CommonConst.fullHeight = CommonConst.bForm.getHeight();
 		
-		CommonConst.treeWidth = (int) (CommonConst.fullWidth * CommonConst.treeWidthRatio);
+		// 초기화: 디바이더 위치가 설정되지 않았으면 기본 비율 사용 (30%, 35%, 35%)
+		if (leftDividerX < 0) {
+			// 최초 초기화: 30% 지점에 좌측 디바이더 배치
+			CommonConst.treeWidth = (int) (CommonConst.fullWidth * 0.30);
+			leftDividerX = CommonConst.treeLeftMargin + CommonConst.treeWidth;
+		} else if (prevFullWidth > 0 && prevFullWidth != CommonConst.fullWidth) {
+			// 창 크기 변경 시: 비율 유지하며 재계산
+			float leftRatio = (float)(leftDividerX - CommonConst.treeLeftMargin) / prevFullWidth;
+			CommonConst.treeWidth = (int) (CommonConst.fullWidth * leftRatio);
+			leftDividerX = CommonConst.treeLeftMargin + CommonConst.treeWidth;
+		} else {
+			// 수동 조정 후: 크기 유지
+			CommonConst.treeWidth = leftDividerX - CommonConst.treeLeftMargin;
+		}
 		
-		int boxWidth = (CommonConst.fullWidth - CommonConst.treeWidth) / 2 - 16;
+		// 중앙 디바이더 초기화 및 크기 변경 처리
+		if (centerDividerX < 0) {
+			// 최초 초기화: 65% 지점에 중앙 디바이더 배치 (30% + 35%)
+			centerDividerX = (int) (CommonConst.fullWidth * 0.65);
+		} else if (prevFullWidth > 0 && prevFullWidth != CommonConst.fullWidth) {
+			// 창 크기 변경 시: 비율 유지하며 재계산
+			float centerRatio = (float)centerDividerX / prevFullWidth;
+			centerDividerX = (int) (CommonConst.fullWidth * centerRatio);
+		}
+		
 		int boxHeight = CommonConst.fullHeight - CommonConst.treeTopMargin - CommonConst.bottomMargin;
 		
-		int box1Left = 4 + CommonConst.treeWidth + 4;
-		int box2Left = box1Left + boxWidth + 4;
+		// 좌측 패널 위치와 너비
+		int box1Left = leftDividerX + DIVIDER_WIDTH;
+		int box1Width = centerDividerX - box1Left;
+		
+		// 우측 패널 위치와 너비 (창 끝까지)
+		int box2Left = centerDividerX + DIVIDER_WIDTH;
+		int box2Width = CommonConst.fullWidth - box2Left - 20; // 20px 여백
 		
 		int arrowButtonTop = 0;
 		
@@ -67,13 +104,16 @@ public class DiffFormListener implements ComponentListener {
 		/**
 		 * 바운더리 적용
 		 */
+		// 디바이더 설정
+		setupDividers(boxHeight);
+		
 		// 트리
 		CommonConst.fileTree.setBounds(0, 0, CommonConst.treeWidth, boxHeight);
 		CommonConst.fileTree.getScrollPane().setBounds(CommonConst.treeLeftMargin, CommonConst.treeTopMargin, CommonConst.treeWidth, boxHeight);
 		
 		
 		// 좌측 파일패스
-		CommonConst.leftFilePathText.setBounds(box1Left, CommonConst.textAreaTopMargin, boxWidth, CommonConst.textAreaHeight);
+		CommonConst.leftFilePathText.setBounds(box1Left, CommonConst.textAreaTopMargin, box1Width, CommonConst.textAreaHeight);
 		CommonConst.leftFilePathText.setEditable(false);
 		
 		CommonConst.leftFilePathText.addMouseListener(new MouseListener() {
@@ -104,8 +144,8 @@ public class DiffFormListener implements ComponentListener {
 		});
 		
 		// 좌측 파일내용
-		CommonConst.leftFileContent.setBounds(0, 0, boxWidth, boxHeight);
-		CommonConst.leftFileContent.getScrollPane().setBounds(box1Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
+		CommonConst.leftFileContent.setBounds(0, 0, box1Width, boxHeight);
+		CommonConst.leftFileContent.getScrollPane().setBounds(box1Left, CommonConst.treeTopMargin, box1Width, boxHeight);
 		
 		CommonConst.leftFileContent.addMouseListener(new MouseListener() {
 			@Override
@@ -159,7 +199,7 @@ public class DiffFormListener implements ComponentListener {
 		
 		
 		// 우측 파일패스
-		CommonConst.rightFilePathText.setBounds(box2Left, CommonConst.textAreaTopMargin, boxWidth, CommonConst.textAreaHeight);
+		CommonConst.rightFilePathText.setBounds(box2Left, CommonConst.textAreaTopMargin, box2Width, CommonConst.textAreaHeight);
 		CommonConst.rightFilePathText.setEditable(false);
 		
 		CommonConst.rightFilePathText.addMouseListener(new MouseListener() {
@@ -190,8 +230,8 @@ public class DiffFormListener implements ComponentListener {
 		});
 		
 		// 우측 파일내용
-		CommonConst.rightFileContent.setBounds(0, 0, boxWidth, boxHeight);
-		CommonConst.rightFileContent.getScrollPane().setBounds(box2Left, CommonConst.treeTopMargin, boxWidth, boxHeight);
+		CommonConst.rightFileContent.setBounds(0, 0, box2Width, boxHeight);
+		CommonConst.rightFileContent.getScrollPane().setBounds(box2Left, CommonConst.treeTopMargin, box2Width, boxHeight);
 		
 		CommonConst.rightFileContent.addMouseListener(new MouseListener() {
 			@Override
@@ -246,7 +286,7 @@ public class DiffFormListener implements ComponentListener {
 		
 		
 		// 공통 버튼
-		int bothArrowButton1Left = box2Left + boxWidth - ((CommonConst.arrowButtonWidth) * 5) - CommonConst.arrowButtonWidth;
+		int bothArrowButton1Left = box2Left + box2Width - ((CommonConst.arrowButtonWidth) * 5) - CommonConst.arrowButtonWidth;
 		CommonConst.bothDiffNextButton.setBounds(bothArrowButton1Left, arrowButtonTop, CommonConst.arrowButtonWidth, CommonConst.arrowButtonHeight);
 		CommonConst.bothDiffNextButton.setIcon(ImageIconUtil.getIconFromName("button", "diff_next"));
 		
@@ -278,6 +318,112 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.bothBottomButton.addMouseListener(new BBArrowButtonMouseListener   (true, true, false, true));
 		CommonConst.bothUpButton.addMouseListener(new BBArrowButtonMouseListener       (true, true, true, false));
 		CommonConst.bothDownButton.addMouseListener(new BBArrowButtonMouseListener     (true, true, false, false));
+	}
+	
+	/**
+	 * 디바이더 설정 및 드래그 이벤트 추가
+	 */
+	private void setupDividers(int boxHeight) {
+		// 좌측 디바이더 (트리와 좌측 패널 사이)
+		CommonConst.leftDivider.setBounds(leftDividerX, CommonConst.treeTopMargin, DIVIDER_WIDTH, boxHeight);
+		CommonConst.leftDivider.setBackground(new Color(220, 220, 220));
+		CommonConst.leftDivider.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+		
+		// 중앙 디바이더 (좌측과 우측 패널 사이)
+		CommonConst.centerDivider.setBounds(centerDividerX, CommonConst.treeTopMargin, DIVIDER_WIDTH, boxHeight);
+		CommonConst.centerDivider.setBackground(new Color(220, 220, 220));
+		CommonConst.centerDivider.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+		
+		// 마우스 이벤트 설정 (한 번만 추가)
+		if (CommonConst.leftDivider.getMouseListeners().length == 0) {
+			setupLeftDividerListeners();
+		}
+		
+		if (CommonConst.centerDivider.getMouseListeners().length == 0) {
+			setupCenterDividerListeners();
+		}
+	}
+	
+	/**
+	 * 좌측 디바이더 드래그 이벤트
+	 */
+	private void setupLeftDividerListeners() {
+		final int[] dragStartX = {0};
+		final int[] initialDividerX = {0};
+		
+		CommonConst.leftDivider.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				dragStartX[0] = e.getXOnScreen();
+				initialDividerX[0] = leftDividerX;
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				CommonConst.leftDivider.setBackground(new Color(180, 180, 180));
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				CommonConst.leftDivider.setBackground(new Color(220, 220, 220));
+			}
+		});
+		
+		CommonConst.leftDivider.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int deltaX = e.getXOnScreen() - dragStartX[0];
+				int newX = initialDividerX[0] + deltaX;
+				
+				// 최소/최대 제한
+				if (newX < 100) newX = 100;
+				if (newX > centerDividerX - 200) newX = centerDividerX - 200;
+				
+				leftDividerX = newX;
+				doResizeForm();
+			}
+		});
+	}
+	
+	/**
+	 * 중앙 디바이더 드래그 이벤트
+	 */
+	private void setupCenterDividerListeners() {
+		final int[] dragStartX = {0};
+		final int[] initialDividerX = {0};
+		
+		CommonConst.centerDivider.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				dragStartX[0] = e.getXOnScreen();
+				initialDividerX[0] = centerDividerX;
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				CommonConst.centerDivider.setBackground(new Color(180, 180, 180));
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				CommonConst.centerDivider.setBackground(new Color(220, 220, 220));
+			}
+		});
+		
+		CommonConst.centerDivider.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int deltaX = e.getXOnScreen() - dragStartX[0];
+				int newX = initialDividerX[0] + deltaX;
+				
+				// 최소/최대 제한
+				if (newX < leftDividerX + DIVIDER_WIDTH + 200) newX = leftDividerX + DIVIDER_WIDTH + 200;
+				if (newX > CommonConst.fullWidth - 200) newX = CommonConst.fullWidth - 200;
+				
+				centerDividerX = newX;
+				doResizeForm();
+			}
+		});
 	}
 	
 	/**

@@ -98,6 +98,13 @@ public class DiffForm {
 		bbTree.setCellRenderer(treeCellRenderer);
 		
 		CommonConst.fileTree = CommonConst.bForm.addTree(0, 0, 0, 0, bbTree);
+		
+		// 크기 조절 가능한 디바이더 추가
+		CommonConst.leftDivider = new javax.swing.JPanel();
+		CommonConst.centerDivider = new javax.swing.JPanel();
+		CommonConst.bForm.add(CommonConst.leftDivider);
+		CommonConst.bForm.add(CommonConst.centerDivider);
+		
 		CommonConst.leftFileContent = CommonConst.bForm.addTextArea(0, 0, 0, 0);
 		CommonConst.rightFileContent = CommonConst.bForm.addTextArea(0, 0, 0, 0);
 		

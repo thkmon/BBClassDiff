@@ -29,6 +29,12 @@ import com.bb.diff.path.PathUtil;
 public class DiffFormListener implements ComponentListener {
 	
 	private static final int DIVIDER_WIDTH = 6;
+	
+	// 패널 비율 설정 (트리, 좌측 패널, 우측 패널)
+	private static final int TREE_PANEL_RATIO = 16;
+	private static final int LEFT_PANEL_RATIO = 42;
+	private static final int RIGHT_PANEL_RATIO = 42;
+	
 	private int leftDividerX = -1;
 	private int centerDividerX = -1;
 	
@@ -61,16 +67,16 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.fullWidth = CommonConst.bForm.getWidth();
 		CommonConst.fullHeight = CommonConst.bForm.getHeight();
 		
-		// 초기화: 디바이더 위치가 설정되지 않았으면 기본 비율 사용 (30%, 35%, 35%)
+		// 초기화: 디바이더 위치가 설정되지 않았으면 기본 비율 사용
 		// 디바이더 너비를 고려한 콘텐츠 영역 계산
 		int availableWidth = CommonConst.fullWidth - CommonConst.treeLeftMargin - DIVIDER_WIDTH * 2 - 20; // 20px 우측 여백
 		
 		if (leftDividerX < 0) {
-			// 최초 초기화: 30% 지점에 좌측 디바이더 배치
-			CommonConst.treeWidth = (int) (availableWidth * 0.30);
+			// 최초 초기화: 설정된 비율에 따라 디바이더 배치
+			CommonConst.treeWidth = (int) (availableWidth * TREE_PANEL_RATIO / 100.0);
 			leftDividerX = CommonConst.treeLeftMargin + CommonConst.treeWidth;
-			// 중앙 디바이더: 30% + 35% 지점에 배치
-			int leftPanelWidth = (int) (availableWidth * 0.35);
+			// 중앙 디바이더: 트리 + 좌측 패널 비율만큼 이동
+			int leftPanelWidth = (int) (availableWidth * LEFT_PANEL_RATIO / 100.0);
 			centerDividerX = leftDividerX + DIVIDER_WIDTH + leftPanelWidth;
 		} else if (prevFullWidth > 0 && prevFullWidth != CommonConst.fullWidth) {
 			// 창 크기 변경 시: 비율 유지하며 재계산

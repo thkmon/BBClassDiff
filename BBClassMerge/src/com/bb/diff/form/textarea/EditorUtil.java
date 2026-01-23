@@ -347,9 +347,8 @@ public class EditorUtil {
 			StyleConstants.setBackground(whiteStyle, new Color(255, 255, 255));
 			
 			// 모던 diff 색상 - 더 명확한 하이라이트
-			// 소프트 블루: RGB(204, 229, 255)
-			StyleConstants.setBackground(strongStyle1, new Color(204, 229, 255));
-			StyleConstants.setBackground(strongStyle2, new Color(204, 229, 255));
+			StyleConstants.setBackground(strongStyle1, new Color(217, 254, 173));
+			StyleConstants.setBackground(strongStyle2, new Color(217, 254, 173));
 		}
 		
 		/**

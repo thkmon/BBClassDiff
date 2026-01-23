@@ -32,9 +32,9 @@ public class DiffFormListener implements ComponentListener {
 	private static final int DIVIDER_HOVER_WIDTH = 5; // 호버/드래그 시 활성 영역
 	
 	// 패널 비율 설정 (트리, 좌측 패널, 우측 패널)
-	private static final int TREE_PANEL_RATIO = 16;
-	private static final int LEFT_PANEL_RATIO = 42;
-	private static final int RIGHT_PANEL_RATIO = 42;
+	private static final int TREE_PANEL_RATIO = 14;
+	private static final int LEFT_PANEL_RATIO = 43;
+	private static final int RIGHT_PANEL_RATIO = 43;
 	
 	private int leftDividerX = -1;
 	private int centerDividerX = -1;
@@ -73,7 +73,7 @@ public class DiffFormListener implements ComponentListener {
 		int availableWidth = CommonConst.fullWidth - CommonConst.treeLeftMargin - DIVIDER_WIDTH * 2 - 20; // 20px 우측 여백
 		
 		if (leftDividerX < 0 || (prevFullWidth > 0 && prevFullWidth != CommonConst.fullWidth)) {
-			// 최초 초기화 또는 창 크기 변경 시: 16%-42%-42%로 리셋
+			// 최초 초기화 또는 창 크기 변경 시: 14%-43%-43%로 리셋
 			CommonConst.treeWidth = (int) (availableWidth * TREE_PANEL_RATIO / 100.0);
 			leftDividerX = CommonConst.treeLeftMargin + CommonConst.treeWidth;
 			// 중앙 디바이더: 트리 + 좌측 패널 비율만큼 이동

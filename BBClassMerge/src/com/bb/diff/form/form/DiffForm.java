@@ -558,33 +558,33 @@ public class DiffForm {
 			});
 		}
 		
-		{
-			final BBCheckBoxMenuItem subMenu8 = new BBCheckBoxMenuItem("클래스 핵심 라인만 비교하기 (Diff core lines of classes only)");
-			
-			// 초기값 세팅. true일 경우 check 처리
-			// 클래스 핵심 라인만 비교하기 여부
-			if (CommonConst.bDiffCoreContents) {
-				subMenu8.doClick();
-			}
-			
-			optionMenu.add(subMenu8);
-			
-			subMenu8.addActionListener(new ActionListener() {
-				
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					boolean bState = subMenu8.getState();
-					if (bState) {
-						CommonConst.bDiffCoreContents = true;
-						TreeUtil.redrawTree(true);
-						
-					} else {
-						CommonConst.bDiffCoreContents = false;
-						TreeUtil.redrawTree(true);
-					}
-				}
-			});
-		}
+//		{
+//			final BBCheckBoxMenuItem subMenu8 = new BBCheckBoxMenuItem("클래스 핵심 라인만 비교하기 (Diff core lines of classes only)");
+//			
+//			// 초기값 세팅. true일 경우 check 처리
+//			// 클래스 핵심 라인만 비교하기 여부
+//			if (CommonConst.bDiffCoreContents) {
+//				subMenu8.doClick();
+//			}
+//			
+//			optionMenu.add(subMenu8);
+//			
+//			subMenu8.addActionListener(new ActionListener() {
+//				
+//				@Override
+//				public void actionPerformed(ActionEvent e) {
+//					boolean bState = subMenu8.getState();
+//					if (bState) {
+//						CommonConst.bDiffCoreContents = true;
+//						TreeUtil.redrawTree(true);
+//						
+//					} else {
+//						CommonConst.bDiffCoreContents = false;
+//						TreeUtil.redrawTree(true);
+//					}
+//				}
+//			});
+//		}
 			
 		{
 			final BBCheckBoxMenuItem subMenu9 = new BBCheckBoxMenuItem("내용 동일해도 파일내용 보기 (View file contents even if the files are the same)");

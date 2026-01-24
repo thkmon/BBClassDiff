@@ -138,11 +138,11 @@ public class DecompileUtil {
 					return new StringBuffer("");
 				}
 				
-				// 클래스 핵심 라인만 비교하기 여부
-				if (CommonConst.bDiffCoreContents) {
-					// 클래스 핵심 라인만 가져오기 (클래스 라인, 메서드 라인, 멤버변수 라인)
-					javaContent = getClassCoreLinesOnly(javaContent);
-				}
+//				// 클래스 핵심 라인만 비교하기 여부
+//				if (CommonConst.bDiffCoreContents) {
+//					// 클래스 핵심 라인만 가져오기 (클래스 라인, 메서드 라인, 멤버변수 라인)
+//					javaContent = getClassCoreLinesOnly(javaContent);
+//				}
 				
 				info.setFileContent(javaContent);
 				CommonConst.fileContentMap.put(clsFilePath, info);
@@ -165,114 +165,114 @@ public class DecompileUtil {
 	}
 	
 	
-	/**
-	 * 클래스 핵심 라인만 가져오기 (클래스 라인, 메서드 라인, 멤버변수 라인)
-	 * 
-	 * @param buff
-	 * @return
-	 */
-	private static StringBuffer getClassCoreLinesOnly(StringBuffer buff) {
-		String str = buff.toString();
-		StringBuffer resultBuff = new StringBuffer();
-		
-		boolean bNeedEnter = false;
-		
-		StringList content = StringUtil.splitMulti(str, "\r\n", "\n", "\r");
-		if (content != null && content.size() > 0) {
-			String oneLine = "";
-			int lineCount = content.size();
-			int lineLastIndex = lineCount - 1;
-			for (int i=0; i<lineCount; i++) {
-				oneLine = content.get(i);
-				
-				// trim
-				oneLine = oneLine.replaceAll("^[\\s\\t\\r\\n]*", "");
-				oneLine = oneLine.replaceAll("[\\s\\t\\r\\n]*$", "");
-				
-				if (oneLine.startsWith("public") ||
-					oneLine.startsWith("private") ||
-					oneLine.startsWith("protected")) {
-					
-					if (CommonConst.bDiffExceptingRivisionString) {
-						// getCVSRevision 무시하자
-						if (oneLine.indexOf("String getCVSRevision()") > -1) {
-							continue;
-						}
-						
-						// SVNFILEINFO 무시하자
-						if (oneLine.indexOf("String SVNFILEINFO") > -1) {
-							continue;
-						}
-					}
-					
-					if (bNeedEnter) {
-						resultBuff.append("\n\n");
-					}
-					
-					resultBuff.append(oneLine);
-					bNeedEnter = true;
-					
-					
-					// 마지막 문자열이 ), ;, { 로 끝나지 않으면 해당 문자열이 나올 때까지, 다음 라인 내용을 가져와서 붙인다.
-					boolean bClassLine = StringUtil.containsOutsideDoubleQuotes(oneLine, "class");
-					boolean bVariableLine = StringUtil.containsOutsideDoubleQuotes(oneLine, "=");
-					boolean bMethodLine = StringUtil.containsOutsideDoubleQuotes(oneLine, "(");
-					
-					boolean bFoundEndOfLine = false;
-					if (bClassLine) {
-						// 클래스의 마지막 문자열은 {
-						bFoundEndOfLine = oneLine.endsWith("{");
-						
-					} else if (bVariableLine) {
-						// 멤버변수의 마지막 문자열은 ;
-						bFoundEndOfLine = oneLine.endsWith(";");
-						
-					} else if (bMethodLine) {
-						// 메서드의 마지막 문자열은 ) 또는 {
-						bFoundEndOfLine = oneLine.endsWith(")") || oneLine.endsWith("{");
-						
-					} else {
-						bFoundEndOfLine = true;
-					}
-					
-					if (!bFoundEndOfLine) {
-						int nextLineIdx = i + 1;
-						int kLimit = nextLineIdx + 9;
-						for (int k=nextLineIdx; k<kLimit; k++) {
-							if (lineLastIndex < k) {
-								break;
-							}
-							
-							String nextLine = content.get(k);
-							
-							// trim
-							nextLine = nextLine.replaceAll("^[\\s\\t\\r\\n]*", "");
-							nextLine = nextLine.replaceAll("[\\s\\t\\r\\n]*$", "");
-							
-							if (nextLine != null && nextLine.length() > 0) {
-								resultBuff.append(nextLine);
-								
-								if (bClassLine && nextLine.endsWith("{")) {
-									// 클래스의 마지막 문자열은 {
-									break;
-									
-								} else if (bVariableLine && nextLine.endsWith(";")) {
-									// 멤버변수의 마지막 문자열은 ;
-									break;
-									
-								} else if (bMethodLine && (nextLine.endsWith(")") || nextLine.endsWith("{"))) {
-									// 메서드의 마지막 문자열은 ) 또는 {
-									break;
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		return resultBuff;
-	}
+//	/**
+//	 * 클래스 핵심 라인만 가져오기 (클래스 라인, 메서드 라인, 멤버변수 라인)
+//	 * 
+//	 * @param buff
+//	 * @return
+//	 */
+//	private static StringBuffer getClassCoreLinesOnly(StringBuffer buff) {
+//		String str = buff.toString();
+//		StringBuffer resultBuff = new StringBuffer();
+//		
+//		boolean bNeedEnter = false;
+//		
+//		StringList content = StringUtil.splitMulti(str, "\r\n", "\n", "\r");
+//		if (content != null && content.size() > 0) {
+//			String oneLine = "";
+//			int lineCount = content.size();
+//			int lineLastIndex = lineCount - 1;
+//			for (int i=0; i<lineCount; i++) {
+//				oneLine = content.get(i);
+//				
+//				// trim
+//				oneLine = oneLine.replaceAll("^[\\s\\t\\r\\n]*", "");
+//				oneLine = oneLine.replaceAll("[\\s\\t\\r\\n]*$", "");
+//				
+//				if (oneLine.startsWith("public") ||
+//					oneLine.startsWith("private") ||
+//					oneLine.startsWith("protected")) {
+//					
+//					if (CommonConst.bDiffExceptingRivisionString) {
+//						// getCVSRevision 무시하자
+//						if (oneLine.indexOf("String getCVSRevision()") > -1) {
+//							continue;
+//						}
+//						
+//						// SVNFILEINFO 무시하자
+//						if (oneLine.indexOf("String SVNFILEINFO") > -1) {
+//							continue;
+//						}
+//					}
+//					
+//					if (bNeedEnter) {
+//						resultBuff.append("\n\n");
+//					}
+//					
+//					resultBuff.append(oneLine);
+//					bNeedEnter = true;
+//					
+//					
+//					// 마지막 문자열이 ), ;, { 로 끝나지 않으면 해당 문자열이 나올 때까지, 다음 라인 내용을 가져와서 붙인다.
+//					boolean bClassLine = StringUtil.containsOutsideDoubleQuotes(oneLine, "class");
+//					boolean bVariableLine = StringUtil.containsOutsideDoubleQuotes(oneLine, "=");
+//					boolean bMethodLine = StringUtil.containsOutsideDoubleQuotes(oneLine, "(");
+//					
+//					boolean bFoundEndOfLine = false;
+//					if (bClassLine) {
+//						// 클래스의 마지막 문자열은 {
+//						bFoundEndOfLine = oneLine.endsWith("{");
+//						
+//					} else if (bVariableLine) {
+//						// 멤버변수의 마지막 문자열은 ;
+//						bFoundEndOfLine = oneLine.endsWith(";");
+//						
+//					} else if (bMethodLine) {
+//						// 메서드의 마지막 문자열은 ) 또는 {
+//						bFoundEndOfLine = oneLine.endsWith(")") || oneLine.endsWith("{");
+//						
+//					} else {
+//						bFoundEndOfLine = true;
+//					}
+//					
+//					if (!bFoundEndOfLine) {
+//						int nextLineIdx = i + 1;
+//						int kLimit = nextLineIdx + 9;
+//						for (int k=nextLineIdx; k<kLimit; k++) {
+//							if (lineLastIndex < k) {
+//								break;
+//							}
+//							
+//							String nextLine = content.get(k);
+//							
+//							// trim
+//							nextLine = nextLine.replaceAll("^[\\s\\t\\r\\n]*", "");
+//							nextLine = nextLine.replaceAll("[\\s\\t\\r\\n]*$", "");
+//							
+//							if (nextLine != null && nextLine.length() > 0) {
+//								resultBuff.append(nextLine);
+//								
+//								if (bClassLine && nextLine.endsWith("{")) {
+//									// 클래스의 마지막 문자열은 {
+//									break;
+//									
+//								} else if (bVariableLine && nextLine.endsWith(";")) {
+//									// 멤버변수의 마지막 문자열은 ;
+//									break;
+//									
+//								} else if (bMethodLine && (nextLine.endsWith(")") || nextLine.endsWith("{"))) {
+//									// 메서드의 마지막 문자열은 ) 또는 {
+//									break;
+//								}
+//							}
+//						}
+//					}
+//				}
+//			}
+//		}
+//		
+//		return resultBuff;
+//	}
 	
 	public static String readClassFileContentByCFR(String filePath) {
 		String decompileContent = "";

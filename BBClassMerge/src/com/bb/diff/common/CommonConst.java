@@ -164,7 +164,7 @@ public class CommonConst {
 	public static boolean bDiffExceptingRivisionString = false;
 	
 	// 클래스 핵심 라인만 비교하기 여부
-	public static boolean bDiffCoreContents = false;
+//	public static boolean bDiffCoreContents = false;
 	
 	// 내용 동일해도 파일내용 보기 여부
 	public static boolean bViewContentEvenIfSame = false;

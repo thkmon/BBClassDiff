@@ -90,5 +90,10 @@ public class BBDiffNextButtonMouseListener implements MouseListener {
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
+
+		// DiffOverviewPanel 다시 그리기
+		if (CommonConst.diffOverviewPanel != null) {
+			CommonConst.diffOverviewPanel.repaint();
+		}
 	}
 }

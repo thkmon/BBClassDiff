@@ -90,9 +90,10 @@ public class DiffFormListener implements ComponentListener {
 		int box1Left = leftDividerX + DIVIDER_WIDTH;
 		int box1Width = centerDividerX - box1Left;
 		
-		// 우측 패널 위치와 너비 (창 끝까지)
+		// 우측 패널 위치와 너비 (창 끝까지, 오른쪽에 DiffOverviewPanel 공간 확보)
 		int box2Left = centerDividerX + DIVIDER_WIDTH;
-		int box2Width = CommonConst.fullWidth - box2Left - 20; // 20px 여백
+		int diffOverviewWidth = 16;
+		int box2Width = CommonConst.fullWidth - box2Left - 20 - diffOverviewWidth; // 20px 여백 + 개요 패널
 		
 		int arrowButtonTop = 0;
 		
@@ -103,7 +104,7 @@ public class DiffFormListener implements ComponentListener {
 		 * 바운더리 적용
 		 */
 		// 디바이더 설정
-		setupDividers(boxHeight);
+		setupDividers(boxHeight, box2Left, box2Width, diffOverviewWidth);
 		
 		// 트리
 		CommonConst.fileTree.setBounds(0, 0, CommonConst.treeWidth, boxHeight);
@@ -321,7 +322,7 @@ public class DiffFormListener implements ComponentListener {
 	/**
 	 * 디바이더 설정 및 드래그 이벤트 추가
 	 */
-	private void setupDividers(int boxHeight) {
+	private void setupDividers(int boxHeight, int box2Left, int box2Width, int diffOverviewWidth) {
 		// 좌측 디바이더 (트리와 좌측 패널 사이)
 		CommonConst.leftDivider.setBounds(leftDividerX, CommonConst.treeTopMargin, DIVIDER_WIDTH, boxHeight);
 		CommonConst.leftDivider.setBackground(new Color(230, 230, 230));
@@ -331,6 +332,13 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.centerDivider.setBounds(centerDividerX, CommonConst.treeTopMargin, DIVIDER_WIDTH, boxHeight);
 		CommonConst.centerDivider.setBackground(new Color(230, 230, 230));
 		CommonConst.centerDivider.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+		
+		// DiffOverviewPanel 설정 (우측 에디터 오른쪽에 배치)
+		if (CommonConst.diffOverviewPanel != null) {
+			int overviewLeft = box2Left + box2Width + 2;
+			CommonConst.diffOverviewPanel.setBounds(overviewLeft, CommonConst.treeTopMargin, diffOverviewWidth, boxHeight);
+			CommonConst.diffOverviewPanel.repaint();
+		}
 		
 		// 마우스 이벤트 설정 (한 번만 추가)
 		if (CommonConst.leftDivider.getMouseListeners().length == 0) {

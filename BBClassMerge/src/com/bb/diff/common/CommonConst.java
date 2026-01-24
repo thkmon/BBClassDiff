@@ -5,11 +5,13 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import com.bb.classmerge.util.DateUtil;
 import com.bb.diff.form.form.BBForm;
 import com.bb.diff.form.form.DiffForm;
+import com.bb.diff.form.form.DiffOverviewPanel;
 import com.bb.diff.form.form.QuickFinderForm;
 import com.bb.diff.form.textarea.BBEditor;
 import com.bb.diff.form.tree.BBTree;
@@ -38,8 +40,9 @@ public class CommonConst {
 	public static BBEditor rightFileContent = null;
 	
 	// 크기 조절 가능한 디바이더
-	public static javax.swing.JPanel leftDivider = null;  // 트리와 좌측 패널 사이
-	public static javax.swing.JPanel centerDivider = null; // 좌측과 우측 패널 사이
+	public static JPanel leftDivider = null;  // 트리와 좌측 패널 사이
+	public static JPanel centerDivider = null; // 좌측과 우측 패널 사이
+	public static DiffOverviewPanel diffOverviewPanel = null; // Diff 개요 패널
 	
 	public static int fullWidth = 1024;
 	public static int fullHeight = 768;

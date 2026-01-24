@@ -105,6 +105,8 @@ public class DiffForm {
 		CommonConst.centerDivider = new javax.swing.JPanel();
 		CommonConst.bForm.add(CommonConst.leftDivider);
 		CommonConst.bForm.add(CommonConst.centerDivider);
+		CommonConst.diffOverviewPanel = new DiffOverviewPanel();
+		CommonConst.bForm.add(CommonConst.diffOverviewPanel);
 		
 		CommonConst.leftFileContent = CommonConst.bForm.addTextArea(0, 0, 0, 0);
 		CommonConst.rightFileContent = CommonConst.bForm.addTextArea(0, 0, 0, 0);

@@ -592,6 +592,8 @@ public class EditorUtil {
 				
 				CommonConst.diffPointList1 = new ArrayList<Integer>();
 				CommonConst.diffPointList2 = new ArrayList<Integer>();
+				CommonConst.diffLineCountList1 = new ArrayList<Integer>();
+				CommonConst.diffLineCountList2 = new ArrayList<Integer>();
 				CommonConst.currentDiffPointIndex = -1;
 				
 				String text1 = content1.toString();
@@ -633,6 +635,8 @@ public class EditorUtil {
 		            
 		            CommonConst.diffPointList1.add(beginRow1);
 		            CommonConst.diffPointList2.add(beginRow2);
+		            CommonConst.diffLineCountList1.add(lineList1 != null ? lineList1.size() : 1);
+		            CommonConst.diffLineCountList2.add(lineList2 != null ? lineList2.size() : 1);
 		        }
 			}
 		}
@@ -645,6 +649,10 @@ public class EditorUtil {
 			} else {
 				CommonConst.diffPointLabel.setText("Diff: 0");
 				CommonConst.currentDiffPointIndex = -1;
+			}
+			
+			if (CommonConst.diffOverviewPanel != null) {
+				CommonConst.diffOverviewPanel.repaint();
 			}
 		}
 		

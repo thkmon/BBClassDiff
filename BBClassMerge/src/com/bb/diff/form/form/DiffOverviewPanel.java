@@ -19,9 +19,9 @@ public class DiffOverviewPanel extends JPanel {
     private static final long serialVersionUID = 1L;
 
     private static final Color BACKGROUND_COLOR = new Color(245, 245, 245);
-    private static final Color DIFF_COLOR = new Color(255, 220, 100);
-    private static final Color DIFF_SELECTED_COLOR = new Color(255, 150, 50);
-    private static final Color BORDER_COLOR = new Color(200, 180, 100);
+    private static final Color DIFF_COLOR = new Color(255, 255, 255);
+    private static final Color DIFF_SELECTED_COLOR = new Color(0, 0, 0);
+    private static final Color BORDER_COLOR = new Color(160, 160, 160);
 
     public DiffOverviewPanel() {
         setBackground(BACKGROUND_COLOR);
@@ -83,11 +83,17 @@ public class DiffOverviewPanel extends JPanel {
         if (totalLines <= 0)
             totalLines = 1;
 
-        int boxHeight = Math.max(4, panelHeight / 80);
-
         for (int i = 0; i < CommonConst.diffPointList1.size(); i++) {
             int lineNumber = CommonConst.diffPointList1.get(i);
             int y = (int) ((double) lineNumber / totalLines * panelHeight);
+
+            int lineCount = 1;
+            if (CommonConst.diffLineCountList1 != null && CommonConst.diffLineCountList1.size() > i) {
+                lineCount = CommonConst.diffLineCountList1.get(i);
+            }
+            
+            // 라인 수에 비례하여 높이 계산 (최소 2px)
+            int boxHeight = Math.max(2, (int) ((double) lineCount / totalLines * panelHeight));
 
             if (i == CommonConst.currentDiffPointIndex) {
                 g2d.setColor(DIFF_SELECTED_COLOR);

@@ -65,8 +65,8 @@ public class DiffFormListener implements ComponentListener {
 		 * 바운더리 계산
 		 */
 		int prevFullWidth = CommonConst.fullWidth;
-		CommonConst.fullWidth = CommonConst.bForm.getWidth();
-		CommonConst.fullHeight = CommonConst.bForm.getHeight();
+		CommonConst.fullWidth = CommonConst.bForm.getContentPane().getWidth();
+		CommonConst.fullHeight = CommonConst.bForm.getContentPane().getHeight();
 		
 		// 초기화: 디바이더 위치가 설정되지 않았으면 기본 비율 사용
 		// 디바이더 너비를 고려한 콘텐츠 영역 계산
@@ -195,6 +195,9 @@ public class DiffFormListener implements ComponentListener {
 		CommonConst.leftBottomButton.addMouseListener(new BBArrowButtonMouseListener(true, false, false, true));
 		CommonConst.leftUpButton.addMouseListener(new BBArrowButtonMouseListener    (true, false, true, false));
 		CommonConst.leftDownButton.addMouseListener(new BBArrowButtonMouseListener  (true, false, false, false));
+		
+		CommonConst.bForm.getContentPane().revalidate();
+		CommonConst.bForm.getContentPane().repaint();
 		
 		
 		// 우측 파일패스

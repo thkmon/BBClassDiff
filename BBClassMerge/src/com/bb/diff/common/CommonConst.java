@@ -136,6 +136,8 @@ public class CommonConst {
 	
 	public static ArrayList<Integer> diffPointList1 = new ArrayList<Integer>();
 	public static ArrayList<Integer> diffPointList2 = new ArrayList<Integer>();
+	public static ArrayList<Integer> diffLineCountList1 = new ArrayList<Integer>();
+	public static ArrayList<Integer> diffLineCountList2 = new ArrayList<Integer>();
 	public static int currentDiffPointIndex = -1;
 	
 	public static BBTree treeModel = null;

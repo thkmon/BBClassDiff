@@ -85,6 +85,9 @@ public class DiffForm {
 		/**
 		 * 기존 트리 추가하는 코드 (상속버전)
 		 */
+		// FlatLaf 사용 시 트리 선(Lines) 활성화
+		UIManager.put("Tree.paintLines", true);
+		
 		// 트리노드 여닫는 아이콘 플러스/마이너스(+/-) 기호로 변경
 		UIManager.put("Tree.collapsedIcon", new IconUIResource(new TreeNodeIcon('+')));
 		UIManager.put("Tree.expandedIcon",  new IconUIResource(new TreeNodeIcon('-')));

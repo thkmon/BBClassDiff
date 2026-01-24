@@ -346,9 +346,9 @@ public class EditorUtil {
 			// 깨끗한 배경
 			StyleConstants.setBackground(whiteStyle, new Color(255, 255, 255));
 			
-			// 모던 diff 색상 - 더 명확한 하이라이트
-			StyleConstants.setBackground(strongStyle1, new Color(217, 254, 173));
-			StyleConstants.setBackground(strongStyle2, new Color(217, 254, 173));
+			// diff 색상 (#C6DCFA)
+			StyleConstants.setBackground(strongStyle1, new Color(198, 220, 250));
+			StyleConstants.setBackground(strongStyle2, new Color(198, 220, 250));
 		}
 		
 		/**

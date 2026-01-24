@@ -24,6 +24,23 @@ public class BBClassDiff {
 			// FlatLaf 테마 적용
 			try {
 				UIManager.setLookAndFeel(new FlatLightLaf());
+				
+				// FlatLaf에서 트리 연결선(세로선)이 보이도록 설정
+				UIManager.put("Tree.paintLines", true);
+				
+				// 트리 선택 시 색상 변경 (#C6DCFA)
+				java.awt.Color selectionColor = new java.awt.Color(198, 220, 250);
+				UIManager.put("Tree.selectionBackground", selectionColor);
+				UIManager.put("Tree.selectionBorderColor", selectionColor);
+				UIManager.put("Tree.selectionInactiveBackground", selectionColor);
+				
+				// 전체 행 선택이 아닌 파일명(노드) 부분만 하이라이트 되도록 설정
+				UIManager.put("Tree.wideSelection", false);
+				
+				// 선택 시 글자색이 흰색이 되지 않도록 검은색으로 설정
+				UIManager.put("Tree.selectionForeground", java.awt.Color.BLACK);
+				UIManager.put("Tree.selectionInactiveForeground", java.awt.Color.BLACK);
+				
 			} catch (Exception e) {
 				ConsoleUtil.print("FlatLaf 테마 적용 실패: " + e.getMessage());
 			}

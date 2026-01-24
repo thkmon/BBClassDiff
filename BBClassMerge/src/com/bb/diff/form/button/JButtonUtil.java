@@ -24,4 +24,18 @@ public class JButtonUtil {
 
 		return jButton;
 	}
+
+
+	/**
+	 * 버튼 배경색 없애기
+	 * 
+	 * @param jButton
+	 */
+	public static void setTransparent(JButton jButton) {
+		if (jButton == null) return;
+		jButton.setContentAreaFilled(false);
+		jButton.setBorderPainted(false);
+		jButton.setFocusPainted(false);
+		jButton.setOpaque(false);
+	}
 }

@@ -31,6 +31,7 @@ import com.bb.diff.decompile.DecompileUtil;
 import com.bb.diff.file.FileUtil;
 import com.bb.diff.form.button.BBDiffNextButtonMouseListener;
 import com.bb.diff.form.button.BBWinmergeButtonMouseListener;
+import com.bb.diff.form.button.JButtonUtil;
 import com.bb.diff.form.textarea.EditorListener;
 import com.bb.diff.form.textarea.EditorUtil;
 import com.bb.diff.form.tree.BBTree;
@@ -77,6 +78,8 @@ public class DiffForm {
 		CommonConst.rightFilePathText = CommonConst.bForm.addTextInput(0, 0, 0, 0);
 		
 		CommonConst.winmergeButton = CommonConst.bForm.addButton(4, CommonConst.textAreaTopMargin - 1 , 85, 24, "Compare");
+		CommonConst.winmergeButton.setToolTipText("외부 비교 (External Compare) (Ctrl+M)");
+		JButtonUtil.setTransparent(CommonConst.winmergeButton);
 		CommonConst.winmergeButton.addMouseListener(new BBWinmergeButtonMouseListener());
 		
 		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(95, CommonConst.textAreaTopMargin - 2, 255, 24, "Diff Point : ");
@@ -136,25 +139,60 @@ public class DiffForm {
 		});
 		
 		CommonConst.leftUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
+		CommonConst.leftUpButton.setToolTipText("좌측 위 (Left Up)");
+		JButtonUtil.setTransparent(CommonConst.leftUpButton);
+		
 		CommonConst.leftDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
+		CommonConst.leftDownButton.setToolTipText("좌측 아래 (Left Down)");
+		JButtonUtil.setTransparent(CommonConst.leftDownButton);
+		
 		CommonConst.leftTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
+		CommonConst.leftTopButton.setToolTipText("좌측 맨위 (Left Top)");
+		JButtonUtil.setTransparent(CommonConst.leftTopButton);
+		
 		CommonConst.leftBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
+		CommonConst.leftBottomButton.setToolTipText("좌측 맨아래 (Left Bottom)");
+		JButtonUtil.setTransparent(CommonConst.leftBottomButton);
 		
 		CommonConst.bothDiffPrevButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
-		CommonConst.bothDiffPrevButton.setToolTipText("이전 Diff로 이동 (F7)");
+		CommonConst.bothDiffPrevButton.setToolTipText("이전 차이 (Prev Diff) (F7)");
+		JButtonUtil.setTransparent(CommonConst.bothDiffPrevButton);
 		
 		CommonConst.bothDiffNextButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
-		CommonConst.bothDiffNextButton.setToolTipText("다음 Diff로 이동 (F8)");
+		CommonConst.bothDiffNextButton.setToolTipText("다음 차이 (Next Diff) (F8)");
+		JButtonUtil.setTransparent(CommonConst.bothDiffNextButton);
 		
 		CommonConst.bothUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
+		CommonConst.bothUpButton.setToolTipText("양쪽 위 (Both Up)");
+		JButtonUtil.setTransparent(CommonConst.bothUpButton);
+		
 		CommonConst.bothDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
+		CommonConst.bothDownButton.setToolTipText("양쪽 아래 (Both Down)");
+		JButtonUtil.setTransparent(CommonConst.bothDownButton);
+		
 		CommonConst.bothTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
+		CommonConst.bothTopButton.setToolTipText("양쪽 맨위 (Both Top)");
+		JButtonUtil.setTransparent(CommonConst.bothTopButton);
+		
 		CommonConst.bothBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
+		CommonConst.bothBottomButton.setToolTipText("양쪽 맨아래 (Both Bottom)");
+		JButtonUtil.setTransparent(CommonConst.bothBottomButton);
 		
 		CommonConst.rightUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
+		CommonConst.rightUpButton.setToolTipText("우측 위 (Right Up)");
+		JButtonUtil.setTransparent(CommonConst.rightUpButton);
+		
 		CommonConst.rightDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
+		CommonConst.rightDownButton.setToolTipText("우측 아래 (Right Down)");
+		JButtonUtil.setTransparent(CommonConst.rightDownButton);
+		
 		CommonConst.rightTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
+		CommonConst.rightTopButton.setToolTipText("우측 맨위 (Right Top)");
+		JButtonUtil.setTransparent(CommonConst.rightTopButton);
+		
 		CommonConst.rightBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
+		CommonConst.rightBottomButton.setToolTipText("우측 맨아래 (Right Bottom)");
+		JButtonUtil.setTransparent(CommonConst.rightBottomButton);
 		
 		DiffFormListener formListener = new DiffFormListener();
 		CommonConst.bForm.addComponentListener(formListener);
@@ -187,6 +225,20 @@ public class DiffForm {
 		CommonConst.bForm.getRootPane().registerKeyboardAction(
 			e -> BBDiffNextButtonMouseListener.showDiffPoint(true),
 			KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0),
+			javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
+		);
+
+		// F5: 새로고침
+		CommonConst.bForm.getRootPane().registerKeyboardAction(
+			e -> TreeUtil.redrawTree(true),
+			KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0),
+			javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
+		);
+		
+		// Ctrl+M: 외부 비교 (Compare)
+		CommonConst.bForm.getRootPane().registerKeyboardAction(
+			e -> new BBWinmergeButtonMouseListener().mouseReleased(null),
+			KeyStroke.getKeyStroke(KeyEvent.VK_M, Event.CTRL_MASK),
 			javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW
 		);
 	}

@@ -265,6 +265,18 @@ public class EditorUtil {
 		
 		CommonConst.currentSelectedTreeNode = node;
 		
+		if (showOnEditor) {
+			CommonConst.diffPointList1 = new ArrayList<Integer>();
+			CommonConst.diffPointList2 = new ArrayList<Integer>();
+			CommonConst.diffLineCountList1 = new ArrayList<Integer>();
+			CommonConst.diffLineCountList2 = new ArrayList<Integer>();
+			CommonConst.currentDiffPointIndex = -1;
+			
+			if (CommonConst.diffOverviewPanel != null) {
+				CommonConst.diffOverviewPanel.repaint();
+			}
+		}
+		
 		/**
 		 * 좌측 파일 출력
 		 */

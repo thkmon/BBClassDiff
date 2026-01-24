@@ -92,7 +92,7 @@ public class DiffFormListener implements ComponentListener {
 		
 		// 우측 패널 위치와 너비 (창 끝까지, 오른쪽에 DiffOverviewPanel 공간 확보)
 		int box2Left = centerDividerX + DIVIDER_WIDTH;
-		int diffOverviewWidth = 16;
+		int diffOverviewWidth = 8;
 		int box2Width = CommonConst.fullWidth - box2Left - 20 - diffOverviewWidth; // 20px 여백 + 개요 패널
 		
 		int arrowButtonTop = 0;

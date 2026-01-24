@@ -107,8 +107,11 @@ public class BBForm extends JFrame {
 		// 에디터 좌측에 라인번호 추가 시작
 		//////////////////////////////////////////////////
 		JTextPane lineNumbers = new JTextPane();
-        lineNumbers.setEditable(false);
-        lineNumbers.setBackground(new Color(243, 243, 243));
+		lineNumbers.setEditable(false);
+		lineNumbers.setBackground(new Color(243, 243, 243));
+		lineNumbers.setFont(font);
+		// 좌우 여백을 줄여서 가로 길이를 최적화
+		lineNumbers.setMargin(new java.awt.Insets(0, 5, 0, 5));
         
         scrollPane.setRowHeaderView(lineNumbers);
         

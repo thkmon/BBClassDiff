@@ -196,12 +196,10 @@ public class DiffForm {
 		BBMenuBar menuBar = new BBMenuBar();
 		
 		
-		int menubarWidth = 200;
 		int menubarHeight = 22;
 		
 		menuBar.setBackground(CommonConst.formBackgroundColor);
 		menuBar.setBorderPainted(false);
-		menuBar.setBounds(0, 0, menubarWidth, menubarHeight);
 		
 		
 		BBMenu treeMenu = new BBMenu("Tree");
@@ -628,6 +626,9 @@ public class DiffForm {
 		menuBar.add(findMenu);
 		menuBar.add(optionMenu);
 		
+		// 메뉴들의 실제 길이에 맞춰서 가로길이 조정
+		int menubarWidth = menuBar.getPreferredSize().width;
+		menuBar.setBounds(0, 0, menubarWidth, menubarHeight);
 		
 		// 우측 상단에 여백을 확보하기 위해 form에 BBMenuBar를 바로 추가하지 않고,
 		// 좌측 상단에 JPanel을 만들고 JPanel에 BBMenuBar를 추가한다.

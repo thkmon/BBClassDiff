@@ -139,59 +139,59 @@ public class DiffForm {
 		});
 		
 		CommonConst.leftUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
-		CommonConst.leftUpButton.setToolTipText("좌측 위 (Left Up)");
+		CommonConst.leftUpButton.setToolTipText("좌측화면: 위로 (Left screen: Up)");
 		JButtonUtil.setTransparent(CommonConst.leftUpButton);
 		
 		CommonConst.leftDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
-		CommonConst.leftDownButton.setToolTipText("좌측 아래 (Left Down)");
+		CommonConst.leftDownButton.setToolTipText("좌측화면: 아래로 (Left screen: Down)");
 		JButtonUtil.setTransparent(CommonConst.leftDownButton);
 		
 		CommonConst.leftTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
-		CommonConst.leftTopButton.setToolTipText("좌측 맨위 (Left Top)");
+		CommonConst.leftTopButton.setToolTipText("좌측화면: 맨위로 (Left screen: To top)");
 		JButtonUtil.setTransparent(CommonConst.leftTopButton);
 		
 		CommonConst.leftBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
-		CommonConst.leftBottomButton.setToolTipText("좌측 맨아래 (Left Bottom)");
+		CommonConst.leftBottomButton.setToolTipText("좌측화면: 맨아래로 (Left screen: To bottom)");
 		JButtonUtil.setTransparent(CommonConst.leftBottomButton);
 		
 		CommonConst.bothDiffPrevButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
-		CommonConst.bothDiffPrevButton.setToolTipText("이전 차이 (Prev Diff) (F7)");
+		CommonConst.bothDiffPrevButton.setToolTipText("이전 차이로 (To prev diff) (F7)");
 		JButtonUtil.setTransparent(CommonConst.bothDiffPrevButton);
 		
 		CommonConst.bothDiffNextButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "D"
-		CommonConst.bothDiffNextButton.setToolTipText("다음 차이 (Next Diff) (F8)");
+		CommonConst.bothDiffNextButton.setToolTipText("다음 차이로 (To next diff) (F8)");
 		JButtonUtil.setTransparent(CommonConst.bothDiffNextButton);
 		
 		CommonConst.bothUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
-		CommonConst.bothUpButton.setToolTipText("양쪽 위 (Both Up)");
+		CommonConst.bothUpButton.setToolTipText("양쪽화면: 위로 (Both screen: Up)");
 		JButtonUtil.setTransparent(CommonConst.bothUpButton);
 		
 		CommonConst.bothDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
-		CommonConst.bothDownButton.setToolTipText("양쪽 아래 (Both Down)");
+		CommonConst.bothDownButton.setToolTipText("양쪽화면: 아래로 (Both screen: Down)");
 		JButtonUtil.setTransparent(CommonConst.bothDownButton);
 		
 		CommonConst.bothTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
-		CommonConst.bothTopButton.setToolTipText("양쪽 맨위 (Both Top)");
+		CommonConst.bothTopButton.setToolTipText("양쪽화면: 맨위로 (Both screen: To top)");
 		JButtonUtil.setTransparent(CommonConst.bothTopButton);
 		
 		CommonConst.bothBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
-		CommonConst.bothBottomButton.setToolTipText("양쪽 맨아래 (Both Bottom)");
+		CommonConst.bothBottomButton.setToolTipText("양쪽화면: 맨아래로 (Both screen: To bottom)");
 		JButtonUtil.setTransparent(CommonConst.bothBottomButton);
 		
 		CommonConst.rightUpButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▲"
-		CommonConst.rightUpButton.setToolTipText("우측 위 (Right Up)");
+		CommonConst.rightUpButton.setToolTipText("우측화면: 위로 (Right screen: Up)");
 		JButtonUtil.setTransparent(CommonConst.rightUpButton);
 		
 		CommonConst.rightDownButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "▼"
-		CommonConst.rightDownButton.setToolTipText("우측 아래 (Right Down)");
+		CommonConst.rightDownButton.setToolTipText("우측화면: 아래로 (Right screen: Down)");
 		JButtonUtil.setTransparent(CommonConst.rightDownButton);
 		
 		CommonConst.rightTopButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "B"
-		CommonConst.rightTopButton.setToolTipText("우측 맨위 (Right Top)");
+		CommonConst.rightTopButton.setToolTipText("우측화면: 맨위로 (Right screen: To top)");
 		JButtonUtil.setTransparent(CommonConst.rightTopButton);
 		
 		CommonConst.rightBottomButton = CommonConst.bForm.addButton(0, 0, 0, 0, ""); // "E"
-		CommonConst.rightBottomButton.setToolTipText("우측 맨아래 (Right Bottom)");
+		CommonConst.rightBottomButton.setToolTipText("우측화면: 맨아래로 (Right screen: To bottom)");
 		JButtonUtil.setTransparent(CommonConst.rightBottomButton);
 		
 		DiffFormListener formListener = new DiffFormListener();

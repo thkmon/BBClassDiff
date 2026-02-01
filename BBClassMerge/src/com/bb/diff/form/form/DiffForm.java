@@ -79,7 +79,7 @@ public class DiffForm {
 		
 		CommonConst.winmergeButton = CommonConst.bForm.addButton(4, CommonConst.textAreaTopMargin - 1 , 85, 24, "Compare");
 		CommonConst.winmergeButton.setToolTipText("외부 비교 (External Compare) (Ctrl+M)");
-		JButtonUtil.setTransparent(CommonConst.winmergeButton);
+		// JButtonUtil.setTransparent(CommonConst.winmergeButton);
 		CommonConst.winmergeButton.addMouseListener(new BBWinmergeButtonMouseListener());
 		
 		CommonConst.diffPointLabel = CommonConst.bForm.addLabel(95, CommonConst.textAreaTopMargin - 2, 255, 24, "Diff Point : ");

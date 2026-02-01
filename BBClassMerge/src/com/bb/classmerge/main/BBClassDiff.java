@@ -14,7 +14,7 @@ public class BBClassDiff {
 	public static String defaultDirPath1 = "";
 	public static String defaultDirPath2 = "";
 	
-	public static String version = "20251108";
+	public static String version = "20260201";
 	public static String title = "BBClassDiff";
 	public static MainForm mainForm = null;
 	

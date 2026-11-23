@@ -295,6 +295,9 @@ public class MainForm extends JFrame {
 					return;
 				}
 				
+				textField1.setText(textField1.getText().trim());
+				textField2.setText(textField2.getText().trim());
+
 				DecompileThead decompileThead = new DecompileThead();
 				decompileThead.start();
 			}
@@ -336,6 +339,9 @@ public class MainForm extends JFrame {
 					return;
 				}
 				
+				textField1.setText(textField1.getText().trim());
+				textField2.setText(textField2.getText().trim());
+
 				DiffThread diffThread = new DiffThread();
 				diffThread.start();
 			}

@@ -3,3 +3,6 @@
 /temp/
 /log/
 /option.properties
+
+/target/
+*.log

@@ -291,42 +291,11 @@ public class DiffForm {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// 트리의 표시된 모든 파일들을 가져온다.
-					CopyPathList pathList = TreeUtil.getAllFilePathInTree(null);
-					if (pathList != null && pathList.size() > 0) {
-						
-						try {
-							String tempFolderName = "files_" + DateUtil.getTodayDateTimeWithUnderbar();
-							File tempDir = new File("temp\\" + tempFolderName);
-							if (!tempDir.exists()) {
-								tempDir.mkdirs();
-							} else {
-								return;
-							}
-							
-							CopyPath oneCopy = null;
-							int pathCount = pathList.size();
-							for (int i=0; i<pathCount; i++) {
-								oneCopy = pathList.get(i);
-								
-								File originFile = new File(oneCopy.getOriginPath());
-								File newFile = new File("temp\\" + tempFolderName + "\\" + oneCopy.getCorePath());
-								
-								CopyUtil.copyFileCore(originFile, newFile);
-							}
-							
-							if (Desktop.getDesktop() != null) {
-								Desktop.getDesktop().open(tempDir);
-							}
-							
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						}
-					}
+					extractFilesInTree(null);
 				}
 			});
 		}
-		
+
 		{
 			final BBMenuItem subMenu4 = new BBMenuItem("트리의 모든 클래스 파일로부터 자바 파일 추출 (Extract java files from classes in tree)");
 			treeMenu.add(subMenu4);
@@ -378,6 +347,32 @@ public class DiffForm {
 							e1.printStackTrace();
 						}
 					}
+				}
+			});
+		}
+		
+		{
+			final BBMenuItem subMenu = new BBMenuItem("트리의 좌측 파일 추출 (Extract left files in tree)");
+			treeMenu.add(subMenu);
+
+			subMenu.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					extractFilesInTree(Boolean.TRUE);
+				}
+			});
+		}
+
+		{
+			final BBMenuItem subMenu = new BBMenuItem("트리의 우측 파일 추출 (Extract right files in tree)");
+			treeMenu.add(subMenu);
+
+			subMenu.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					extractFilesInTree(Boolean.FALSE);
 				}
 			});
 		}
@@ -693,5 +688,54 @@ public class DiffForm {
 		
 		form.add(jpanel);
 	}
+
+	/**
+	 * 트리에 표시된 파일들을 추출한다. isLeft가 null이면 기존 방식으로 추출한다.
+	 *
+	 * @param isLeft
+	 */
+	private void extractFilesInTree(Boolean isLeft) {
+		// 트리의 표시된 모든 파일들을 가져온다.
+		CopyPathList pathList = TreeUtil.getAllFilePathInTree(null, isLeft);
+		if (pathList != null && pathList.size() > 0) {
+
+			try {
+				String tempFolderPrefix = "files_";
+				if (isLeft != null) {
+					if (isLeft.booleanValue()) {
+						tempFolderPrefix = "left_files_";
+					} else {
+						tempFolderPrefix = "right_files_";
+					}
+				}
+				String tempFolderName = tempFolderPrefix + DateUtil.getTodayDateTimeWithUnderbar();
+				File tempDir = new File("temp\\" + tempFolderName);
+				if (!tempDir.exists()) {
+					tempDir.mkdirs();
+				} else {
+					return;
+				}
+
+				CopyPath oneCopy = null;
+				int pathCount = pathList.size();
+				for (int i=0; i<pathCount; i++) {
+					oneCopy = pathList.get(i);
+
+					File originFile = new File(oneCopy.getOriginPath());
+					File newFile = new File("temp\\" + tempFolderName + "\\" + oneCopy.getCorePath());
+
+					CopyUtil.copyFileCore(originFile, newFile);
+				}
+
+				if (Desktop.getDesktop() != null) {
+					Desktop.getDesktop().open(tempDir);
+				}
+
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+	}
+
 }
 

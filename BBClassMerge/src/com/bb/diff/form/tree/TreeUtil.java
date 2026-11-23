@@ -536,10 +536,21 @@ public class TreeUtil {
 	 * @return
 	 */
 	public static CopyPathList getAllFilePathInTree(String extension) {
+		return getAllFilePathInTree(extension, null);
+	}
+
+	/**
+	 * 트리의 지정한 쪽 파일 가져오기. isLeft가 null이면 기존 방식으로 가져온다.
+	 *
+	 * @param extension
+	 * @param isLeft
+	 * @return
+	 */
+	public static CopyPathList getAllFilePathInTree(String extension, Boolean isLeft) {
 		BBTreeNode rootNode = CommonConst.fileTree.getRootNode();
 		
 		CopyPathList copyList = new CopyPathList();
-		addFilePath(copyList, rootNode, extension, true);
+		addFilePath(copyList, rootNode, extension, true, isLeft);
 		return copyList;
 	}
 	
@@ -551,8 +562,9 @@ public class TreeUtil {
 	 * @param node
 	 * @param extension
 	 * @param bRootFolder
+	 * @param isLeft
 	 */
-	private static void addFilePath(CopyPathList copyList, BBTreeNode node, String extension, boolean bRootFolder) {
+	private static void addFilePath(CopyPathList copyList, BBTreeNode node, String extension, boolean bRootFolder, Boolean isLeft) {
 		if (copyList == null) {
 			return;
 		}
@@ -566,14 +578,23 @@ public class TreeUtil {
 			int count = node.getChildCount();
 			for (int i=0; i<count; i++) {
 				oneNode = (BBTreeNode) node.getChildAt(i);
-				addFilePath(copyList, oneNode, extension, false);
+				addFilePath(copyList, oneNode, extension, false, isLeft);
 			}
 			
 		} else if (node.isFile()) {
 			String originPath = "";
 			String corePath = "";
 			String title = node.getTitle();
-			if (title != null && title.indexOf("[Right]") > -1) {
+			if (isLeft != null) {
+				originPath = node.getAbsoultePath(isLeft.booleanValue());
+				corePath = node.getCorePath();
+
+				// 지정한 쪽에 실제로 존재하는 파일만 가져온다.
+				if (originPath == null || originPath.length() == 0 || !new File(originPath).isFile()) {
+					return;
+				}
+
+			} else if (title != null && title.indexOf("[Right]") > -1) {
 				originPath = node.getRightAbsoulutePath();
 				corePath = node.getCorePath();
 			} else {
